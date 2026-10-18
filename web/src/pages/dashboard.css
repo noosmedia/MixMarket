@@ -1,0 +1,145 @@
+/* Dashboard im integrierten Monochrom-Stil (keine Cards). */
+
+/* Kennzahlen-Band: Spalten mit Haarlinien, oben und unten begrenzt */
+.stats-strip {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.stat-col {
+  padding: var(--space-5) var(--space-4);
+  border-left: 1px solid var(--border-subtle);
+}
+.stat-col:first-child {
+  border-left: none;
+  padding-left: 0;
+}
+.stat-col-label {
+  font-size: var(--text-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-3);
+}
+.stat-col-value {
+  font-size: var(--text-3xl);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--text-primary);
+}
+
+/* Abschnitte: nur eine Haarlinie als Trennung, kein Kasten */
+.dash-section {
+  margin-top: var(--space-7);
+}
+.dash-section-head {
+  margin-bottom: var(--space-5);
+}
+.dash-section-title {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+/* Schnellzugriff: schlanke Zeile mit drei Eintraegen, Haarlinien-getrennt */
+.quick-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--border-subtle);
+}
+.quick-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-4);
+  border-left: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  text-align: left;
+  transition: background var(--transition-fast);
+}
+.quick-link:first-child {
+  border-left: none;
+  padding-left: 0;
+}
+.quick-link:hover {
+  background: var(--bg-surface);
+}
+.quick-link:hover .quick-link-arrow {
+  opacity: 1;
+  transform: translateX(2px);
+}
+.quick-link-icon {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+.quick-link-label {
+  flex: 1;
+  font-size: var(--text-md);
+  font-weight: 540;
+  color: var(--text-primary);
+}
+.quick-link-arrow {
+  color: var(--text-tertiary);
+  opacity: 0;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+@media (max-width: 920px) {
+  .stats-strip {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .stat-col:nth-child(4) {
+    border-left: none;
+    padding-left: 0;
+  }
+  .stat-col {
+    border-top: 1px solid var(--border-subtle);
+  }
+  .stat-col:nth-child(-n + 3) {
+    border-top: none;
+  }
+}
+@media (max-width: 767px) {
+  .quick-row {
+    grid-template-columns: 1fr;
+  }
+  .quick-link {
+    border-left: none;
+    padding-left: 0;
+  }
+}
+/* Handy: Kennzahlen in zwei Spalten statt gequetscht in drei */
+@media (max-width: 767px) {
+  .stats-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .stat-col {
+    padding: var(--space-4) var(--space-4);
+  }
+  .stat-col:nth-child(odd) {
+    border-left: none;
+    padding-left: 0;
+  }
+  .stat-col:nth-child(even) {
+    border-left: 1px solid var(--border-subtle);
+    padding-left: var(--space-4);
+  }
+  .stat-col:nth-child(n + 3) {
+    border-top: 1px solid var(--border-subtle);
+  }
+  .stat-col:nth-child(-n + 2) {
+    border-top: none;
+  }
+  .stat-col-value {
+    font-size: var(--text-2xl);
+  }
+}
+
+/* Erster Abschnitt direkt unter dem Seitenkopf */
+.dash-section.is-first {
+  margin-top: 0;
+}

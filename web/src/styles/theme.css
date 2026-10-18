@@ -1,0 +1,155 @@
+/* MixMarket Design-Tokens
+   Aesthetik: Monochrom / Tinte. Angenehme Mitteltoene, kein pechschwarz,
+   kein grelles Weiss. Der Akzent ist NUR Kontrast (hell auf dunkel bzw.
+   dunkel auf hell), kein Buntton. Lebt von Typografie und Haarlinien.
+   Keine Cards, integrierter Look mit feinen Trennlinien. */
+
+:root {
+  /* Schrift-Familien (nur Geist) */
+  --font-display: 'Geist Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-ui: 'Geist Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono Variable', 'SF Mono', ui-monospace, monospace;
+
+  /* Schriftgroessen */
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-md: 0.875rem;
+  --text-base: 0.9375rem;
+  --text-lg: 1.0625rem;
+  --text-xl: 1.3125rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.5rem;
+  --text-display: 3.5rem;
+
+  /* Abstaende */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 2.75rem;
+  --space-8: 4rem;
+
+  /* Radien (klein, dezent) */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 999px;
+
+  /* Layout */
+  --topbar-height: 56px;
+
+  /* Uebergaenge */
+  --transition-fast: 130ms cubic-bezier(0.2, 0, 0, 1);
+  --transition-normal: 240ms cubic-bezier(0.2, 0, 0, 1);
+  --transition-slow: 460ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --- Dark-Theme: weiches Anthrazit (nicht pechschwarz) --- */
+:root,
+[data-theme='dark'] {
+  --bg-base: #18191b;
+  --bg-canvas: #1b1c1e;
+  --bg-raised: #1f2023;
+  --bg-glass: rgba(27, 28, 30, 0.82);
+  --bg-surface: #242528;
+  --bg-surface-hover: #2b2c30;
+  --bg-inset: #151517;
+  /* Ausgewählter Eintrag in Umschaltern */
+  --bg-selected: #242528;
+
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-default: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.2);
+
+  --text-primary: #e9e9e6;
+  --text-secondary: #a3a39e;
+  --text-tertiary: #76766f;
+  --text-dim: #55554f;
+  --text-inverse: #18191b;
+
+  /* Akzent = Kontrast (helles Weiss-Grau), KEIN Buntton */
+  --accent: #e9e9e6;
+  --accent-hover: #ffffff;
+  --accent-pressed: #cfcfca;
+  --accent-soft: rgba(255, 255, 255, 0.08);
+  --accent-soft-hover: rgba(255, 255, 255, 0.13);
+  --accent-border: rgba(255, 255, 255, 0.22);
+  --accent-glow: transparent;
+  --accent-text: #18191b;
+
+  /* Sehr gedaempfte Statusfarben, nur fuer Semantik (Status-Badges) */
+  --success: #7e9c86;
+  --success-soft: rgba(126, 156, 134, 0.16);
+  --warning: #b6a36d;
+  --warning-soft: rgba(182, 163, 109, 0.16);
+  --danger: #bd7d7d;
+  --danger-soft: rgba(189, 125, 125, 0.16);
+  --info: #8a96a3;
+  --info-soft: rgba(138, 150, 163, 0.16);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 10px 28px -14px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 28px 64px -26px rgba(0, 0, 0, 0.8);
+  --shadow-glow: none;
+
+  --backdrop: none;
+
+  color-scheme: dark;
+}
+
+/* --- Light-Theme: abgedunkeltes Papier, hell aber nicht grell ---
+   Reihenfolge von hell nach dunkel: raised > canvas > base > inset > surface > surface-hover.
+   Hover-Flächen (surface) liegen deutlich unter dem Seitenhintergrund, damit jeder
+   Hover-Effekt sichtbar bleibt, auch in Fenstern auf der helleren raised-Fläche. */
+[data-theme='light'] {
+  --bg-base: #dfddd7;
+  --bg-canvas: #e4e2dc;
+  --bg-raised: #e9e7e1;
+  --bg-glass: rgba(223, 221, 215, 0.86);
+  --bg-surface: #d0cec7;
+  --bg-surface-hover: #c6c4bc;
+  --bg-inset: #d7d5ce;
+  --bg-selected: #eceae5;
+
+  --border-subtle: rgba(26, 26, 24, 0.1);
+  --border-default: rgba(26, 26, 24, 0.17);
+  --border-strong: rgba(26, 26, 24, 0.28);
+
+  --text-primary: #1a1a18;
+  --text-secondary: #4f4f48;
+  --text-tertiary: #72726a;
+  --text-dim: #8f8f86;
+  --text-inverse: #e9e7e1;
+
+  /* Akzent = Kontrast (dunkle Tinte) */
+  --accent: #1a1a18;
+  --accent-hover: #000000;
+  --accent-pressed: #2c2c28;
+  --accent-soft: rgba(26, 26, 24, 0.08);
+  --accent-soft-hover: rgba(26, 26, 24, 0.13);
+  --accent-border: rgba(26, 26, 24, 0.22);
+  --accent-glow: transparent;
+  --accent-text: #ecebe6;
+
+  --success: #5c7d63;
+  --success-soft: rgba(92, 125, 99, 0.14);
+  --warning: #8f7a3a;
+  --warning-soft: rgba(143, 122, 58, 0.16);
+  --danger: #a55b5b;
+  --danger-soft: rgba(165, 91, 91, 0.14);
+  --info: #5f6b78;
+  --info-soft: rgba(95, 107, 120, 0.14);
+
+  --shadow-sm: 0 1px 2px rgba(26, 26, 24, 0.06);
+  --shadow-md: 0 12px 30px -16px rgba(26, 26, 24, 0.22);
+  --shadow-lg: 0 28px 60px -26px rgba(26, 26, 24, 0.26);
+  --shadow-glow: none;
+
+  --backdrop: none;
+
+  color-scheme: light;
+}

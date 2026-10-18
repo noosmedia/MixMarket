@@ -1,0 +1,191 @@
+/* Anmeldeseite: geteiltes Layout im Linear-Stil */
+.login {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Linke Markenbuehne mit Indigo-Schimmer */
+.login-stage {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-canvas);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+}
+.stage-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 55% at 16% 20%, var(--bg-surface), transparent 62%),
+    radial-gradient(50% 45% at 95% 92%, var(--bg-raised), transparent 68%);
+}
+.stage-content {
+  position: relative;
+  padding: var(--space-8);
+  max-width: 540px;
+}
+.stage-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 1.375rem;
+  font-weight: 660;
+  letter-spacing: -0.04em;
+  margin-bottom: var(--space-8);
+  animation: fade-up var(--transition-slow) both;
+}
+.stage-headline {
+  font-size: clamp(2.5rem, 4.6vw, 3.75rem);
+  font-weight: 640;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  margin-bottom: var(--space-5);
+  color: var(--text-secondary);
+  animation: fade-up var(--transition-slow) 80ms both;
+}
+.stage-accent {
+  color: var(--text-primary);
+}
+.stage-text {
+  font-size: var(--text-lg);
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: 46ch;
+  animation: fade-up var(--transition-slow) 160ms both;
+}
+.stage-footer {
+  margin-top: var(--space-7);
+  font-size: var(--text-sm);
+  color: var(--text-dim);
+  letter-spacing: 0.02em;
+  animation: fade-up var(--transition-slow) 240ms both;
+}
+
+/* Rechte Formularseite */
+.login-form-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-6);
+  background: var(--bg-base);
+}
+.login-form {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  animation: fade-up var(--transition-slow) 120ms both;
+}
+.form-head {
+  margin-bottom: var(--space-3);
+}
+.form-head h2 {
+  font-size: var(--text-2xl);
+  font-weight: 660;
+  letter-spacing: -0.035em;
+  margin-top: var(--space-2);
+}
+.form-head p {
+  margin-top: var(--space-2);
+  color: var(--text-tertiary);
+  font-size: var(--text-md);
+}
+.login-error {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-size: var(--text-sm);
+  border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent);
+}
+.login-submit {
+  height: 44px;
+  margin-top: var(--space-2);
+  font-size: var(--text-base);
+}
+/* Formular innerhalb des Rahmens: Felder untereinander */
+.login-form-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+/* Sprachwahl oben rechts auf der Formularseite */
+.login-form-side {
+  position: relative;
+}
+.login-lang {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+}
+/* Unauffälliger Textknopf, z. B. "Passwort vergessen?" */
+.login-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  align-self: center;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+.login-link:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface);
+}
+/* Notlösung ohne Schlüssel */
+.login-emergency {
+  margin-top: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.login-emergency p {
+  margin: var(--space-2) 0 0;
+}
+.login-emergency-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.login-command {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--bg-inset);
+  color: var(--text-primary);
+}
+
+@media (max-width: 880px) {
+  .login {
+    grid-template-columns: 1fr;
+  }
+  .login-stage {
+    display: none;
+  }
+}
+
+/* Versteckter Auslöser der Notlösung: sieht aus und verhält sich wie der übrige Text */
+.login-secret {
+  cursor: inherit;
+  user-select: text;
+}
+.login-emergency {
+  animation: fade-in var(--transition-normal) both;
+}

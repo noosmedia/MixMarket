@@ -1,0 +1,138 @@
+/* Hinweise auf MixMarket Pro: ruhiges Messing wie der Update-Punkt, keine Signalfarbe */
+.pro-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  background: var(--warning-soft);
+  color: var(--warning);
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn.pro-lock {
+  white-space: nowrap;
+}
+.btn.pro-lock .pro-badge {
+  margin-left: 2px;
+}
+.pro-dialog-text {
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+.pro-dialog-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--text-tertiary);
+}
+.pro-dialog-hint svg {
+  margin-top: 2px;
+  flex-shrink: 0;
+  color: var(--warning);
+}
+.pro-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+  border: 1px dashed var(--border-default);
+  border-radius: var(--radius-lg);
+  background: var(--bg-inset);
+}
+.pro-panel-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.pro-panel-head svg {
+  color: var(--warning);
+}
+.pro-panel-text {
+  font-size: var(--text-md);
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+.pro-panel-hint {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+/* Bereich "MixMarket Pro" in den Einstellungen */
+.pro-license-badge {
+  margin-left: auto;
+}
+.pro-license-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--space-2) var(--space-5);
+  margin: 0;
+  font-size: var(--text-md);
+}
+.pro-license-facts dt {
+  color: var(--text-tertiary);
+}
+.pro-license-facts dd {
+  margin: 0;
+  color: var(--text-primary);
+}
+.pro-license-key {
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+.pro-license-note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--warning);
+}
+.pro-license-note svg {
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.pro-license-price {
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+.pro-license-input {
+  max-width: 420px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+}
+.pro-dialog-link {
+  align-self: flex-start;
+}
+/* Kaufknöpfe mit Zeile darüber (Ersparnis beim Jahresabo) */
+.pro-plan-options {
+  align-items: flex-end;
+}
+.pro-plan-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+}
+.pro-plan-saving {
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  background: var(--warning-soft);
+  color: var(--warning);
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.pro-plan-saving.is-empty {
+  visibility: hidden;
+}

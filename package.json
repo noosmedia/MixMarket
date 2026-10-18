@@ -1,0 +1,23 @@
+{
+  "name": "mixmarket",
+  "version": "0.17.0",
+  "description": "MixMarket: schlankes Programm für gezielte B2B-Erstansprache",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "server",
+    "web"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=server & npm run dev --workspace=web",
+    "dev:server": "npm run dev --workspace=server",
+    "dev:web": "npm run dev --workspace=web",
+    "build": "npm run build --workspace=server && npm run build --workspace=web",
+    "db:push": "npm run db:push --workspace=server",
+    "db:seed": "npm run db:seed --workspace=server",
+    "db:studio": "npm run db:studio --workspace=server",
+    "reset-password": "npm run reset-password --workspace=server"
+  },
+  "author": "MixMarket",
+  "license": "AGPL-3.0-only"
+}

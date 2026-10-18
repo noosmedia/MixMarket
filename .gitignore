@@ -1,0 +1,51 @@
+# Abhaengigkeiten
+node_modules/
+
+# Build-Ausgaben
+dist/
+build/
+*.tsbuildinfo
+
+# Umgebungsvariablen (niemals committen)
+.env
+.env.development
+.env.production
+.env.local
+
+# Datenbank (lokale SQLite-Dateien)
+*.db
+*.db-journal
+*.sqlite
+server/prisma/*.db
+# Automatisch erzeugter Geheimschlüssel (niemals committen)
+*.secret
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Playwright
+playwright-report/
+test-results/
+
+# Betriebssystem
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Hochgeladene Mediendateien zur Laufzeit
+server/uploads/
+
+# Alte Bearbeitungs-Sicherungen und lokale Sicherungsordner
+.edit-backups/
+backups/
+
+# Von Prisma erzeugter Client (entsteht bei npm install und npm run build)
+server/src/generated/
+
+# MixMarket Pro: eigener, privater Ordner, gehört nie in dieses Repository
+/pro/

@@ -1,0 +1,708 @@
+// MixMarket Datenbankschema
+// Verwendet SQLite fuer den lokalen Betrieb. Fuer Server-Betrieb kann der
+// Provider auf "postgresql" umgestellt werden, ohne dass sich die Modelle aendern.
+// Status-Felder sind als String umgesetzt, da SQLite keine nativen Enums kennt.
+// Die erlaubten Werte stehen jeweils als Kommentar am Feld.
+
+// Prisma 7: der Client wird als TypeScript in src/generated/prisma erzeugt (nicht im Repository).
+// Die Datenbankadresse steht in prisma.config.ts, die Verbindung baut src/db/prisma.ts auf.
+generator client {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// --- Benutzer und Anmeldung ---
+// MixMarket hat genau ein Konto; es wird bei der Ersteinrichtung angelegt.
+model User {
+  id              String   @id @default(cuid())
+  email           String   @unique
+  passwordHash    String
+  name            String
+  // Wiederherstellungsschlüssel für "Passwort vergessen" (nur als Hash gespeichert)
+  recoveryKeyHash String?
+  // Sitzungsnummer: steigt bei jeder Passwortänderung, ältere Anmeldungen werden damit ungültig
+  tokenVersion    Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// --- Kontakte (B2B-Empfaenger) ---
+model Contact {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  firstName     String?
+  lastName      String?
+  company       String?
+  position      String?
+  website       String?
+  country       String?
+  sector        String? // Branche / Sachgebiet, nach dem gesucht wurde
+  source        String? // Herkunft: import | form | scrape | manual
+  status        String   @default("active") // active | unsubscribed | bounced | complained
+  consent       Boolean  @default(false) // dokumentierte Einwilligung vorhanden
+  notes         String?
+  custom        Json? // frei belegbare Zusatzfelder
+  salutation    String? // herr | frau, für den Platzhalter {{anrede}}
+  academicTitle String? // z. B. Dr., für den Platzhalter {{anrede}}
+  companyId     String? // Verknüpfung zur Firma aus der Recherche
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  lists         ContactList[]
+  sends         Send[]
+  events        EmailEvent[]
+  companyRecord Company?        @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  prospects     Prospect[]
+  outbox        OutboxMessage[]
+  inbox         InboxMessage[]
+
+  @@index([companyId])
+}
+
+// --- Listen (inkl. Sperr- und Bounce-Listen) ---
+model List {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  type        String   @default("normal") // normal | unsubscribed | bounced | complained
+  color       String? // optionale Farbmarkierung in der UI
+  productId   String? // Interessentenliste eines Produkts, liefert den Ansatzpunkt für {{ansatz}}
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  contacts  ContactList[]
+  campaigns CampaignList[]
+  product   Product?       @relation(fields: [productId], references: [id], onDelete: SetNull)
+}
+
+// --- Zuordnung Kontakt zu Liste ---
+model ContactList {
+  contactId String
+  listId    String
+  addedAt   DateTime @default(now())
+
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  list    List    @relation(fields: [listId], references: [id], onDelete: Cascade)
+
+  @@id([contactId, listId])
+}
+
+// --- Globale Sperrliste (Do-not-contact) ---
+// Adressen hier werden niemals erneut angeschrieben.
+model Suppression {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  reason    String // unsubscribed | bounced | complained | manual
+  note      String?
+  createdAt DateTime @default(now())
+}
+
+// --- E-Mail-Vorlagen ---
+model Template {
+  id        String   @id @default(cuid())
+  name      String
+  subject   String
+  htmlBody  String
+  textBody  String?
+  thumbnail String? // optionaler Vorschau-Snapshot
+  language  String   @default("de") // de | en: Sprache von Anrede, Abmelde-Hinweis und Footer
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  campaigns   Campaign[]
+  automations Automation[]
+}
+
+// --- Kampagnen ---
+model Campaign {
+  id          String    @id @default(cuid())
+  name        String
+  subject     String
+  fromName    String
+  fromEmail   String
+  templateId  String?
+  status      String    @default("draft") // draft | scheduled | sending | sent | paused | cancelled
+  scheduledAt DateTime?
+  sentAt      DateTime?
+  // gezaehlte Kennzahlen (werden beim Versand aktualisiert)
+  totalCount  Int       @default(0)
+  sentCount   Int       @default(0)
+  failedCount Int       @default(0)
+  openCount   Int       @default(0)
+  clickCount  Int       @default(0)
+  unsubCount  Int       @default(0)
+  bounceCount Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  template            Template?      @relation(fields: [templateId], references: [id])
+  lists               CampaignList[]
+  sends               Send[]
+  events              EmailEvent[]
+  automationsAsSource Automation[]   @relation("AutomationSource")
+}
+
+// --- Zuordnung Kampagne zu Liste ---
+model CampaignList {
+  campaignId String
+  listId     String
+
+  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  list     List     @relation(fields: [listId], references: [id], onDelete: Cascade)
+
+  @@id([campaignId, listId])
+}
+
+// --- Einzelversand pro Kontakt und Kampagne ---
+model Send {
+  id           String    @id @default(cuid())
+  campaignId   String
+  contactId    String
+  status       String    @default("queued") // queued | sent | failed | bounced
+  trackingId   String    @unique @default(cuid())
+  messageId    String?
+  errorMessage String?
+  sentAt       DateTime?
+  openedAt     DateTime?
+  firstClickAt DateTime?
+  createdAt    DateTime  @default(now())
+
+  campaign Campaign     @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  contact  Contact      @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  events   EmailEvent[]
+
+  @@unique([campaignId, contactId])
+}
+
+// --- Ereignisse (Tracking) ---
+model EmailEvent {
+  id         String   @id @default(cuid())
+  sendId     String?
+  campaignId String?
+  contactId  String?
+  type       String // open | click | bounce | unsubscribe | complaint
+  url        String? // Ziel-URL bei Klick
+  ip         String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  send     Send?     @relation(fields: [sendId], references: [id], onDelete: Cascade)
+  campaign Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  contact  Contact?  @relation(fields: [contactId], references: [id], onDelete: SetNull)
+}
+
+// --- Automatisierungen / Follow-ups ---
+model Automation {
+  id               String   @id @default(cuid())
+  name             String
+  triggerType      String // clicked | opened | not_opened
+  delayDays        Int      @default(3)
+  sourceCampaignId String?
+  templateId       String
+  subject          String
+  fromName         String
+  fromEmail        String
+  active           Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  template       Template        @relation(fields: [templateId], references: [id])
+  sourceCampaign Campaign?       @relation("AutomationSource", fields: [sourceCampaignId], references: [id], onDelete: SetNull)
+  runs           AutomationRun[]
+}
+
+// --- Geplante Follow-up-Versendungen ---
+model AutomationRun {
+  id           String    @id @default(cuid())
+  automationId String
+  contactId    String
+  status       String    @default("scheduled") // scheduled | sent | skipped | failed
+  dueAt        DateTime
+  sentAt       DateTime?
+  createdAt    DateTime  @default(now())
+
+  automation Automation @relation(fields: [automationId], references: [id], onDelete: Cascade)
+
+  @@unique([automationId, contactId])
+}
+
+// --- Scraping-Auftraege ---
+model ScrapeJob {
+  id          String   @id @default(cuid())
+  name        String
+  type        String   @default("structured") // structured | contacts
+  config      Json // URLs, Selektoren, Suchkriterien
+  status      String   @default("idle") // idle | running | done | error
+  resultCount Int      @default(0)
+  error       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  results ScrapeResult[]
+}
+
+// --- Scraping-Ergebnisse ---
+model ScrapeResult {
+  id        String   @id @default(cuid())
+  jobId     String
+  data      Json
+  sourceUrl String?
+  createdAt DateTime @default(now())
+
+  job ScrapeJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
+}
+
+// --- Globale Einstellungen (Singleton) ---
+// Pflichtangaben fuer rechtskonforme Footer (Impressum, Postanschrift).
+model Settings {
+  id            String  @id @default("singleton")
+  companyName   String?
+  postalAddress String?
+  signatureHtml String?
+  unsubFooterDe String?
+  unsubFooterEn String?
+
+  // Zugänge für die Firmensuche. Passwort und Schlüssel liegen nur
+  // verschlüsselt in der Datenbank und werden nie an das Frontend geschickt.
+  dataforseoLogin       String?
+  dataforseoPasswordEnc String?
+  dataforseoSandbox     Boolean @default(false)
+  serperApiKeyEnc       String?
+  // Kostenobergrenze je Suche in US-Dollar (Schutz vor teuren Fehlbedienungen)
+  discoveryMaxSpendUsd  Float   @default(1)
+
+  // KI-Bewertung: Anbieter (claude | codex) und optionales Modell; Produkt und
+  // idealer Kunde stehen je Produkt in der Tabelle Product
+  aiProvider String?
+  aiModel    String?
+
+  // Postfach: Versand über SMTP, Empfang über IMAP. Passwörter liegen nur
+  // verschlüsselt vor und werden nie an das Frontend geschickt.
+  // Leere SMTP-Felder: Werte aus der Server-Datei .env gelten weiter.
+  smtpHost        String?
+  smtpPort        Int?
+  smtpSecurity    String? // tls (direkt verschlüsselt, meist Port 465) | starttls (meist Port 587)
+  smtpUser        String?
+  smtpPasswordEnc String?
+  mailFromAddress String?
+  mailFromName    String?
+  imapHost        String?
+  imapPort        Int?
+  imapSecurity    String? // tls (meist Port 993) | starttls (meist Port 143)
+  imapSameLogin   Boolean @default(true) // gleiche Anmeldung wie beim Versand
+  imapUser        String?
+  imapPasswordEnc String?
+  imapFolder      String? // Ordner für eingehende Antworten, Standard INBOX
+
+  // Versandregeln des Postausgangs
+  outboxDailyLimit Int    @default(20) // höchstens so viele Mails je Tag
+  outboxDays       String @default("1,2,3,4,5") // Versandtage, 1 = Montag ... 7 = Sonntag
+  outboxFrom       String @default("08:00") // Versandfenster Beginn (Ortszeit des Servers)
+  outboxTo         String @default("17:00") // Versandfenster Ende
+  outboxGapMinutes Int    @default(3) // Mindestabstand zwischen zwei Mails
+
+  // Stand des Postfach-Abrufs (IMAP): zuletzt gelesene Nachricht je Ordnerkennung
+  imapUidValidity String?
+  imapLastUid     Int?
+  imapCheckedAt   DateTime?
+  imapLastError   String?
+
+  // Steuerung: Autopilot je Bereich, Not-Aus für jeden Versand, Schwellen
+  autopilotResearch Boolean   @default(false) // Suchen selbst durchleuchten, Zielgruppen selbst bewerten
+  autopilotWriting  Boolean   @default(false) // Firmen ab Mindestpassung selbst anschreiben lassen
+  autopilotMinScore Int       @default(7)
+  autopilotSending  Boolean   @default(true) // Postausgang verschickt freigegebene Mails
+  autopilotReplies  Boolean   @default(true) // KI ordnet Antworten ein und entwirft
+  sendingStopped    Boolean   @default(false) // Not-Aus: kein Versand, egal woher
+  sendingStoppedAt  DateTime?
+  sendingStopReason String? // manual | bounces
+  bounceStopPercent Int       @default(5) // Not-Aus ab diesem Anteil dauerhafter Rückläufer in 24 Stunden
+  aiPausePercent    Int       @default(80) // KI pausiert ab dieser Auslastung des Abos (100 = nie)
+
+  // MixMarket Pro: Lizenzschlüssel nur verschlüsselt, Kennung dieser Installation für den Lizenzserver
+  proLicenseKeyEnc  String?
+  proInstallationId String?
+
+  updatedAt DateTime @updatedAt
+}
+
+// --- Gespräche: eingegangene Mails aus dem Postfach, die zu MixMarket gehören ---
+// Gespeichert werden nur Antworten auf eigene Mails, Mails bekannter Kontakte und Rückläufer.
+// kind: reply (echte Antwort) | auto_reply (Abwesenheitsnotiz o. ä.) | bounce (unzustellbar)
+model InboxMessage {
+  id              String   @id @default(cuid())
+  folder          String? // IMAP-Ordner
+  uid             Int? // IMAP-Kennung im Ordner
+  messageIdHeader String?  @unique // Message-ID der eingegangenen Mail
+  inReplyTo       String?
+  references      String?
+  fromEmail       String
+  fromName        String?
+  toEmail         String?
+  subject         String   @default("")
+  text            String   @default("") // reiner Text, gekürzt
+  receivedAt      DateTime
+  kind            String   @default("reply")
+  category        String? // Einordnung der KI: interested | question | not_interested | unsubscribe | other
+  summary         String? // ein Satz der KI
+  aiStatus        String   @default("pending") // pending | running | done | failed | skipped
+  aiError         String?
+  status          String   @default("open") // open | done
+  bounceType      String? // hard | soft
+  bounceRecipient String? // Adresse, die nicht zugestellt werden konnte
+  contactId       String?
+  prospectId      String?
+  outboxMessageId String? // beantwortete Mail aus dem Postausgang
+  sendId          String? // beantwortete Kampagnen-Mail
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  contact  Contact?     @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  prospect Prospect?    @relation(fields: [prospectId], references: [id], onDelete: SetNull)
+  replies  InboxReply[]
+
+  @@index([status, kind])
+  @@index([contactId])
+}
+
+// Eigene Antwort auf eine eingegangene Mail: Entwurf der KI oder selbst geschrieben, geht erst nach Klick hinaus
+model InboxReply {
+  id             String    @id @default(cuid())
+  inboxMessageId String
+  subject        String    @default("")
+  body           String    @default("")
+  status         String    @default("generating") // generating | review | sent | failed | discarded
+  hint           String? // Wunsch an die KI für die nächste Fassung
+  language       String    @default("de") // Sprache der Antwort (Zitatzeile der Mail)
+  error          String?
+  messageId      String?
+  testMode       Boolean   @default(false)
+  editedByUser   Boolean   @default(false)
+  aiProvider     String?
+  sentAt         DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  message InboxMessage @relation(fields: [inboxMessageId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+}
+
+// --- Jeder Aufruf der KI, für die Auslastung je Bereich ---
+model AiCall {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  area       String // scoring | outbox | inbox
+  provider   String
+  ok         Boolean
+  durationMs Int
+  error      String?
+
+  @@index([createdAt])
+}
+
+// --- Hinweise für "Wartet auf Sie": Abmeldungen, Rückläufer, Not-Aus, KI-Pause ---
+model Notice {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  kind        String // unsubscribe | bounce | stop | aiPause
+  label       String?
+  entityType  String?
+  entityId    String?
+  params      Json?
+  dismissedAt DateTime?
+
+  @@index([dismissedAt])
+}
+
+// --- Aktivitätsprotokoll: wer hat wann was getan (Nutzer, System, KI-Agent) ---
+model Activity {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  actorType  String // user | system | agent
+  actorId    String? // Nutzer-ID bei actorType user
+  actorName  String? // Name zum Zeitpunkt der Aktion, bleibt auch nach Löschen des Nutzers lesbar
+  area       String // Bereich, z. B. contacts, campaigns, research, settings
+  action     String // Schlüssel der Aktion, z. B. contact.created
+  level      String   @default("info") // info | warning | error
+  entityType String? // Art des betroffenen Eintrags
+  entityId   String? // Kennung des betroffenen Eintrags
+  label      String? // Name des Eintrags zum Zeitpunkt der Aktion
+  params     Json? // Werte für den Anzeigetext (z. B. Anzahl)
+  details    Json? // Einzelheiten, z. B. geänderte Felder vorher und nachher
+
+  @@index([createdAt])
+  @@index([area, createdAt])
+  @@index([entityType, entityId])
+}
+
+// --- Firmensuche: ein Suchlauf über eine Quelle ---
+model DiscoverySearch {
+  id            String    @id @default(cuid())
+  provider      String // osm | dataforseo_listings | dataforseo_serp | serper
+  branchKey     String? // Schlüssel aus dem Branchenkatalog, leer bei Freitext
+  term          String // Suchbegriff, z. B. "Dachdecker"
+  location      String // Ort, z. B. "Leipzig"
+  radiusKm      Int       @default(25)
+  depth         Int       @default(30) // Suchtiefe bei Suchmaschinen-Quellen
+  maxResults    Int       @default(100) // Höchstzahl bei Branchen-Quellen
+  lat           Float?
+  lon           Float?
+  status        String    @default("pending") // pending | running | done | error
+  estimatedCost Float     @default(0) // geschätzte Kosten in US-Dollar
+  actualCost    Float     @default(0) // vom Anbieter gemeldete Kosten in US-Dollar
+  foundCount    Int       @default(0) // Treffer insgesamt
+  junkCount     Int       @default(0) // aussortierte Verzeichnisse und Portale
+  newCount      Int       @default(0) // neu angelegte Firmen
+  knownCount    Int       @default(0) // bereits bekannte Firmen
+  error         String?
+  createdAt     DateTime  @default(now())
+  finishedAt    DateTime?
+
+  // Durchleuchten der gefundenen Firmen (Webseiten auslesen)
+  profileStatus String  @default("idle") // idle | running | done | error
+  profileTotal  Int     @default(0) // Firmen mit Webseite, die geprüft werden
+  profileDone   Int     @default(0) // davon bereits geprüft
+  profileError  String?
+
+  finds CompanyFind[]
+}
+
+// --- Firmen aus der Recherche (noch keine Kontakte) ---
+model Company {
+  id          String   @id @default(cuid())
+  name        String
+  domain      String?  @unique // Webseite ohne www, dient zum Erkennen von Doppelten
+  externalId  String?  @unique // Kennung beim Anbieter, z. B. "osm:node/123"
+  website     String?
+  phone       String?
+  email       String?
+  street      String?
+  postalCode  String?
+  city        String?
+  country     String?
+  category    String?
+  lat         Float?
+  lon         Float?
+  rating      Float?
+  reviewCount Int?
+  isClaimed   Boolean? // Google-Eintrag vom Inhaber bestätigt
+  hasWebsite  Boolean?
+  source      String // Quelle, über die die Firma zuerst gefunden wurde
+  sourceUrl   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Ergebnis des Durchleuchtens
+  profileStatus String? // ok | unreachable | blocked | error, leer = noch nicht geprüft
+  profileError  String?
+  profiledAt    DateTime?
+  profileText   String? // kurzer Auszug der Startseite (Titel, Beschreibung, Überschriften) für die KI
+
+  finds     CompanyFind[]
+  signals   CompanySignal[]
+  people    CompanyPerson[]
+  scores    CompanyScore[]
+  prospects Prospect[]
+  contacts  Contact[]
+}
+
+// Interessent: Firma, die für ein Produkt angesprochen werden soll (Arbeitsliste der Erstansprache)
+model Prospect {
+  id         String   @id @default(cuid())
+  companyId  String
+  productId  String
+  status     String   @default("new") // new | contacted | talking | declined | customer
+  personName String? // gewählter Ansprechpartner (voller Name), leer = erster Entscheider
+  notes      String?
+  contactId  String? // Kontakt nach der Übernahme in die Kontakte
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  company  Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  product  Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  contact  Contact?        @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  messages OutboxMessage[]
+  inbox    InboxMessage[]
+
+  @@unique([companyId, productId])
+  @@index([productId])
+}
+
+// --- Postausgang: persönliche Mails an einzelne Interessenten (Erstmail und Nachfass-Mails) ---
+// Ablauf: waiting (Nachfass, noch nicht fällig) -> generating (KI schreibt) -> review (wartet auf
+// Freigabe) -> approved (freigegeben) -> sent. Außerdem rejected, failed (KI oder Versand) und
+// cancelled (Ablauf beendet, z. B. nach Abmeldung oder Statuswechsel des Interessenten).
+model OutboxMessage {
+  id           String    @id @default(cuid())
+  prospectId   String
+  productId    String
+  contactId    String?
+  step         Int       @default(0) // 0 = Erstmail, 1 = erste Nachfass-Mail, ...
+  status       String    @default("generating")
+  toEmail      String
+  subject      String    @default("")
+  body         String    @default("") // reiner Text; Absätze durch Leerzeilen
+  plannedAt    DateTime  @default(now()) // frühester Versandzeitpunkt
+  sentAt       DateTime?
+  testMode     Boolean   @default(false) // ohne Postfach nur im Testmodus "versendet"
+  messageId    String? // Message-ID der versendeten Mail, für Nachfass-Mails im selben Verlauf
+  error        String?
+  stopReason   String? // Grund bei cancelled: manual | status | unsubscribed | suppressed | contact | product
+  rewriteHint  String? // Hinweis des Nutzers für das nächste Neuschreiben durch die KI
+  editedByUser Boolean   @default(false)
+  aiProvider   String?
+  openedAt     DateTime?
+  clickedAt    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  prospect Prospect @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  contact  Contact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
+
+  @@index([status, plannedAt])
+  @@index([prospectId])
+}
+
+// --- Produkt, für das Kunden gesucht werden (z. B. eine eigene Software) ---
+model Product {
+  id            String   @id @default(cuid())
+  name          String
+  website       String?
+  description   String // Was verkauft wird: Funktionen, Preise, für wen
+  idealCustomer String // Wer besonders gut passt und wer nicht
+  minEmployees  Int? // Mindestgröße der Kundenfirma in Mitarbeitern, leer = keine Grenze
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Ablauf der persönlichen Ansprache im Postausgang
+  outreachFollowUps    Int     @default(2) // Anzahl Nachfass-Mails nach der Erstmail (0 bis 3)
+  outreachIntervals    String  @default("4,7") // Abstand in Tagen je Nachfass-Mail, kommagetrennt
+  outreachApproval     Boolean @default(true) // jede Mail vor dem Versand freigeben
+  outreachLanguage     String  @default("de") // de | en
+  outreachInstructions String? // eigene Hinweise an die KI, z. B. "Bieten Sie eine kurze Vorführung an"
+
+  cohorts   Cohort[]
+  scores    CompanyScore[]
+  prospects Prospect[]
+  lists     List[]
+  outbox    OutboxMessage[]
+}
+
+// --- KI-Bewertung einer Firma für ein Produkt (immer nur die jüngste) ---
+model CompanyScore {
+  id          String   @id @default(cuid())
+  companyId   String
+  productId   String
+  score       Int // 1 bis 10
+  reason      String // kurze Begründung
+  hook        String // Ansatzpunkt für die Erstansprache
+  sizeClass   String? // von der KI geschätzte Größe: 1-5 | 6-20 | 21-50 | 51-250 | 250+ | unbekannt
+  sizeReason  String? // woran die KI die Größe festmacht
+  provider    String // claude | codex
+  model       String?
+  contextHash String // Prüfsumme von Produkt und idealem Kunde, zeigt veraltete Bewertungen
+  createdAt   DateTime @default(now())
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, productId])
+}
+
+// --- Bewertungslauf über eine Zielgruppe ---
+model ScoringJob {
+  id              String    @id @default(cuid())
+  cohortId        String?
+  productId       String?
+  provider        String
+  status          String    @default("running") // running | done | error | cancelled
+  total           Int       @default(0)
+  done            Int       @default(0)
+  failed          Int       @default(0)
+  skipped         Int       @default(0) // bereits aktuell bewertet
+  cancelRequested Boolean   @default(false)
+  error           String?
+  createdAt       DateTime  @default(now())
+  finishedAt      DateTime?
+}
+
+// --- Merkmal einer Firma aus ihrer Webseite, immer mit Fundstelle ---
+model CompanySignal {
+  id          String   @id @default(cuid())
+  companyId   String
+  code        String // z. B. GOOGLE_ADS, CMS, AGENCY, HIRING, LEGAL_FORM
+  valueText   String?
+  valueNum    Float?
+  confidence  Float    @default(1)
+  evidenceUrl String? // Seite, auf der das Merkmal gefunden wurde
+  observedAt  DateTime @default(now())
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+  @@index([code])
+}
+
+// --- Ansprechpartner aus Impressum oder Teamseite ---
+model CompanyPerson {
+  id              String   @id @default(cuid())
+  companyId       String
+  fullName        String
+  academicTitle   String? // z. B. Dr., Dipl.-Ing.
+  salutation      String? // herr | frau, nur wenn auf der Seite erkennbar
+  firstName       String?
+  lastName        String?
+  role            String? // z. B. Geschäftsführer, Inhaberin
+  isDecisionMaker Boolean  @default(false)
+  source          String // impressum | team
+  evidenceUrl     String?
+  createdAt       DateTime @default(now())
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+}
+
+// --- Verknüpfung: welche Suche hat welche Firma gefunden (mit Rang) ---
+model CompanyFind {
+  id        String   @id @default(cuid())
+  searchId  String
+  companyId String
+  rank      Int? // Position in den Suchergebnissen, falls die Quelle sie liefert
+  createdAt DateTime @default(now())
+
+  search  DiscoverySearch @relation(fields: [searchId], references: [id], onDelete: Cascade)
+  company Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([searchId, companyId])
+}
+
+// --- Zwischenspeicher für Ortsangaben (Nominatim erlaubt nur Einzelabfragen) ---
+model GeoCache {
+  query     String   @id // kleingeschriebener Ortsname
+  lat       Float?
+  lon       Float?
+  createdAt DateTime @default(now())
+}
+
+// --- Zielgruppe: gespeicherte Auswahl von Firmen über Merkmale ---
+model Cohort {
+  id          String   @id @default(cuid())
+  productId   String? // Produkt, für das die Zielgruppe gedacht ist
+  name        String
+  description String?
+  // Aufbau: { searchIds: string[], conditions: [{ key, value?, mode: "must" | "mustNot" }] }
+  filter      Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  product Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+}

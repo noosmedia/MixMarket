@@ -1,0 +1,582 @@
+/* Firmensuche in der Recherche. Folgt dem Tinte-Look von MixMarket:
+   Haarlinien statt Kästen, Kontrast statt Buntton. */
+
+/* Metazeile einer Suche: Teile mit feinem Punkt getrennt */
+.discovery-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-3);
+}
+/* Trennpunkt hinter dem Eintrag statt davor: bricht die Zeile um, beginnt sie nie mit einem Punkt */
+.discovery-meta > span:not(:last-child)::after {
+  content: '·';
+  margin-left: var(--space-3);
+  color: var(--text-dim);
+}
+
+/* Hinweis oder Fehler unter einer Suche */
+.discovery-note {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--warning);
+  max-width: 72ch;
+  overflow-wrap: anywhere;
+}
+.discovery-note-error {
+  color: var(--danger);
+}
+
+/* Formular */
+.discovery-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+.discovery-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+.discovery-grid-tight {
+  gap: var(--space-3);
+}
+
+/* Quellenauswahl als Liste mit Haarlinien statt Kacheln */
+.discovery-sources {
+  border: none;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.discovery-source-list {
+  border-top: 1px solid var(--border-subtle);
+}
+.discovery-source {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  text-align: left;
+  padding: var(--space-3) var(--space-2);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background var(--transition-fast);
+}
+.discovery-source:hover {
+  background: var(--bg-surface);
+}
+.discovery-source:focus-visible {
+  outline: 2px solid var(--border-strong);
+  outline-offset: -2px;
+}
+/* Auswahlmarke: Ring, gefüllt bei aktiver Quelle */
+.discovery-source-mark {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-strong);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.discovery-source.active .discovery-source-mark {
+  border-color: var(--text-primary);
+  box-shadow: inset 0 0 0 3px var(--bg-raised), inset 0 0 0 7px var(--text-primary);
+}
+.discovery-source-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.discovery-source-name {
+  font-size: var(--text-md);
+  font-weight: 560;
+  color: var(--text-secondary);
+}
+.discovery-source.active .discovery-source-name {
+  color: var(--text-primary);
+}
+.discovery-source-desc {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  line-height: 1.5;
+}
+.discovery-source-state {
+  font-size: var(--text-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.discovery-source-state.ok {
+  color: var(--success);
+}
+.discovery-missing {
+  margin-top: var(--space-2);
+  color: var(--warning);
+}
+.discovery-missing a {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Vorschau des Suchbegriffs, der für die Branche verwendet wird */
+.discovery-term-preview {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  border-bottom: 1px dashed var(--border-default);
+}
+
+/* Fußzeile des Formulars: Kostenzeile links, Knöpfe rechts */
+.discovery-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  width: 100%;
+  flex-wrap: wrap;
+}
+.discovery-cost {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+.discovery-cost-label {
+  font-family: var(--font-ui);
+  font-size: var(--text-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+.discovery-cost-over {
+  color: var(--danger);
+}
+
+/* Ergebnistabelle */
+.discovery-table-wrap {
+  overflow: auto;
+  max-height: 64vh;
+  margin: 0 calc(var(--space-4) * -1);
+}
+.discovery-table td {
+  vertical-align: top;
+  font-size: var(--text-sm);
+}
+.discovery-company {
+  color: var(--text-primary);
+  font-weight: 540;
+}
+.discovery-sub {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+.discovery-nowrap {
+  white-space: nowrap;
+}
+.discovery-col-rank {
+  width: 48px;
+  text-align: right;
+}
+.discovery-link {
+  color: var(--text-primary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-default);
+  transition: border-color var(--transition-fast);
+  overflow-wrap: anywhere;
+}
+.discovery-link:hover {
+  border-color: var(--text-primary);
+}
+.discovery-attribution {
+  margin-top: var(--space-4);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+.discovery-attribution a {
+  color: var(--text-secondary);
+}
+
+/* Reiter der Recherche; auf dem Handy ersetzt durch ein Auswahlfeld */
+.scraper-tabs,
+.scraper-tab-select {
+  margin-bottom: var(--space-5);
+}
+
+/* KI-Passung als Zahl in der Tabelle: hohe Werte gefüllt, niedrige gedämpft */
+.discovery-col-score {
+  width: 64px;
+  text-align: center;
+}
+.discovery-score {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-default);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+.discovery-score.is-high {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--text-inverse);
+  font-weight: 600;
+}
+.discovery-score.is-low {
+  color: var(--text-dim);
+  border-style: dashed;
+}
+
+/* Fortschritt beim Durchleuchten */
+.discovery-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+.discovery-progress-bar {
+  position: relative;
+  width: 120px;
+  height: 3px;
+  border-radius: var(--radius-full);
+  background: var(--border-subtle);
+  overflow: hidden;
+}
+.discovery-progress-bar > span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--text-primary);
+  transition: width var(--transition-normal);
+}
+.discovery-profiled {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--success);
+}
+
+/* Firmenname als Knopf zur Detailansicht */
+.discovery-company {
+  display: inline;
+  text-align: left;
+  font: inherit;
+  color: var(--text-primary);
+  font-weight: 540;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--transition-fast);
+}
+.discovery-company:hover,
+.discovery-company:focus-visible {
+  border-color: var(--text-primary);
+  outline: none;
+}
+.discovery-person {
+  color: var(--text-primary);
+}
+
+/* Merkmale als kleine Hinweise ohne Farbe, nur Kontrast */
+.discovery-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: 240px;
+}
+.discovery-chip {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-2xs);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* --- Detailansicht einer Firma --- */
+.company-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+.company-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  font-size: var(--text-sm);
+}
+.company-status-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.company-section {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-4);
+}
+.company-heading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-3);
+}
+.company-empty {
+  font-size: var(--text-sm);
+}
+.company-people {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.company-people li {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+}
+.company-person-main,
+.company-person-meta {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.company-person-name {
+  color: var(--text-primary);
+  font-weight: 540;
+}
+.company-person-role {
+  color: var(--text-secondary);
+}
+.company-person-source {
+  font-size: var(--text-xs);
+}
+.company-list {
+  display: grid;
+  grid-template-columns: minmax(140px, 200px) 1fr;
+  margin: 0;
+}
+.company-row {
+  display: contents;
+}
+.company-row dt,
+.company-row dd {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: var(--text-sm);
+  margin: 0;
+}
+.company-row dt {
+  color: var(--text-tertiary);
+}
+.company-row dd {
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+.company-evidence {
+  display: inline-flex;
+  margin-left: var(--space-2);
+  color: var(--text-dim);
+  vertical-align: middle;
+  transition: color var(--transition-fast);
+}
+.company-evidence:hover {
+  color: var(--text-primary);
+}
+/* KI-Bewertung in der Detailansicht */
+.company-ai-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+.company-ai-score {
+  font-size: 2.25rem;
+  line-height: 1;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.company-ai-reason {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.company-ai-hook {
+  margin-top: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-left: 2px solid var(--text-primary);
+  background: var(--bg-inset);
+}
+.company-ai-hook p {
+  margin: 4px 0 var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+.company-ai-hook-label {
+  font-size: var(--text-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+.company-other-scores {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+/* Zahl links, daneben Produktname, Begründung darunter; nichts läuft ineinander */
+.company-other-scores li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--space-3);
+  row-gap: 2px;
+  align-items: start;
+  font-size: var(--text-sm);
+}
+.company-other-scores li > .discovery-score {
+  grid-row: span 2;
+}
+.company-other-scores li > .company-person-name {
+  align-self: center;
+}
+.company-jobs {
+  margin: 0;
+  padding-left: var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Schmale Bildschirme: Felder untereinander */
+@media (max-width: 767px) {
+  .discovery-grid {
+    grid-template-columns: 1fr;
+  }
+  .discovery-source {
+    grid-template-columns: 14px 1fr;
+  }
+  .discovery-source-state {
+    grid-column: 2;
+  }
+  /* Suchzeilen: Inhalt oben, Status und Knöpfe darunter */
+  .discovery-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+  .discovery-row .data-row-aside {
+    justify-content: space-between;
+  }
+  /* Ergebnistabelle ohne Querscrollen: jede Firma als Block untereinander */
+  /* Kein eigener Scrollkasten im Fenster: das ganze Fenster scrollt */
+  .discovery-table-wrap {
+    margin: 0;
+    max-height: none;
+    overflow: visible;
+  }
+  /* Passung links neben dem Firmennamen statt mittig darüber */
+  .discovery-table .discovery-col-score {
+    float: left;
+    width: auto;
+    padding: 0;
+    margin: 2px var(--space-2) 0 0;
+    text-align: left;
+  }
+  .discovery-table thead {
+    display: none;
+  }
+  .discovery-table,
+  .discovery-table tbody,
+  .discovery-table tr,
+  .discovery-table td {
+    display: block;
+    width: 100%;
+  }
+  .discovery-table tr {
+    position: relative;
+    padding: var(--space-3) 44px var(--space-3) 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .discovery-table td {
+    border: none;
+    padding: 2px 0;
+  }
+  .discovery-table td:has(> .cell-empty:only-child) {
+    display: none;
+  }
+  .discovery-table .discovery-col-rank {
+    text-align: left;
+    color: var(--text-tertiary);
+  }
+  .discovery-table .discovery-nowrap {
+    white-space: normal;
+  }
+  .discovery-table td:last-child {
+    position: absolute;
+    top: var(--space-3);
+    right: 0;
+    width: auto;
+  }
+  .discovery-chips {
+    max-width: none;
+    margin-top: 4px;
+  }
+  .company-list {
+    grid-template-columns: 1fr;
+  }
+  /* Ansprechpartner: Name und Rolle oben, Kennzeichnung und Quelle darunter eingerückt */
+  .company-people li {
+    display: grid;
+    grid-template-columns: 15px 1fr;
+    column-gap: var(--space-2);
+    row-gap: 2px;
+  }
+  .company-person-meta {
+    grid-column: 2;
+  }
+  .company-row dt {
+    padding-bottom: 0;
+    border-bottom: none;
+    font-size: var(--text-xs);
+  }
+}
+
+/* Knöpfe bleiben rechts, auch wenn die Fußzeile umbricht */
+.discovery-footer > .flex {
+  margin-left: auto;
+}
+
+/* Hinweis auf bezahlte Quellen (MixMarket Pro) unter der Quellenliste */
+.discovery-more-sources {
+  align-self: flex-start;
+  margin-top: var(--space-2);
+}

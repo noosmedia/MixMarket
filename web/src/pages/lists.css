@@ -1,0 +1,38 @@
+/* Feinheiten für die Listen-Seite. Die Zeilen-Darstellung nutzt die globalen
+   Klassen (.data-list, .data-row usw.). Hier bleibt nur der Modal-Stil. */
+
+/* Abstand zwischen den Formularfeldern im Modal */
+.list-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Kontaktanzahl in der Listenzeile: am Desktop rechtsbündig mit fester Breite */
+.list-members-link {
+  min-width: 90px;
+  text-align: right;
+}
+@media (max-width: 767px) {
+  .list-members-link {
+    min-width: 0;
+    text-align: left;
+  }
+}
+
+/* Kontaktanzahl als Verweis auf die Mitglieder der Liste */
+.list-members-link {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 3px;
+  padding: 2px 4px;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+.list-members-link:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface);
+}

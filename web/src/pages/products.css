@@ -1,0 +1,82 @@
+/* Produktwahl in der Recherche und Fenster "Produkte verwalten" */
+
+.product-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.product-bar-label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+.product-select {
+  width: auto;
+  min-width: 200px;
+  height: 34px;
+  font-weight: 540;
+}
+
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Nur das Zahlenfeld schmal halten, Beschriftung und Hinweis nutzen die volle Breite */
+.product-min .input {
+  max-width: 160px;
+}
+
+.product-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--border-subtle);
+}
+.product-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-2);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.product-list-main {
+  min-width: 0;
+}
+.product-list-name {
+  font-weight: 560;
+  color: var(--text-primary);
+}
+.product-list-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+@media (max-width: 767px) {
+  /* Handy: Beschriftung oben, darunter Auswahl und "Produkte verwalten" in einer Reihe */
+  .product-bar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+  .product-bar > svg {
+    display: none;
+  }
+  .product-bar-label {
+    grid-column: 1 / -1;
+  }
+  .product-select {
+    width: 100%;
+    min-width: 0;
+  }
+  .product-list li {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

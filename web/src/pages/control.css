@@ -1,0 +1,482 @@
+/* Steuerung auf der Übersicht: integrierter Monochrom-Stil mit Haarlinien, keine Karten */
+
+.ctl-error {
+  color: var(--danger);
+  font-size: var(--text-sm);
+}
+.ctl-sub {
+  margin-bottom: var(--space-3);
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+/* --- Wartet auf Sie --- */
+.ctl-waiting {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.ctl-all-done {
+  margin: 0;
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+.ctl-list {
+  border-top: 1px solid var(--border-subtle);
+}
+.ctl-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 48px;
+  padding: var(--space-2) var(--space-3) var(--space-2) 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font: inherit;
+  text-align: left;
+  color: var(--text-primary);
+}
+.ctl-row.is-task {
+  transition: background var(--transition-fast);
+}
+.ctl-row.is-task:hover {
+  background: var(--bg-surface);
+}
+.ctl-row.is-task:hover .ctl-row-arrow {
+  opacity: 1;
+  transform: translateX(2px);
+}
+.ctl-count {
+  flex-shrink: 0;
+  min-width: 44px;
+  font-size: var(--text-xl);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  text-align: right;
+  padding-right: var(--space-2);
+}
+.ctl-row.is-danger .ctl-count,
+.ctl-row.is-danger .ctl-row-text {
+  color: var(--danger);
+}
+.ctl-row-text {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-md);
+  overflow-wrap: anywhere;
+}
+.ctl-row-arrow {
+  flex-shrink: 0;
+  color: var(--text-tertiary);
+  opacity: 0.4;
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+}
+.ctl-row.is-notice .ctl-row-text {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+.ctl-dot {
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  margin: 0 var(--space-2) 0 var(--space-4);
+  border-radius: 50%;
+  background: var(--text-tertiary);
+}
+.ctl-row.is-unsubscribe .ctl-dot,
+.ctl-row.is-aiPause .ctl-dot {
+  background: var(--warning);
+}
+.ctl-row.is-bounce .ctl-dot,
+.ctl-row.is-stop .ctl-dot {
+  background: var(--danger);
+}
+.ctl-row-at {
+  flex-shrink: 0;
+  font-size: var(--text-2xs);
+  color: var(--text-tertiary);
+}
+.ctl-notices-foot {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--space-2);
+}
+
+/* --- Steuerung --- */
+.ctl-steering {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+.ctl-area {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--border-subtle);
+}
+.ctl-area:last-child {
+  border-bottom: 1px solid var(--border-subtle);
+}
+.ctl-area-text {
+  min-width: 0;
+}
+.ctl-area-name {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.ctl-area-hint {
+  margin-top: 2px;
+  max-width: 62ch;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--text-tertiary);
+}
+.ctl-area-extra {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+.ctl-area-extra .field-label {
+  margin: 0;
+}
+.ctl-select {
+  width: 120px;
+  height: 30px;
+  font-size: var(--text-sm);
+}
+
+/* Schalter: Spur mit Knopf und Beschriftung An oder Aus */
+.ctl-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 560;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+.ctl-switch-track {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  background: var(--bg-inset);
+  box-shadow: inset 0 0 0 1px var(--border-default);
+  transition: background var(--transition-fast);
+}
+.ctl-switch-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+  transition:
+    transform var(--transition-normal),
+    background var(--transition-fast);
+}
+.ctl-switch.is-on {
+  color: var(--text-primary);
+}
+.ctl-switch.is-on .ctl-switch-track {
+  background: var(--accent);
+  box-shadow: none;
+}
+.ctl-switch.is-on .ctl-switch-thumb {
+  transform: translateX(16px);
+  background: var(--accent-text);
+}
+.ctl-switch-label {
+  min-width: 26px;
+}
+
+/* Not-Aus: ruhig, solange der Versand läuft; deutlich rot, wenn gestoppt */
+.ctl-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.ctl-stop {
+  padding: var(--space-5);
+  border-radius: var(--radius-sm);
+  background: var(--bg-raised);
+  box-shadow: inset 0 0 0 1px var(--border-subtle);
+}
+.ctl-stop.is-stopped {
+  background: var(--danger-soft);
+  box-shadow: inset 3px 0 0 var(--danger);
+}
+.ctl-stop-state {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+}
+.ctl-stop-light {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 4px var(--success-soft);
+}
+.ctl-stop.is-stopped .ctl-stop-light {
+  background: var(--danger);
+  box-shadow: 0 0 0 4px var(--danger-soft);
+}
+.ctl-stop-hint {
+  margin: var(--space-2) 0 var(--space-4);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.ctl-thresholds {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* --- Auslastung --- */
+.ctl-quotas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.ctl-quota {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-5) var(--space-5) 0;
+  min-width: 0;
+}
+.ctl-quota + .ctl-quota {
+  padding-left: var(--space-5);
+  border-left: 1px solid var(--border-subtle);
+}
+.ctl-quota-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.ctl-quota-name {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.ctl-quota:not(.is-active) .ctl-quota-name {
+  color: var(--text-secondary);
+}
+.ctl-quota-error {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+.ctl-meter-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+.ctl-meter-bar {
+  position: relative;
+  height: 6px;
+  margin-top: 6px;
+  border-radius: var(--radius-full);
+  background: var(--bg-inset);
+}
+.ctl-meter-bar span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: var(--text-secondary);
+  transition: width var(--transition-normal);
+}
+.ctl-meter-bar span.is-over {
+  background: var(--warning);
+}
+/* Markierung der Grenze für die KI-Pause */
+.ctl-meter-bar i {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 1.5px;
+  background: var(--text-primary);
+  opacity: 0.55;
+}
+.ctl-meter-reset {
+  margin-top: 4px;
+  font-size: var(--text-2xs);
+  color: var(--text-tertiary);
+}
+.ctl-note {
+  margin: var(--space-3) 0 0;
+  max-width: 90ch;
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+.ctl-figures {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6);
+  margin-top: var(--space-5);
+}
+.ctl-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+.ctl-table th {
+  padding: 0 0 var(--space-2);
+  text-align: left;
+  font-weight: 500;
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+.ctl-table td {
+  padding: var(--space-2) 0;
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.ctl-failed {
+  color: var(--danger);
+}
+.ctl-muted {
+  color: var(--text-tertiary);
+}
+.ctl-dl {
+  margin: 0;
+}
+.ctl-dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-top: 1px solid var(--border-subtle);
+  font-size: var(--text-sm);
+}
+.ctl-dl dt {
+  color: var(--text-secondary);
+}
+.ctl-dl dd {
+  margin: 0;
+  text-align: right;
+  color: var(--text-primary);
+}
+.ctl-usage-foot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-3);
+}
+
+/* Tablet und Handy */
+@media (max-width: 1023px) {
+  .ctl-steering {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 767px) {
+  .ctl-quotas,
+  .ctl-figures {
+    grid-template-columns: 1fr;
+  }
+  .ctl-quota + .ctl-quota {
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .ctl-row.is-notice {
+    flex-wrap: wrap;
+  }
+  .ctl-row.is-notice .ctl-row-text {
+    flex-basis: calc(100% - 60px);
+  }
+  .ctl-row.is-notice .ctl-row-at {
+    margin-left: 34px;
+  }
+  .ctl-area {
+    gap: var(--space-3);
+  }
+}
+
+/* --- Erste Schritte nach der Ersteinrichtung --- */
+.ctl-setup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.ctl-setup-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.ctl-setup-title {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.ctl-setup-progress {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+.ctl-setup-mark {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin: 0 var(--space-2) 0 var(--space-3);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--border-strong);
+  color: var(--success);
+}
+.ctl-row.is-setup.is-done .ctl-setup-mark {
+  box-shadow: inset 0 0 0 1.5px var(--success);
+  background: var(--success-soft);
+}
+.ctl-row.is-setup.is-done .ctl-row-text {
+  color: var(--text-tertiary);
+}
+.ctl-setup-hint {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+/* Hinweis "mit Anleitung": dieser Schritt startet eine geführte Tour */
+.ctl-setup-tour {
+  flex-shrink: 0;
+  margin-left: var(--space-3);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--warning-soft);
+  color: var(--warning);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Pro-Hinweis anstelle eines Autopilot-Schalters */
+.ctl-area-lock {
+  flex-shrink: 0;
+}

@@ -1,0 +1,125 @@
+/* Feinheiten der Kontakte-Seite, baut auf den globalen Tokens auf */
+
+/* Tabellen-Karte ohne doppelten Innenabstand, damit die Tabelle voll anliegt */
+.contacts-table-wrap {
+  padding: 0;
+  overflow-x: auto;
+}
+
+/* E-Mail-Zelle: E-Mail oben, Name dezent darunter */
+.contact-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.contact-email {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 500;
+}
+
+.contact-email-icon {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.contact-name {
+  font-size: 0.85em;
+  color: var(--text-secondary);
+}
+
+/* Aktionsspalte rechtsbuendig und schmal halten */
+.col-actions {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.row-actions {
+  justify-content: flex-end;
+}
+
+/* Formular-Layout: zwei Felder nebeneinander */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+/* Auf schmalen Ansichten untereinander stapeln */
+@media (max-width: 767px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Checkbox-Zeile für Einwilligung und Listenauswahl */
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Listenauswahl als kompakte Liste mit Rahmen */
+.list-picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-height: 220px;
+  overflow-y: auto;
+  padding: var(--space-3);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+/* Anzahl der Kontakte je Liste rechts ausrichten */
+.list-count {
+  margin-left: auto;
+}
+
+/* Platzhalter für leere Tabellenzellen dezent darstellen */
+.cell-empty {
+  color: var(--text-dim, var(--text-secondary));
+}
+
+/* Auswahlfelder in der Werkzeugleiste (Listenfilter, Status auf dem Handy) */
+.toolbar .select.contacts-filter {
+  flex: 0 0 auto;
+  width: 240px;
+}
+/* Anzahl und Blättern unter der Tabelle */
+.contacts-pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-2);
+  border-top: 1px solid var(--border-subtle);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+.contacts-pager-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.contacts-page {
+  font-size: var(--text-xs);
+  white-space: nowrap;
+}
+@media (max-width: 767px) {
+  .toolbar .select.contacts-filter {
+    flex: 1 1 100%;
+    width: auto;
+  }
+}

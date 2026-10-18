@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="description" content="MixMarket - schlankes B2B Marketing- und Outreach-Tool" />
+    <title>MixMarket</title>
+    <style>
+      /* Ladeanzeige, bis die Oberfläche bereit ist (sonst bleibt die Seite beim ersten Start sekundenlang leer) */
+      html, body { margin: 0; background: #18191b; }
+      @media (prefers-color-scheme: light) { html, body { background: #dfddd7; } }
+      .boot { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+      .boot svg { width: 72px; height: 47px; animation: boot-pulse 1.2s ease-in-out infinite; }
+      @keyframes boot-pulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+      @media (prefers-reduced-motion: reduce) { .boot svg { animation: none; opacity: 0.8; } }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="boot" role="status" aria-label="MixMarket lädt">
+        <svg viewBox="0 0 260 170" aria-hidden="true">
+          <circle cx="100" cy="85" r="70" fill="none" stroke="#a3a39e" stroke-width="9" />
+          <circle cx="160" cy="85" r="70" fill="none" stroke="#a3a39e" stroke-width="9" opacity="0.6" />
+        </svg>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

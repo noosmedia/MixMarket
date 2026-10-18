@@ -1,0 +1,56 @@
+/* Anzeige eines neuen Wiederherstellungsschlüssels */
+.recovery {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.recovery-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.recovery-text {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+.recovery-key {
+  padding: var(--space-4);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-inset);
+  font-size: var(--text-lg);
+  letter-spacing: 0.06em;
+  text-align: center;
+  color: var(--text-primary);
+  user-select: all;
+  overflow-wrap: anywhere;
+}
+.recovery-actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.recovery-confirm {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+.recovery-confirm.is-invalid {
+  border-color: var(--danger);
+  background: var(--danger-soft);
+}
+.recovery-warn {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--danger);
+}
+.recovery-done {
+  align-self: flex-start;
+}

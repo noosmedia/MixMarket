@@ -1,0 +1,145 @@
+/* Feinheiten für die Kampagnen-Seite. Globale Klassen kommen aus dem App-Stylesheet. */
+
+/* Umschließende Flaeche der Kampagnen-Tabelle */
+.campaigns-panel {
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Tabelle der Kampagnen */
+.campaigns-table {
+  width: 100%;
+}
+
+/* Erste Spalte mit Name und Betreff bekommt den meisten Platz */
+.campaigns-table td {
+  vertical-align: middle;
+}
+
+/* Name der Kampagne */
+.campaign-name {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Betreff unter dem Namen */
+.campaign-subject {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-top: 2px;
+  word-break: break-word;
+}
+
+/* Statuszelle: Badge und optionaler Zeitpunkt */
+.campaign-status-cell {
+  white-space: nowrap;
+}
+
+/* Geplanter Zeitpunkt unter dem Status-Badge */
+.campaign-scheduled-at {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  margin-top: var(--space-2);
+}
+
+/* Kennzahlen kompakt nebeneinander */
+.campaign-metrics {
+  display: flex;
+  gap: var(--space-5);
+  white-space: nowrap;
+}
+
+/* Eine einzelne Kennzahl als Spalte */
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Bezeichnung der Kennzahl */
+.metric-label {
+  font-size: var(--text-2xs);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Wert der Kennzahl */
+.metric-value {
+  font-size: var(--text-md);
+  color: var(--text-primary);
+}
+
+/* Aktionsbereich rechts ausgerichtet */
+.campaign-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  white-space: nowrap;
+}
+
+/* Abstand zwischen den Formularfeldern im Modal */
+.campaign-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Liste der auswählbaren Kontaktlisten als gerahmte Box */
+.campaign-lists {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md, 6px);
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+/* Eine einzelne Listenzeile mit Checkbox */
+.campaign-list-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Letzte Zeile ohne Trennlinie */
+.campaign-list-option:last-child {
+  border-bottom: none;
+}
+
+/* Listenname nimmt den verfügbaren Platz ein */
+.campaign-list-name {
+  flex: 1;
+  font-size: var(--text-md);
+  color: var(--text-primary);
+}
+
+/* Kontaktanzahl je Liste */
+.campaign-list-count {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+/* Absendername und Absenderadresse: nebeneinander, auf dem Handy untereinander */
+.campaign-sender {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+@media (max-width: 767px) {
+  .campaign-sender {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+}

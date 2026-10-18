@@ -1,0 +1,15 @@
+/* Stile für die Sperrlisten-Seite. Nutzt ausschließlich zentrale Design-Tokens. */
+
+/* Werkzeugleiste, Filter und Suche kommen aus den globalen Klassen (.toolbar, .segmented, .search-box).
+   Eigene Kopien hier wirkten auf alle Seiten der App und überschrieben die Grundstile. */
+
+/* Datumsspalte etwas schmaler, Aktionsspalte rechtsbuendig */
+.table .col-date {
+  white-space: nowrap;
+}
+
+.table .col-action {
+  text-align: right;
+  width: 1%;
+  white-space: nowrap;
+}

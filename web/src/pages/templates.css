@@ -1,0 +1,127 @@
+/* Feinheiten für die Vorlagen-Seite. Globale Klassen kommen aus dem App-Stylesheet. */
+/* Die Vorlagen-Liste nutzt die globalen .data-list/.data-row-Klassen und braucht hier kein eigenes CSS. */
+
+/* Formular im Editor-Modal als Spalte mit Abstand */
+.template-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Zweispaltiger Bereich für Editor und Vorschau auf breiten Schirmen */
+.template-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  align-items: stretch;
+}
+
+/* Breit: Editor und Vorschau nebeneinander, der Umschalter wird nicht gebraucht */
+.template-col {
+  display: flex;
+  min-width: 0;
+}
+.template-col > .template-pane {
+  flex: 1;
+}
+.segmented.template-view-toggle {
+  display: none;
+}
+
+/* Schmal: nur eine Spalte, Umschalter zwischen Editor und Vorschau */
+@media (max-width: 899px) {
+  .template-split {
+    grid-template-columns: 1fr;
+  }
+  .segmented.template-view-toggle {
+    display: inline-flex;
+    align-self: flex-start;
+  }
+  .template-col.is-inactive {
+    display: none;
+  }
+}
+
+/* Spalte für Editor bzw. Vorschau */
+.template-pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Grosse Textarea für den HTML-Quelltext */
+.template-html-input {
+  min-height: 280px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* Heller Vorschaukasten, der die fertige Mail zeigt */
+.template-preview {
+  flex: 1;
+  min-height: 280px;
+  padding: var(--space-4);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  color: #1a1a1a;
+  overflow: auto;
+  line-height: 1.5;
+}
+
+/* Vorschau als abgeschotteter Rahmen: Innenabstand liegt im Dokument des Rahmens */
+.template-preview-frame {
+  display: block;
+  width: 100%;
+  padding: 0;
+}
+
+/* Hinweis über dem Vorschaukasten */
+.template-preview-empty {
+  color: #8e8e93;
+  font-style: italic;
+}
+
+/* Bereich mit den Platzhalter-Chips */
+.template-placeholders {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* Einzelner klickbarer Platzhalter-Chip */
+.template-chip {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--bg-inset);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--transition-fast, 150ms ease);
+}
+
+.template-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Name und Sprache der Vorlage nebeneinander, auf dem Handy untereinander */
+.template-head-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 200px;
+  gap: var(--space-4);
+}
+.template-lang-hint {
+  margin-top: calc(var(--space-2) * -1);
+}
+.template-lang {
+  font-size: var(--text-2xs);
+  margin-left: var(--space-1);
+}
+@media (max-width: 767px) {
+  .template-head-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

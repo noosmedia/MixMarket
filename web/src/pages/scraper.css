@@ -1,0 +1,73 @@
+/* Feinheiten der Recherche-Seite. Grundlegende Klassen kommen aus dem globalen
+   Stylesheet, hier nur ergaenzende Abstände und kleine Layout-Details. */
+
+/* Drehendes Symbol für laufende Aufträge */
+.scraper-spin {
+  animation: scraper-rotate 1s linear infinite;
+}
+
+@keyframes scraper-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Formular: gleichmaessige Abstände zwischen den Feldern */
+.scraper-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4, 16px);
+}
+
+/* Selektor-Paare untereinander */
+.scraper-selectors {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 8px);
+}
+
+/* Eine Zeile: Feldname schmaler, Selektor breiter */
+.scraper-selector-row {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: var(--space-2, 8px);
+}
+
+/* Ergebnis-Tabelle scrollbar bei vielen Spalten */
+.scraper-results-wrap {
+  overflow: auto;
+  max-height: 60vh;
+}
+
+/* Quell-Adresse abschneiden, damit die Tabelle nicht zu breit wird */
+.scraper-source {
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--font-xs, 11px);
+}
+
+.scraper-source a {
+  color: var(--accent, #0066ff);
+  text-decoration: none;
+}
+
+.scraper-source a:hover {
+  text-decoration: underline;
+}
+
+/* Auf schmalen Schirmen Selektor-Paare untereinander */
+@media (max-width: 767px) {
+  /* Paare untereinander: eng innerhalb des Paars, deutlicher Abstand zwischen den Paaren */
+  .scraper-selectors {
+    gap: var(--space-4);
+  }
+  .scraper-selector-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+}

@@ -1,0 +1,301 @@
+/* Handbuch: ruhige Leseseite. Links das Inhaltsverzeichnis, rechts eine schmale Textspalte. */
+.hb {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: var(--space-7);
+  align-items: start;
+}
+
+/* Inhaltsverzeichnis, läuft beim Lesen mit */
+.hb-toc {
+  position: sticky;
+  top: calc(var(--topbar-height) + 132px);
+  max-height: calc(100vh - var(--topbar-height) - 150px);
+  overflow-y: auto;
+}
+.hb-toc-head {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0 var(--space-2) var(--space-2);
+}
+.hb-toc ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.hb-toc a {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: 6px var(--space-2);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.hb-toc a:hover {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+.hb-toc a.is-active {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-weight: 560;
+}
+.hb-toc-num {
+  font-size: var(--text-2xs);
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+/* Textspalte */
+.hb-content {
+  max-width: 72ch;
+  min-width: 0;
+}
+.hb-mobile-select {
+  display: none;
+}
+.hb-chapter-head {
+  padding-bottom: var(--space-5);
+  margin-bottom: var(--space-5);
+  border-bottom: 1px solid var(--border-default);
+}
+.hb-chapter-num {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-2);
+}
+.hb-chapter-title {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.hb-chapter-summary {
+  margin-top: var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+/* Sprungmarken zu den Abschnitten des Kapitels */
+.hb-onpage {
+  list-style: none;
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.hb-onpage a {
+  display: inline-block;
+  padding: 3px 10px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+.hb-onpage a:hover {
+  background: var(--bg-surface);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.hb-section {
+  padding: var(--space-4) 0 var(--space-5);
+  /* Abschnitt beim Anspringen nicht unter Kopfleiste und Seitenkopf verstecken */
+  scroll-margin-top: calc(var(--topbar-height) + 140px);
+  border-radius: var(--radius-sm);
+}
+.hb-section + .hb-section {
+  border-top: 1px solid var(--border-subtle);
+}
+.hb-section-title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin-bottom: var(--space-3);
+  color: var(--text-primary);
+}
+.hb-p,
+.hb-steps,
+.hb-list {
+  font-size: var(--text-base);
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-3);
+}
+.hb-steps,
+.hb-list {
+  padding-left: 1.4em;
+}
+.hb-steps li,
+.hb-list li {
+  margin-bottom: var(--space-1);
+  padding-left: 2px;
+}
+.hb-steps li::marker {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+/* Beschriftungen der Oberfläche wie Knöpfe und Reiter */
+.hb-ui {
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* Hinweis und Achtung */
+.hb-note {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-3) var(--space-4);
+  margin: var(--space-2) 0 var(--space-4);
+  border-radius: var(--radius-sm);
+  border-left: 2px solid;
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+.hb-note svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.hb-note p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+.hb-tip {
+  background: var(--info-soft);
+  border-color: var(--info);
+}
+.hb-tip svg {
+  color: var(--info);
+}
+.hb-warning {
+  background: var(--warning-soft);
+  border-color: var(--warning);
+}
+.hb-warning svg {
+  color: var(--warning);
+}
+
+/* Begriffe */
+.hb-terms {
+  margin: 0;
+}
+.hb-term {
+  display: grid;
+  grid-template-columns: minmax(140px, 200px) minmax(0, 1fr);
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.hb-term dt {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.hb-term dd {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Angesprungener Abschnitt leuchtet kurz auf */
+.hb-flash {
+  animation: hb-flash 1.8s ease-out;
+}
+@keyframes hb-flash {
+  0%,
+  30% {
+    background: var(--accent-soft);
+  }
+  100% {
+    background: transparent;
+  }
+}
+
+/* Blättern */
+.hb-pager {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-default);
+}
+.hb-pager-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  min-width: 0;
+  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+.hb-pager-link:hover {
+  background: var(--bg-surface);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+.hb-pager-link.is-next {
+  text-align: right;
+  margin-left: auto;
+}
+.hb-pager-link > span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.hb-pager-label {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+.hb-pager-title {
+  font-weight: 560;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Tablet und Handy: Inhaltsverzeichnis wird zur Kapitelwahl oben */
+@media (max-width: 1023px) {
+  .hb {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .hb-toc {
+    display: none;
+  }
+  .hb-mobile-select {
+    display: block;
+    margin-bottom: var(--space-5);
+  }
+  .hb-content {
+    max-width: none;
+  }
+}
+@media (max-width: 767px) {
+  .hb-section {
+    scroll-margin-top: calc(var(--topbar-height) + var(--space-4));
+  }
+  .hb-term {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
+  }
+  .hb-ui {
+    white-space: normal;
+  }
+  .hb-pager {
+    flex-direction: column;
+  }
+  .hb-pager-link.is-next {
+    margin-left: 0;
+  }
+}

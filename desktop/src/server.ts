@@ -113,7 +113,7 @@ function databaseUrl(): string {
 }
 
 // Umgebung für Server und Werkzeuge: Electron als Node, Daten im Datenordner, keine Rückmeldungen an Prisma
-function nodeEnvironment(extra: Record<string, string> = {}): NodeJS.ProcessEnv {
+export function nodeEnvironment(extra: Record<string, string> = {}): NodeJS.ProcessEnv {
   const { dataDir } = paths()
   return {
     ...process.env,

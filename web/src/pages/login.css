@@ -153,6 +153,10 @@
 .login-emergency p {
   margin: var(--space-2) 0 0;
 }
+/* Knopf im Programm: öffnet das eigene Fenster "Passwort neu setzen" */
+.login-emergency-action {
+  margin-top: var(--space-3);
+}
 .login-emergency-head {
   display: flex;
   align-items: center;

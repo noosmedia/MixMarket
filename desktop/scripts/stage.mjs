@@ -1,6 +1,6 @@
 // Stellt den Inhalt des Programmpakets in desktop/stage zusammen:
 //   main.js, preload.js, splash-preload.js   Programmhülle (aus desktop/src übersetzt)
-//   static/                                  Startbildschirm und Symbol
+//   static/                                  Startbildschirm, Fenster "Passwort neu setzen" und Symbol
 //   server/                                  fertig übersetzter Server mit Datenbankaufbau (schema.prisma)
 //   web/                                     fertig gebaute Oberfläche
 //   node_modules/                            nur die Laufzeitpakete des Servers (genau die installierten Versionen)
@@ -40,7 +40,7 @@ if (!skipBuild) run(npm, ['run', 'build'], root)
 const rootPkg = readJson(join(root, 'package.json'))
 const serverPkg = readJson(join(root, 'server', 'package.json'))
 const desktopPkg = readJson(join(desktop, 'package.json'))
-for (const entry of ['server', 'web', 'static', 'main.js', 'preload.js', 'splash-preload.js', 'texts.js', 'environment.js', 'server.js', 'window.js', 'updater.js', 'linux-menu.js', 'i18n']) {
+for (const entry of ['server', 'web', 'static', 'main.js', 'preload.js', 'splash-preload.js', 'reset-preload.js', 'password-reset.js', 'texts.js', 'environment.js', 'server.js', 'window.js', 'updater.js', 'linux-menu.js', 'i18n']) {
   rmSync(join(stage, entry), { recursive: true, force: true })
 }
 mkdirSync(stage, { recursive: true })

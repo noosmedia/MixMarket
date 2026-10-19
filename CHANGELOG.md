@@ -2,6 +2,14 @@
 
 Alle Änderungen an MixMarket, nach Semantic Versioning.
 
+## Unveröffentlicht
+
+### Neu
+- Programm: Sind Passwort und Wiederherstellungsschlüssel verloren, zeigt der versteckte Hinweis auf der Seite „Passwort vergessen“ den Knopf „Ohne Schlüssel neu setzen“. Er öffnet ein eigenes Fenster des Programms, in dem Sie das neue Passwort eingeben und den neuen Schlüssel erhalten. Ein Terminal ist dafür nicht nötig, und es geht nur an dem Rechner, auf dem MixMarket läuft
+
+### Geändert
+- Handbuch und README beschreiben die Notlösung für beide Wege: im Programm und in der Quellcode-Fassung mit `npm run reset-password`
+
 ## 0.18.0 (19.10.2026)
 
 ### Neu

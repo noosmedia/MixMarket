@@ -5,6 +5,7 @@
 import { app, BrowserWindow, ipcMain, Menu, nativeTheme, shell, type MenuItemConstructorOptions } from 'electron'
 import { join } from 'node:path'
 import { syncLinuxMenuEntry } from './linux-menu'
+import { setupPasswordReset } from './password-reset'
 import { log, openLog, paths, prepareDatabase, startServer, StartError, stopServer } from './server'
 import { allTexts, language, text } from './texts'
 import { setupUpdater } from './updater'
@@ -125,6 +126,14 @@ function ready(): void {
     () => mainWindow,
     (url) => !!appUrl && url.startsWith(appUrl),
   )
+  // Notlösung "Passwort neu setzen" (versteckter Hinweis auf der Seite "Passwort vergessen")
+  setupPasswordReset({
+    getMainWindow: () => mainWindow,
+    isFromApp: (url) => !!appUrl && url.startsWith(appUrl),
+    iconFile: iconFile(),
+    pageFile: staticFile('reset.html'),
+    preloadFile: join(__dirname, 'reset-preload.js'),
+  })
 
   // Knöpfe des Startbildschirms (nur vom Startbildschirm selbst angenommen)
   const fromSplash = (event: Electron.IpcMainEvent) => !!splash && event.sender === splash.webContents

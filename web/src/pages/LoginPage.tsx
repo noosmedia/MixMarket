@@ -3,16 +3,18 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ArrowLeft, ArrowRight, Copy, Terminal } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Copy, KeyRound, Terminal } from 'lucide-react'
 import { useAuth, type User } from '../stores/auth'
 import { useUi } from '../stores/ui'
 import { ApiError } from '../lib/api'
+import { desktop } from '../lib/desktop'
 import { LogoMark } from '../components/Logo'
 import { PasswordField } from '../components/PasswordField'
 import { RecoveryKeyPanel, forgetPendingKey, rememberPendingKey } from '../components/RecoveryKeyPanel'
 import './login.css'
 
-// Befehl der Notlösung, im MixMarket-Ordner auf dem Rechner auszuführen
+// Befehl der Notlösung in der Quellcode-Fassung, im MixMarket-Ordner auf dem Rechner auszuführen.
+// Im installierten Programm öffnet stattdessen ein Knopf das eigene Fenster des Programms.
 const RESET_COMMAND = 'npm run reset-password'
 // Mindestlänge wie auf dem Server
 const MIN_PASSWORD_LENGTH = 10
@@ -71,7 +73,9 @@ export function LoginPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { user, needsSetup, login, recover, setUser } = useAuth()
-  const { notify } = useUi()
+  const { notify, language, theme } = useUi()
+  // Brücke zum installierten Programm (im Browser null)
+  const program = desktop()
   const [mode, setMode] = useState<'login' | 'recover' | 'key'>('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -95,6 +99,27 @@ export function LoginPage() {
     setMode(next)
     setError('')
     setEmergencyOpen(false)
+  }
+
+  // Programm: Passwort wurde im Fenster "Passwort neu setzen" geändert, zurück zur Anmeldung
+  useEffect(() => {
+    if (!program) return
+    return program.onPasswordReset(() => {
+      setMode('login')
+      setError('')
+      setEmergencyOpen(false)
+      setPassword('')
+      notify('success', t('auth.emergencyAppDone'))
+    })
+  }, [program, notify, t])
+
+  // Programm: eigenes Fenster zum Neusetzen öffnen (Eingabe dort, nicht in dieser Seite)
+  async function openProgramReset() {
+    try {
+      await program?.openPasswordReset(language, theme)
+    } catch {
+      notify('error', t('auth.emergencyAppFailed'))
+    }
   }
 
   // Überschrift "Passwort vergessen" mit dem versteckten Auslöser: das erste "s" im Wort aus
@@ -262,7 +287,20 @@ export function LoginPage() {
           </button>
 
           {/* Notlösung ohne Schlüssel: nur sichtbar nach Klick auf das versteckte "s" (steht im Handbuch) */}
-          {emergencyOpen && (
+          {emergencyOpen && program && (
+            <div className="login-emergency">
+              <div className="login-emergency-head">
+                <KeyRound size={15} />
+                <span>{t('auth.emergencyTitle')}</span>
+              </div>
+              <p>{t('auth.emergencyAppText')}</p>
+              <button type="button" className="btn btn-secondary btn-sm login-emergency-action" onClick={openProgramReset}>
+                <KeyRound size={14} />
+                {t('auth.emergencyAppButton')}
+              </button>
+            </div>
+          )}
+          {emergencyOpen && !program && (
             <div className="login-emergency">
               <div className="login-emergency-head">
                 <Terminal size={15} />

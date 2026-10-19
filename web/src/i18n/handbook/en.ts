@@ -2766,7 +2766,7 @@ export const handbookEn: HandbookChapter[] = [
             type: 'list',
             items: [
               'Actors are you with the name of your account, MixMarket itself for automatic processes such as sending, unsubscribes or searches, and AI agents such as the AI rating, “KI-Postausgang”, which writes the emails in the outbox, “KI-Gespräche”, which sorts replies and writes reply drafts, and the “Autopilot”, which has searches analysed and target groups rated, adds prospects and puts them into the outbox.',
-              'The area **Sign-in and account** holds the first setup, sign-ins and sign-outs, changes to name and email, password changes, new recovery keys and password resets. Failed sign-ins and recoveries appear with the email that was entered, as does a lock after too many failed attempts. A reset on the computer with npm run reset-password is logged with MixMarket as the actor.',
+              'The area **Sign-in and account** holds the first setup, sign-ins and sign-outs, changes to name and email, password changes, new recovery keys and password resets. Failed sign-ins and recoveries appear with the email that was entered, as does a lock after too many failed attempts. A reset on the computer without a key, in the program with **Reset without key** or in the source code version with npm run reset-password, is logged with MixMarket as the actor.',
               'Warnings and errors are marked with a warning icon.',
               'When sending, the start and end of a campaign are logged, not every single email.',
               'The area **Outbox**, by contrast, lists every single email: drafts by the AI, your approvals, edits and rejections, sending, errors and ended sequences, plus changes to sequence and sending rules.',
@@ -2898,7 +2898,25 @@ export const handbookEn: HandbookChapter[] = [
           },
           {
             type: 'p',
-            text: 'If the key is lost as well, there is an emergency option. It is deliberately hidden on the Forgot password page: in the heading **Forgot password**, click the first "s" in the word "password". The mouse pointer does not change there. The note **Lost the key as well?** then appears with the command. Remember this way, because this handbook cannot be reached without signing in.',
+            text: 'If the key is lost as well, there is an emergency option. It is deliberately hidden on the Forgot password page: in the heading **Forgot password**, click the first "s" in the word "password". The mouse pointer does not change there. The note **Lost the key as well?** then appears. Remember this way, because this handbook cannot be reached without signing in. Both variants of the emergency option only work directly on the computer MixMarket runs on, not over the network.',
+          },
+          {
+            type: 'p',
+            text: '**In the installed program** the note shows the button **Reset without key**. You do not need a terminal for it.',
+          },
+          {
+            type: 'steps',
+            items: [
+              'In the note **Lost the key as well?**, click **Reset without key**. The small window **Set a new password** of the program opens.',
+              'Under **New password**, enter a password with at least 10 characters and repeat it under **Repeat new password**. The eye in the field shows what you typed.',
+              'Click **Set password**.',
+              'The window shows your account and a new **recovery key**. **Copy** puts it on the clipboard. Keep it in a safe place, the old one no longer applies.',
+              'Tick **I have stored the key safely.** and click **Done**. MixMarket shows the sign-in again. Sign in with the new password. Previous sign-ins are signed out.',
+            ],
+          },
+          {
+            type: 'p',
+            text: '**In the source code version**, which you start with npm, the note shows a command instead.',
           },
           {
             type: 'steps',
@@ -2912,7 +2930,7 @@ export const handbookEn: HandbookChapter[] = [
           },
           {
             type: 'tip',
-            text: 'Either way your data is kept. Only password and key change.',
+            text: 'Whichever way you choose, your data is kept. Only password and key change.',
           },
           {
             type: 'warning',

@@ -1,5 +1,6 @@
 // Brücke zum installierten Programm (Electron). Im Browser (npm-Fassung) gibt es sie nicht.
-// Das Programm stellt sie im Preload bereit; sie bietet nur Version und Updates an.
+// Das Programm stellt sie im Preload bereit; sie bietet nur Version, Updates und das Fenster
+// "Passwort neu setzen" (Notlösung bei verlorenem Wiederherstellungsschlüssel) an.
 
 export type DesktopUpdateCheck =
   | { status: 'available'; version: string }
@@ -14,6 +15,8 @@ export interface DesktopBridge {
   downloadUpdate: () => Promise<{ ok: boolean; message?: string }>
   installUpdate: () => Promise<void>
   onUpdateProgress: (callback: (percent: number) => void) => () => void
+  openPasswordReset: (language: string, theme: string) => Promise<void>
+  onPasswordReset: (callback: () => void) => () => void
 }
 
 declare global {

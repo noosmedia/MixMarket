@@ -2766,7 +2766,7 @@ export const handbookDe: HandbookChapter[] = [
             type: 'list',
             items: [
               'Handelnde sind Sie mit dem Namen Ihres Kontos, MixMarket selbst bei automatischen Abläufen wie Versand, Abmeldungen oder Suchen, und KI-Agenten wie die KI-Bewertung, der „KI-Postausgang“, der die Mails im Postausgang schreibt, „KI-Gespräche“, das Antworten einordnet und Antwortentwürfe schreibt, und der „Autopilot“, der Suchen durchleuchten und Zielgruppen bewerten lässt, Interessenten übernimmt und in den Postausgang gibt.',
-              'Im Bereich **Anmeldung und Konto** stehen die Ersteinrichtung, Anmeldungen und Abmeldungen, Änderungen an Name und E-Mail, Passwortänderungen, neue Wiederherstellungsschlüssel und das Zurücksetzen des Passworts. Fehlgeschlagene Anmeldungen und Wiederherstellungen erscheinen mit der eingegebenen E-Mail, ebenso eine Sperre nach zu vielen Fehlversuchen. Ein Zurücksetzen am Rechner mit npm run reset-password steht mit MixMarket als Handelndem im Protokoll.',
+              'Im Bereich **Anmeldung und Konto** stehen die Ersteinrichtung, Anmeldungen und Abmeldungen, Änderungen an Name und E-Mail, Passwortänderungen, neue Wiederherstellungsschlüssel und das Zurücksetzen des Passworts. Fehlgeschlagene Anmeldungen und Wiederherstellungen erscheinen mit der eingegebenen E-Mail, ebenso eine Sperre nach zu vielen Fehlversuchen. Ein Zurücksetzen am Rechner ohne Schlüssel, im Programm über **Ohne Schlüssel neu setzen** oder in der Quellcode-Fassung mit npm run reset-password, steht mit MixMarket als Handelndem im Protokoll.',
               'Warnungen und Fehler sind mit einem Warnsymbol markiert.',
               'Beim Versand werden Beginn und Ende einer Kampagne protokolliert, nicht jede einzelne Mail.',
               'Im Bereich **Postausgang** steht dagegen jede einzelne Mail: Entwürfe der KI, Ihre Freigaben, Änderungen und Ablehnungen, der Versand, Fehler und beendete Abläufe, dazu Änderungen an Ablauf und Versandregeln.',
@@ -2898,7 +2898,25 @@ export const handbookDe: HandbookChapter[] = [
           },
           {
             type: 'p',
-            text: 'Ist auch der Schlüssel verloren, hilft eine Notlösung. Sie ist auf der Seite „Passwort vergessen“ bewusst versteckt: Klicken Sie in der Überschrift **Passwort vergessen** auf das erste „s“ im Wort „vergessen“. Der Mauszeiger ändert sich dort nicht. Danach erscheint der Hinweis **Schlüssel auch verloren?** mit dem Befehl. Merken Sie sich diesen Weg, denn ohne Anmeldung ist dieses Handbuch nicht erreichbar.',
+            text: 'Ist auch der Schlüssel verloren, hilft eine Notlösung. Sie ist auf der Seite „Passwort vergessen“ bewusst versteckt: Klicken Sie in der Überschrift **Passwort vergessen** auf das erste „s“ im Wort „vergessen“. Der Mauszeiger ändert sich dort nicht. Danach erscheint der Hinweis **Schlüssel auch verloren?**. Merken Sie sich diesen Weg, denn ohne Anmeldung ist dieses Handbuch nicht erreichbar. Beide Varianten der Notlösung funktionieren nur direkt an dem Rechner, auf dem MixMarket läuft, nicht über das Netz.',
+          },
+          {
+            type: 'p',
+            text: '**Im installierten Programm** zeigt der Hinweis den Knopf **Ohne Schlüssel neu setzen**. Ein Terminal brauchen Sie dafür nicht.',
+          },
+          {
+            type: 'steps',
+            items: [
+              'Klicken Sie im Hinweis **Schlüssel auch verloren?** auf **Ohne Schlüssel neu setzen**. Es öffnet sich das kleine Fenster **Passwort neu setzen** des Programms.',
+              'Geben Sie unter **Neues Passwort** ein Passwort mit mindestens 10 Zeichen ein und wiederholen Sie es unter **Neues Passwort wiederholen**. Mit dem Auge im Feld können Sie die Eingabe anzeigen.',
+              'Klicken Sie **Passwort setzen**.',
+              'Das Fenster zeigt Ihr Konto und einen neuen **Wiederherstellungsschlüssel**. Mit **Kopieren** legen Sie ihn in die Zwischenablage. Bewahren Sie ihn sicher auf, der alte gilt nicht mehr.',
+              'Setzen Sie den Haken **Ich habe den Schlüssel sicher aufbewahrt.** und klicken Sie **Fertig**. MixMarket zeigt wieder die Anmeldung. Melden Sie sich mit dem neuen Passwort an. Bisherige Anmeldungen sind abgemeldet.',
+            ],
+          },
+          {
+            type: 'p',
+            text: '**In der Quellcode-Fassung**, die Sie mit npm starten, zeigt der Hinweis stattdessen einen Befehl.',
           },
           {
             type: 'steps',
@@ -2912,7 +2930,7 @@ export const handbookDe: HandbookChapter[] = [
           },
           {
             type: 'tip',
-            text: 'Auf beiden Wegen bleiben Ihre Daten erhalten. Es ändern sich nur Passwort und Schlüssel.',
+            text: 'Auf allen Wegen bleiben Ihre Daten erhalten. Es ändern sich nur Passwort und Schlüssel.',
           },
           {
             type: 'warning',

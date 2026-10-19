@@ -1,0 +1,421 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <!-- Fenster "Passwort neu setzen": lokal, ohne fremde Inhalte -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:" />
+    <title>MixMarket</title>
+    <style>
+      /* Farben wie der Startbildschirm (aus web/src/styles/theme.css). Hell oder dunkel wie in der Oberfläche
+         (data-theme vom Programm), ohne Angabe nach Systemeinstellung */
+      :root {
+        --bg: #dfddd7;
+        --surface: #e9e7e1;
+        --text: #1a1a18;
+        --text-dim: #72726a;
+        --border: rgba(26, 26, 24, 0.17);
+        --focus: rgba(26, 26, 24, 0.45);
+        --danger: #b3261e;
+        --btn: #1a1a18;
+        --btn-text: #e9e7e1;
+        --transition-fast: 150ms ease;
+        --transition-normal: 250ms ease;
+      }
+      :root[data-theme='dark'] {
+        --bg: #18191b;
+        --surface: #1f2023;
+        --text: #e9e9e6;
+        --text-dim: #a3a39e;
+        --border: rgba(255, 255, 255, 0.12);
+        --focus: rgba(255, 255, 255, 0.4);
+        --danger: #ff8a80;
+        --btn: #e9e9e6;
+        --btn-text: #18191b;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme]) {
+          --bg: #18191b;
+          --surface: #1f2023;
+          --text: #e9e9e6;
+          --text-dim: #a3a39e;
+          --border: rgba(255, 255, 255, 0.12);
+          --focus: rgba(255, 255, 255, 0.4);
+          --danger: #ff8a80;
+          --btn: #e9e9e6;
+          --btn-text: #18191b;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, sans-serif;
+        font-size: 14px;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+      .view {
+        flex: 1;
+        display: none;
+        flex-direction: column;
+        gap: 14px;
+        padding: 26px 28px 22px;
+        opacity: 0;
+        transition: opacity var(--transition-normal);
+      }
+      .view.active {
+        display: flex;
+        opacity: 1;
+      }
+      h1 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 650;
+        letter-spacing: -0.01em;
+      }
+      p {
+        margin: 0;
+        color: var(--text-dim);
+        line-height: 1.5;
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      label {
+        font-weight: 550;
+      }
+      .input-wrap {
+        position: relative;
+      }
+      input[type='password'],
+      input[type='text'] {
+        width: 100%;
+        height: 38px;
+        padding: 0 40px 0 12px;
+        border-radius: 4px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
+        font: inherit;
+        outline: none;
+        transition: border-color var(--transition-fast);
+      }
+      input:focus {
+        border-color: var(--focus);
+      }
+      input.invalid {
+        border-color: var(--danger);
+      }
+      .eye {
+        position: absolute;
+        top: 3px;
+        right: 3px;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border: none;
+        background: transparent;
+        color: var(--text-dim);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .eye:hover {
+        color: var(--text);
+        background: transparent;
+      }
+      .eye svg {
+        width: 18px;
+        height: 18px;
+      }
+      .hint {
+        font-size: 12px;
+        color: var(--text-dim);
+      }
+      .error {
+        display: none;
+        flex-direction: column;
+        gap: 8px;
+        color: var(--danger);
+        line-height: 1.5;
+      }
+      .error.visible {
+        display: flex;
+      }
+      pre {
+        margin: 0;
+        max-height: 90px;
+        padding: 10px;
+        overflow: auto;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        color: var(--text);
+        font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+        font-size: 12px;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      pre:empty {
+        display: none;
+      }
+      .spacer {
+        flex: 1;
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+      button {
+        height: 36px;
+        padding: 0 16px;
+        border-radius: 4px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        font: inherit;
+        font-weight: 550;
+        white-space: nowrap;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: background var(--transition-fast), opacity var(--transition-fast);
+      }
+      button:hover {
+        background: var(--surface);
+      }
+      button.primary {
+        background: var(--btn);
+        color: var(--btn-text);
+        border-color: var(--btn);
+      }
+      button.primary:hover {
+        opacity: 0.88;
+      }
+      .spinner {
+        display: none;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        border: 2px solid currentColor;
+        border-right-color: transparent;
+        animation: spin 0.8s linear infinite;
+      }
+      .busy .spinner {
+        display: inline-block;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .account {
+        color: var(--text);
+      }
+      .key {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 10px 10px 14px;
+        border-radius: 4px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+      }
+      .key code {
+        flex: 1;
+        font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+        font-size: 15px;
+        letter-spacing: 0.04em;
+        user-select: all;
+        word-break: break-all;
+      }
+      .check {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-weight: 500;
+        cursor: pointer;
+        line-height: 1.4;
+      }
+      .check input {
+        margin: 2px 0 0;
+        width: 16px;
+        height: 16px;
+      }
+      .missing {
+        display: none;
+        color: var(--danger);
+        font-size: 13px;
+      }
+      .missing.visible {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <form class="view active" id="form-view" novalidate>
+      <h1 data-text="resetTitle"></h1>
+      <p data-text="resetIntro"></p>
+      <div class="field">
+        <label for="password" data-text="resetPassword"></label>
+        <div class="input-wrap">
+          <input id="password" type="password" autocomplete="new-password" autofocus />
+          <button type="button" class="eye" data-for="password"></button>
+        </div>
+        <div class="hint" id="rule"></div>
+      </div>
+      <div class="field">
+        <label for="repeat" data-text="resetRepeat"></label>
+        <div class="input-wrap">
+          <input id="repeat" type="password" autocomplete="new-password" />
+          <button type="button" class="eye" data-for="repeat"></button>
+        </div>
+      </div>
+      <div class="error" id="error">
+        <span id="error-text"></span>
+        <pre id="error-detail"></pre>
+      </div>
+      <div class="spacer"></div>
+      <div class="actions">
+        <button type="button" id="cancel" data-text="resetCancel"></button>
+        <button type="submit" class="primary" id="submit"><span class="spinner"></span><span id="submit-label"></span></button>
+      </div>
+    </form>
+
+    <div class="view" id="done-view">
+      <h1 data-text="resetDoneTitle"></h1>
+      <p data-text="resetDoneText"></p>
+      <p class="account"><span data-text="resetAccount"></span>: <strong id="account"></strong></p>
+      <div class="field">
+        <label data-text="resetKeyLabel"></label>
+        <div class="key">
+          <code id="key"></code>
+          <button type="button" id="copy" data-text="resetCopy"></button>
+        </div>
+        <div class="hint" data-text="resetKeyHint"></div>
+      </div>
+      <label class="check"><input type="checkbox" id="confirm" /><span data-text="resetConfirm"></span></label>
+      <div class="missing" id="missing" data-text="resetConfirmMissing"></div>
+      <div class="spacer"></div>
+      <div class="actions">
+        <button type="button" class="primary" id="finish" data-text="resetFinish"></button>
+      </div>
+    </div>
+
+    <script>
+      // Texte vom Programm übernehmen, Eingaben prüfen, Passwort setzen, neuen Schlüssel zeigen
+      const byId = (id) => document.getElementById(id)
+      const bridge = window.mixmarketReset
+      // Eigene Symbole im Stil der Oberfläche (Linien, Stärke 2, abgerundet)
+      const EYE =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>'
+      const EYE_OFF =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.6 5.1A10.4 10.4 0 0 1 12 5c6.5 0 10 7 10 7a17.6 17.6 0 0 1-2.4 3.3"/><path d="M6.6 6.6C3.7 8.4 2 12 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/></svg>'
+      let t = {}
+      let minLength = 10
+      let busy = false
+
+      const fill = (template) => template.replace('{count}', String(minLength))
+
+      bridge.onState((state) => {
+        t = state.texts
+        minLength = state.minLength
+        document.documentElement.lang = state.language
+        document.documentElement.dataset.theme = state.theme
+        document.title = t.resetTitle
+        for (const el of document.querySelectorAll('[data-text]')) el.textContent = t[el.dataset.text] ?? ''
+        byId('rule').textContent = fill(t.resetRule)
+        byId('submit-label').textContent = t.resetSubmit
+        for (const eye of document.querySelectorAll('.eye')) setEye(eye, false)
+      })
+
+      // Auge im Passwortfeld: Eingabe zeigen oder verbergen
+      function setEye(eye, visible) {
+        byId(eye.dataset.for).type = visible ? 'text' : 'password'
+        eye.innerHTML = visible ? EYE_OFF : EYE
+        eye.setAttribute('aria-label', visible ? t.resetHide : t.resetShow)
+      }
+      for (const eye of document.querySelectorAll('.eye')) {
+        eye.addEventListener('click', () => setEye(eye, byId(eye.dataset.for).type === 'password'))
+      }
+
+      function showError(message, detail, fields) {
+        byId('error-text').textContent = message
+        byId('error-detail').textContent = detail ?? ''
+        byId('error').classList.add('visible')
+        for (const id of ['password', 'repeat']) byId(id).classList.toggle('invalid', fields.includes(id))
+      }
+      function clearError() {
+        byId('error').classList.remove('visible')
+        for (const id of ['password', 'repeat']) byId(id).classList.remove('invalid')
+      }
+      for (const id of ['password', 'repeat']) byId(id).addEventListener('input', clearError)
+
+      byId('form-view').addEventListener('submit', async (event) => {
+        event.preventDefault()
+        if (busy) return
+        const password = byId('password').value
+        const repeat = byId('repeat').value
+        // Erst hier prüfen, das Programm prüft danach noch einmal
+        if (password.length < minLength) return showError(fill(t.resetErrorShort), '', ['password'])
+        if (password !== repeat) return showError(t.resetErrorMismatch, '', ['repeat'])
+        clearError()
+        busy = true
+        byId('submit').classList.add('busy')
+        byId('submit-label').textContent = t.resetBusy
+        let answer
+        try {
+          answer = await bridge.submit(password, repeat)
+        } catch (error) {
+          answer = { ok: false, code: 'failed', detail: String(error && error.message ? error.message : error) }
+        }
+        busy = false
+        byId('submit').classList.remove('busy')
+        byId('submit-label').textContent = t.resetSubmit
+        if (answer.ok) {
+          byId('password').value = ''
+          byId('repeat').value = ''
+          byId('account').textContent = answer.email
+          byId('key').textContent = answer.recoveryKey
+          byId('form-view').classList.remove('active')
+          byId('done-view').classList.add('active')
+          return
+        }
+        if (answer.code === 'tooShort') showError(fill(t.resetErrorShort), '', ['password'])
+        else if (answer.code === 'mismatch') showError(t.resetErrorMismatch, '', ['repeat'])
+        else if (answer.code === 'noAccount') showError(t.resetErrorNoAccount, '', [])
+        else showError(t.resetErrorFailed, answer.detail ?? '', [])
+      })
+
+      byId('cancel').addEventListener('click', () => bridge.close())
+
+      byId('copy').addEventListener('click', () => {
+        bridge.copyKey()
+        byId('copy').textContent = t.resetCopied
+        setTimeout(() => (byId('copy').textContent = t.resetCopy), 1600)
+      })
+
+      byId('confirm').addEventListener('change', () => byId('missing').classList.remove('visible'))
+
+      // Erst schließen, wenn der Schlüssel als aufbewahrt bestätigt ist
+      byId('finish').addEventListener('click', () => {
+        if (!byId('confirm').checked) {
+          byId('missing').classList.add('visible')
+          return
+        }
+        bridge.close()
+      })
+    </script>
+  </body>
+</html>

@@ -88,6 +88,8 @@ Ihre Daten (Datenbank, Einstellungen, Protokoll) liegen im Benutzerordner und bl
 - macOS: `~/Library/Application Support/MixMarket`
 - Linux: `~/.config/MixMarket`
 
+Sind Passwort und Wiederherstellungsschlüssel verloren, setzen Sie das Passwort im Programm direkt auf der Seite „Passwort vergessen“ neu, ohne Terminal und nur an diesem Rechner. Wie das geht, steht im Handbuch unter „Passwort vergessen“.
+
 ### Installation aus dem Quellcode
 
 ```bash
@@ -229,6 +231,8 @@ Your data (database, settings, log) lives in your user folder and is kept on upd
 - Windows: `%APPDATA%\MixMarket`
 - macOS: `~/Library/Application Support/MixMarket`
 - Linux: `~/.config/MixMarket`
+
+If both password and recovery key are lost, set a new password in the program directly on the Forgot password page, without a terminal and only on this computer. The handbook explains how under "Forgot password".
 
 ### Installing from source
 

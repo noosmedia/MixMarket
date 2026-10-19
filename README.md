@@ -56,13 +56,39 @@ Alle Bilder zeigen erfundene Beispieldaten.
 
 ### Voraussetzungen
 
-- Node.js 22.12 oder neuer (mit npm)
 - Für die KI-Funktionen: [Claude Code](https://claude.com/claude-code) (`claude`) oder die Codex CLI (`codex`), installiert und angemeldet
 - Für echten Versand und Empfang: ein Postfach mit SMTP und IMAP. Ohne Postfach läuft MixMarket im Testmodus und verschickt nichts.
 - Optional mit MixMarket Pro: Zugänge zu DataForSEO und Serper als weitere Suchquellen (werden in der App eingetragen)
-- Optional für den Browser-Modus beim Webseiten-Auslesen: `npx playwright install chromium`
+- Nur für die Installation aus dem Quellcode: Node.js 22.12 oder neuer (mit npm), für den Browser-Modus beim Webseiten-Auslesen zusätzlich `npx playwright install chromium`
 
-### Installation
+### Installation als Programm
+
+Die Installationspakete stehen unter [Releases](https://github.com/noosmedia/MixMarket/releases/latest):
+
+| System | Datei |
+| --- | --- |
+| Windows | `MixMarket-Setup-<Version>.exe` |
+| macOS mit Apple-Chip | `MixMarket-<Version>-arm64.dmg` |
+| macOS mit Intel-Prozessor | `MixMarket-<Version>-x64.dmg` |
+| Linux (Ubuntu, Debian, Mint) | `MixMarket-<Version>-amd64.deb` |
+| Linux (Fedora, openSUSE) | `MixMarket-<Version>-x86_64.rpm` |
+| Linux (alle) | `MixMarket-<Version>-x86_64.AppImage` |
+
+Nach der Installation steht MixMarket mit seinem Symbol im Startmenü (unter macOS im Ordner „Programme“). Ein Klick startet es in einem eigenen Fenster. Beim ersten Start legen Sie Ihr Konto an.
+
+Die Pakete sind nicht mit einem kostenpflichtigen Zertifikat signiert. Deshalb fragt das System beim ersten Start nach:
+
+- **Windows:** Erscheint „Der Computer wurde durch Windows geschützt“, klicken Sie auf **Weitere Informationen** und dann auf **Trotzdem ausführen**.
+- **macOS:** Öffnen Sie MixMarket einmal, schließen Sie den Hinweis und wählen Sie unter **Systemeinstellungen**, **Datenschutz & Sicherheit** den Knopf **Dennoch öffnen**.
+- **Linux (AppImage):** Datei ausführbar machen (Rechtsklick, Eigenschaften, Rechte) und starten. MixMarket trägt sich dabei selbst ins Startmenü ein. Manche Systeme brauchen dafür das Paket `libfuse2`.
+
+Ihre Daten (Datenbank, Einstellungen, Protokoll) liegen im Benutzerordner und bleiben bei Updates und beim Deinstallieren erhalten:
+
+- Windows: `%APPDATA%\MixMarket`
+- macOS: `~/Library/Application Support/MixMarket`
+- Linux: `~/.config/MixMarket`
+
+### Installation aus dem Quellcode
 
 ```bash
 git clone https://github.com/noosmedia/MixMarket.git
@@ -77,7 +103,7 @@ npm run db:seed
 
 Die Werte in `server/.env` können zunächst so bleiben. Den Geheimschlüssel für die Anmeldung erzeugt MixMarket beim ersten Start selbst.
 
-### Starten
+Starten:
 
 ```bash
 npm run dev
@@ -87,7 +113,10 @@ Danach ist MixMarket unter http://localhost:5261 erreichbar. Beim ersten Aufruf 
 
 ### Aktualisieren
 
-Gibt es eine neue Version, zeigt MixMarket oben rechts einen kleinen Punkt an Ihren Initialen und im Menü **Update verfügbar**. Zum Aktualisieren beenden Sie MixMarket mit Strg+C und führen im MixMarket-Ordner aus:
+Gibt es eine neue Version, zeigt MixMarket oben rechts einen kleinen Punkt an Ihren Initialen und im Menü **Update verfügbar**.
+
+- **Als Programm:** Im Fenster **Update verfügbar** auf **Jetzt aktualisieren** klicken. MixMarket lädt die neue Version, sichert vorher die Datenbank und startet neu. Unter Linux mit .deb oder .rpm fragt das System dabei nach Ihrem Passwort. Unter macOS führt der Knopf zur Download-Seite: neue `.dmg` öffnen und MixMarket wieder in „Programme“ ziehen.
+- **Aus dem Quellcode:** MixMarket mit Strg+C beenden und im MixMarket-Ordner ausführen:
 
 ```bash
 git pull
@@ -95,7 +124,7 @@ npm install
 npm run db:push
 ```
 
-Danach starten Sie wie gewohnt mit `npm run dev`. Ihre Daten bleiben erhalten.
+Danach wie gewohnt mit `npm run dev` starten. Ihre Daten bleiben in beiden Fällen erhalten.
 
 ### Weitere Befehle
 
@@ -104,6 +133,7 @@ Danach starten Sie wie gewohnt mit `npm run dev`. Ihre Daten bleiben erhalten.
 | `npm run build` | Server und Oberfläche für den Betrieb bauen |
 | `npm run db:studio` | Datenbank in Prisma Studio ansehen |
 | `npm run reset-password` | Passwort neu setzen, wenn Passwort und Wiederherstellungsschlüssel verloren sind |
+| `cd desktop && npm install && npm run dist` | Installationspakete für das eigene System bauen (Ergebnis in `desktop/release/`) |
 
 ### Aufbau
 
@@ -111,6 +141,7 @@ Danach starten Sie wie gewohnt mit `npm run dev`. Ihre Daten bleiben erhalten.
 | --- | --- | --- |
 | `server/` | Backend: Node.js, TypeScript, Fastify, Prisma 7 mit SQLite | 5260 |
 | `web/` | Oberfläche: React 19, Vite, TypeScript, i18next | 5261 |
+| `desktop/` | Programm: Electron-Fenster um Server und Oberfläche, Installationspakete, Updates | 5268 |
 
 ### Lizenz
 
@@ -167,13 +198,39 @@ All images show invented sample data and the German interface; English can be se
 
 ### Requirements
 
-- Node.js 22.12 or newer (with npm)
 - For the AI features: [Claude Code](https://claude.com/claude-code) (`claude`) or the Codex CLI (`codex`), installed and signed in
 - For real sending and receiving: a mailbox with SMTP and IMAP. Without a mailbox MixMarket runs in test mode and sends nothing.
 - Optional with MixMarket Pro: DataForSEO and Serper accounts as additional search sources (entered in the app)
-- Optional for browser mode when reading websites: `npx playwright install chromium`
+- Only for installing from source: Node.js 22.12 or newer (with npm), plus `npx playwright install chromium` for browser mode when reading websites
 
-### Installation
+### Installing the app
+
+The installers are available under [Releases](https://github.com/noosmedia/MixMarket/releases/latest):
+
+| System | File |
+| --- | --- |
+| Windows | `MixMarket-Setup-<version>.exe` |
+| macOS with Apple chip | `MixMarket-<version>-arm64.dmg` |
+| macOS with Intel processor | `MixMarket-<version>-x64.dmg` |
+| Linux (Ubuntu, Debian, Mint) | `MixMarket-<version>-amd64.deb` |
+| Linux (Fedora, openSUSE) | `MixMarket-<version>-x86_64.rpm` |
+| Linux (all) | `MixMarket-<version>-x86_64.AppImage` |
+
+After installing, MixMarket appears with its icon in the start menu (on macOS in the Applications folder). One click opens it in its own window. On the first start you create your account.
+
+The installers are not signed with a paid certificate, so the system asks on the first start:
+
+- **Windows:** If "Windows protected your PC" appears, click **More info** and then **Run anyway**.
+- **macOS:** Open MixMarket once, close the notice and choose **Open Anyway** under **System Settings**, **Privacy & Security**.
+- **Linux (AppImage):** Make the file executable (right click, Properties, Permissions) and start it. MixMarket adds itself to the start menu. Some systems need the `libfuse2` package for this.
+
+Your data (database, settings, log) lives in your user folder and is kept on updates and when uninstalling:
+
+- Windows: `%APPDATA%\MixMarket`
+- macOS: `~/Library/Application Support/MixMarket`
+- Linux: `~/.config/MixMarket`
+
+### Installing from source
 
 ```bash
 git clone https://github.com/noosmedia/MixMarket.git
@@ -188,7 +245,7 @@ npm run db:seed
 
 The values in `server/.env` can stay as they are for now. MixMarket creates the secret key for sign-in by itself on the first start.
 
-### Running
+Start:
 
 ```bash
 npm run dev
@@ -198,7 +255,10 @@ MixMarket is then available at http://localhost:5261. On the first visit you cre
 
 ### Updating
 
-When a new version is out, MixMarket shows a small dot on your initials at the top right and **Update available** in the menu. To update, stop MixMarket with Ctrl+C and run in the MixMarket folder:
+When a new version is out, MixMarket shows a small dot on your initials at the top right and **Update available** in the menu.
+
+- **App:** In the **Update available** window click **Update now**. MixMarket downloads the new version, backs up the database first and restarts. On Linux with .deb or .rpm the system asks for your password. On macOS the button leads to the download page: open the new `.dmg` and drag MixMarket into Applications again.
+- **From source:** stop MixMarket with Ctrl+C and run in the MixMarket folder:
 
 ```bash
 git pull
@@ -206,7 +266,7 @@ npm install
 npm run db:push
 ```
 
-Then start as usual with `npm run dev`. Your data is kept.
+Then start as usual with `npm run dev`. Your data is kept either way.
 
 ### More commands
 
@@ -215,6 +275,7 @@ Then start as usual with `npm run dev`. Your data is kept.
 | `npm run build` | Build server and interface for operation |
 | `npm run db:studio` | Inspect the database in Prisma Studio |
 | `npm run reset-password` | Set a new password if both password and recovery key are lost |
+| `cd desktop && npm install && npm run dist` | Build installers for your own system (output in `desktop/release/`) |
 
 ### Structure
 
@@ -222,6 +283,7 @@ Then start as usual with `npm run dev`. Your data is kept.
 | --- | --- | --- |
 | `server/` | Backend: Node.js, TypeScript, Fastify, Prisma 7 with SQLite | 5260 |
 | `web/` | Interface: React 19, Vite, TypeScript, i18next | 5261 |
+| `desktop/` | App: Electron window around server and interface, installers, updates | 5268 |
 
 ### License
 

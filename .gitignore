@@ -49,3 +49,8 @@ server/src/generated/
 
 # MixMarket Pro: eigener, privater Ordner, gehört nie in dieses Repository
 /pro/
+
+# Programmpaket: zusammengestellter Inhalt und fertige Pakete (entstehen beim Bauen)
+desktop/stage/
+desktop/release/
+desktop/build-js/

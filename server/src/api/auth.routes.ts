@@ -144,10 +144,11 @@ function publicUser(u: { id: string; email: string; name: string }) {
 }
 
 export async function authRoutes(app: FastifyInstance): Promise<void> {
-  // Cookie-Optionen je nach Umgebung
+  // Cookie-Optionen: "secure" nur, wenn die Oberfläche über https erreichbar ist. Hinge es am Betriebsmodus,
+  // könnte sich im installierten Programm (Produktion, aber http://127.0.0.1) niemand anmelden.
   const cookieOptions = {
     httpOnly: true,
-    secure: env.isProduction,
+    secure: env.publicWebUrl.startsWith('https://'),
     // Strikt: der Cookie geht nie mit Anfragen anderer Seiten mit
     sameSite: 'strict' as const,
     path: '/',

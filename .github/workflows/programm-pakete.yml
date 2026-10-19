@@ -1,0 +1,102 @@
+# Baut MixMarket als installierbares Programm für Linux, Windows und macOS und legt die Pakete
+# an eine Veröffentlichung auf GitHub. Startet bei einem Versions-Tag (z. B. v0.18.0) oder von Hand.
+# Die Veröffentlichung bleibt ein Entwurf, bis alle drei Systeme fertig gebaut sind; erst dann wird sie
+# sichtbar und damit auch für die Update-Prüfung im Programm.
+name: Programm-Pakete
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bauen:
+    name: Pakete ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - name: Quellcode holen
+        uses: actions/checkout@v4
+
+      - name: Node.js einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            desktop/package-lock.json
+
+      - name: Werkzeug für das .rpm-Paket (nur Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y rpm
+
+      - name: MixMarket installieren
+        run: npm ci
+
+      - name: Programmhülle installieren
+        working-directory: desktop
+        run: npm ci
+
+      # Nur bei einem Versions-Tag hochladen; von Hand gestartet bleiben die Pakete als Artefakte hier
+      - name: Pakete bauen (Linux, Windows)
+        if: runner.os != 'macOS'
+        working-directory: desktop
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH: ${{ startsWith(github.ref, 'refs/tags/v') && 'always' || 'never' }}
+        run: |
+          node scripts/stage.mjs --arch x64
+          npx electron-builder --config electron-builder.yml --x64 --publish "$PUBLISH"
+
+      # macOS: SQLite muss je Architektur passend übersetzt werden, deshalb nacheinander
+      - name: Pakete bauen (macOS, Apple-Chip und Intel)
+        if: runner.os == 'macOS'
+        working-directory: desktop
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH: ${{ startsWith(github.ref, 'refs/tags/v') && 'always' || 'never' }}
+        run: |
+          node scripts/stage.mjs --arch arm64
+          npx electron-builder --config electron-builder.yml --mac --arm64 --publish "$PUBLISH"
+          node scripts/stage.mjs --skip-build --arch x64
+          npx electron-builder --config electron-builder.yml --mac --x64 --publish "$PUBLISH"
+
+      - name: Pakete als Artefakt aufbewahren
+        uses: actions/upload-artifact@v4
+        with:
+          name: mixmarket-${{ matrix.os }}
+          path: |
+            desktop/release/*.AppImage
+            desktop/release/*.deb
+            desktop/release/*.rpm
+            desktop/release/*.exe
+            desktop/release/*.dmg
+            desktop/release/*.yml
+          if-no-files-found: error
+          retention-days: 14
+
+  veroeffentlichen:
+    name: Veröffentlichung freigeben
+    needs: bauen
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Quellcode holen
+        uses: actions/checkout@v4
+
+      - name: Neuerungen dieser Version aus dem CHANGELOG nehmen und Entwurf veröffentlichen
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          awk -v v="$VERSION" '$0 ~ "^## \\[?v?"v"[] ]" {p=1; next} /^## / && p {exit} p' CHANGELOG.md > notes.md
+          gh release edit "$GITHUB_REF_NAME" --title "MixMarket $VERSION" --notes-file notes.md --draft=false --latest

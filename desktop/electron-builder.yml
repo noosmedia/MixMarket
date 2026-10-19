@@ -1,0 +1,91 @@
+# Pakete für Linux (AppImage, .deb, .rpm), Windows (Installer) und macOS (.dmg).
+# Inhalt kommt aus desktop/stage (scripts/stage.mjs). Ohne Code-Signatur: Windows und macOS
+# zeigen beim ersten Start einen Hinweis auf einen unbekannten Herausgeber.
+appId: io.github.noosmedia.mixmarket
+productName: MixMarket
+copyright: MixMarket, AGPL-3.0
+directories:
+  app: stage
+  output: release
+  buildResources: assets
+# Ohne asar-Archiv: Server, Prisma-Werkzeug und SQLite laufen als eigener Prozess und brauchen echte Dateien
+asar: false
+files:
+  - "**/*"
+  - "!package-lock.json"
+# Native Module (SQLite) passt scripts/stage.mjs nur im Paketordner an (je Zielarchitektur, --arch).
+# Der eingebaute Schritt von electron-builder würde auch den Hauptordner umbauen und npm run dev beschädigen.
+npmRebuild: false
+electronLanguages:
+  - de
+  - en-US
+publish:
+  - provider: github
+    owner: noosmedia
+    repo: MixMarket
+    releaseType: draft
+
+linux:
+  target:
+    - AppImage
+    - deb
+    - rpm
+  icon: assets/icons
+  category: Office
+  executableName: mixmarket
+  artifactName: MixMarket-${version}-${arch}.${ext}
+  synopsis: Firmen finden und gezielt anschreiben
+  # Wird auch als Kommentar im Startmenü gezeigt, deshalb kurz
+  description: Firmen finden und gezielt anschreiben
+  maintainer: MixMarket <mixmarket@users.noreply.github.com>
+  desktop:
+    entry:
+      Name: MixMarket
+      Comment: Firmen finden und gezielt anschreiben
+      Comment[en]: Find companies and reach out to them
+      Keywords: Marketing;Akquise;Outreach;Mail;
+      # Fensterklasse des Programms (aus desktopName), damit die Taskleiste Fenster und Eintrag verbindet
+      StartupWMClass: mixmarket
+deb:
+  packageName: mixmarket
+rpm:
+  packageName: mixmarket
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: assets/icon.ico
+  artifactName: MixMarket-Setup-${version}.${ext}
+nsis:
+  # Installation mit Auswahl des Ordners; Verknüpfung nur im Startmenü, nicht auf dem Desktop
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: false
+  createStartMenuShortcut: true
+  shortcutName: MixMarket
+  uninstallDisplayName: MixMarket
+  # Daten (Datenbank, Einstellungen) beim Deinstallieren behalten
+  deleteAppDataOnUninstall: false
+  installerLanguages:
+    - de_DE
+    - en_US
+  multiLanguageInstaller: true
+
+mac:
+  target:
+    - target: dmg
+      arch:
+        - arm64
+        - x64
+  icon: assets/icon.png
+  category: public.app-category.business
+  artifactName: MixMarket-${version}-${arch}.${ext}
+  # Ad-hoc-Signatur ohne Apple-Konto: nötig, damit das Programm auf Apple-Chips überhaupt startet
+  identity: "-"
+  hardenedRuntime: false
+  gatekeeperAssess: false
+dmg:
+  title: MixMarket ${version}

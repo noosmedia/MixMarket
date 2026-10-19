@@ -3,6 +3,7 @@
 import Fastify, { type FastifyError } from 'fastify'
 import cors from '@fastify/cors'
 import cookie from '@fastify/cookie'
+import fastifyStatic from '@fastify/static'
 import { env } from './utils/env.js'
 import { isSmtpConfigured } from './services/mailer.service.js'
 import { logger } from './utils/logger.js'
@@ -13,6 +14,17 @@ import { requireAuth } from './middleware/auth.js'
 import { registerProDispatcher } from './pro/host.js'
 import { startPro } from './pro/loader.js'
 import { registerLicenseRoutes } from './pro/license.js'
+
+// Sicherheitsregeln (Content-Security-Policy): Schnittstelle und Tracking dürfen nichts nachladen;
+// die Oberfläche darf nur eigene Skripte, Stile, Schriften und Bilder vom selben Server laden
+const API_CSP = "default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
+const WEB_CSP =
+  "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
+
+// Gehört die Adresse zur Oberfläche? Nur wenn der Server sie selbst ausliefert (installiertes Programm)
+function isWebRequest(url: string): boolean {
+  return !!env.webDir && !url.startsWith('/api/') && !url.startsWith('/t/')
+}
 
 // Routen
 import { authRoutes } from './api/auth.routes.js'
@@ -39,7 +51,9 @@ import { controlRoutes } from './api/control.routes.js'
 async function main(): Promise<void> {
   // X-Forwarded-For nur vom eingetragenen Reverse-Proxy übernehmen, sonst ließe sich die Adresse fälschen
   const trustProxy = env.trustProxy === 'true' ? true : env.trustProxy ? env.trustProxy.split(',').map((s) => s.trim()) : false
-  const app = Fastify({ logger: false, trustProxy })
+  // Beim Beenden offene Verbindungen schließen statt auf sie zu warten: Browser und Programmfenster halten
+  // vorsorglich Verbindungen offen, sonst hinge das Beenden (z. B. beim Schließen des Programms)
+  const app = Fastify({ logger: false, trustProxy, forceCloseConnections: true })
 
   // CORS für das Frontend
   await app.register(cors, {
@@ -70,15 +84,12 @@ async function main(): Promise<void> {
   })
 
   // Sicherheits-Header für alle Antworten des Servers
-  app.addHook('onSend', async (_request, reply, payload) => {
+  app.addHook('onSend', async (request, reply, payload) => {
     reply.header('X-Content-Type-Options', 'nosniff')
     reply.header('X-Frame-Options', 'DENY')
     reply.header('Referrer-Policy', 'no-referrer')
     reply.header('Cross-Origin-Resource-Policy', 'same-site')
-    reply.header(
-      'Content-Security-Policy',
-      "default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
-    )
+    reply.header('Content-Security-Policy', isWebRequest(request.url) ? WEB_CSP : API_CSP)
     return payload
   })
 
@@ -121,6 +132,24 @@ async function main(): Promise<void> {
   registerLicenseRoutes(app)
   registerProDispatcher(app, requireAuth)
 
+  // Installiertes Programm: die fertige Oberfläche kommt vom selben Server (gleiche Adresse für
+  // Oberfläche und Schnittstelle). Unbekannte Seitenadressen bekommen die Startseite, die Oberfläche
+  // wählt die Seite dann selbst; unbekannte Schnittstellen-Adressen bleiben ein 404.
+  if (env.webDir) {
+    await app.register(fastifyStatic, {
+      root: env.webDir,
+      prefix: '/',
+      // Dateinamen mit Prüfsumme dürfen lange zwischengespeichert werden, die Startseite nie
+      setHeaders: (res, path) => {
+        res.header('Cache-Control', /[\\/]assets[\\/]/.test(path) ? 'public, max-age=31536000, immutable' : 'no-cache')
+      },
+    })
+    app.setNotFoundHandler((request, reply) => {
+      if (request.method === 'GET' && isWebRequest(request.url)) return reply.header('Cache-Control', 'no-cache').sendFile('index.html')
+      return reply.code(404).send({ error: 'Nicht gefunden' })
+    })
+  }
+
   // Server starten
   try {
     await app.listen({ port: env.port, host: env.host })
@@ -143,6 +172,19 @@ async function main(): Promise<void> {
   }
   process.on('SIGINT', shutdown)
   process.on('SIGTERM', shutdown)
+
+  // Installiertes Programm: endet das Programmfenster unerwartet (Absturz, beendet über die Prozessliste),
+  // beendet sich auch der Server, statt ohne Fenster weiterzulaufen und den Port zu belegen
+  const parentPid = Number(process.env.MIXMARKET_PARENT_PID)
+  if (parentPid > 0) {
+    setInterval(() => {
+      try {
+        process.kill(parentPid, 0)
+      } catch {
+        void shutdown()
+      }
+    }, 2000).unref()
+  }
 }
 
 main()

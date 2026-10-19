@@ -16,6 +16,7 @@
 // Weitere Anbieter (z. B. API-Schlüssel oder "Sign in with ChatGPT") lassen
 // sich später als zusätzliche Einträge in AI_PROVIDERS ergänzen.
 import { spawn } from 'node:child_process'
+import { existsSync } from 'node:fs'
 import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -61,11 +62,45 @@ export class AiPausedError extends AiError {
 
 // Umgebung für die KI-Programme: Suchpfad, Benutzerordner, Sprache, Proxy- und Zertifikatsangaben
 // sowie die Konfigurationsordner von Claude Code und Codex
+// Unter Windows schreiben sich die Namen anders (z. B. "Path", "SystemRoot"); dort zählt die Großschreibung nicht,
+// und dazu kommen die Angaben, ohne die Windows-Programme nicht starten (PATHEXT, COMSPEC, Programmordner)
 const PASS_ENV = /^(PATH|HOME|USER|LOGNAME|SHELL|LANG|LANGUAGE|LC_[A-Z]+|TZ|TMPDIR|TEMP|TMP|SYSTEMROOT|APPDATA|LOCALAPPDATA|USERPROFILE|HOMEDRIVE|HOMEPATH|XDG_[A-Z_]+|CLAUDE_CONFIG_DIR|CODEX_HOME|HTTPS?_PROXY|https?_proxy|NO_PROXY|no_proxy|NODE_EXTRA_CA_CERTS|SSL_CERT_FILE|SSL_CERT_DIR)$/
+const PASS_ENV_WINDOWS = /^(PATHEXT|COMSPEC|WINDIR|PROGRAMFILES|PROGRAMFILES\(X86\)|PROGRAMW6432|PROGRAMDATA|CLAUDE_CODE_GIT_BASH_PATH)$/
+const IS_WINDOWS = process.platform === 'win32'
 function aiEnvironment(): NodeJS.ProcessEnv {
   const out: NodeJS.ProcessEnv = {}
-  for (const [key, value] of Object.entries(process.env)) if (PASS_ENV.test(key)) out[key] = value
+  for (const [key, value] of Object.entries(process.env)) {
+    const name = IS_WINDOWS ? key.toUpperCase() : key
+    if (PASS_ENV.test(name) || (IS_WINDOWS && PASS_ENV_WINDOWS.test(name))) out[key] = value
+  }
   return out
+}
+
+// Windows: Programm im Suchpfad finden. Claude Code liegt meist als .exe vor, über npm installierte
+// Programme (z. B. Codex) als .cmd. Eine .cmd startet Windows nur über die Eingabeaufforderung.
+// Auf anderen Systemen sucht spawn selbst im Suchpfad.
+function resolveCommand(command: string): { file: string; viaShell: boolean } {
+  if (!IS_WINDOWS) return { file: command, viaShell: false }
+  const extensions = (process.env.PATHEXT || '.COM;.EXE;.BAT;.CMD')
+    .split(';')
+    .map((ext) => ext.trim().toLowerCase())
+    .filter((ext) => ['.com', '.exe', '.bat', '.cmd'].includes(ext))
+  for (const dir of (process.env.PATH || '').split(';')) {
+    const folder = dir.trim().replace(/^"|"$/g, '')
+    if (!folder) continue
+    for (const ext of extensions) {
+      const file = join(folder, command + ext)
+      if (existsSync(file)) return { file, viaShell: ext === '.cmd' || ext === '.bat' }
+    }
+  }
+  // Nicht gefunden: spawn meldet ENOENT, das wird als "nicht installiert" angezeigt
+  return { file: command, viaShell: false }
+}
+
+// Für die Eingabeaufforderung: jedes Argument in Anführungszeichen, innere Anführungszeichen verdoppelt
+// (auch leere Argumente wie bei --tools "" bleiben so erhalten)
+function cmdQuote(value: string): string {
+  return `"${value.replace(/"/g, '""')}"`
 }
 
 interface RunResult {
@@ -83,13 +118,18 @@ async function run(
 ): Promise<RunResult> {
   return new Promise((resolve, reject) => {
     let child
+    const target = resolveCommand(command)
     try {
-      child = spawn(command, args, {
+      child = spawn(target.viaShell ? cmdQuote(target.file) : target.file, target.viaShell ? args.map(cmdQuote) : args, {
         cwd: options.cwd,
         // Nur die nötigen Umgebungsvariablen weitergeben, keine Geheimnisse von MixMarket (JWT, SMTP usw.)
         env: { ...aiEnvironment(), NO_COLOR: '1' },
         stdio: ['pipe', 'pipe', 'pipe'],
-        detached: true, // eigene Prozessgruppe, damit alle Unterprozesse beendet werden können
+        // Eigene Prozessgruppe, damit alle Unterprozesse beendet werden können. Unter Windows würde das
+        // ein sichtbares Konsolenfenster öffnen; dort beendet taskkill den ganzen Prozessbaum.
+        detached: !IS_WINDOWS,
+        windowsHide: true,
+        shell: target.viaShell,
       })
     } catch (error) {
       reject(error)
@@ -100,8 +140,12 @@ async function run(
     let buffered = ''
     let aborted: string | null = null
 
-    // Ganze Prozessgruppe hart beenden
+    // Ganze Prozessgruppe hart beenden (Windows: Prozessbaum über taskkill)
     const killAll = () => {
+      if (IS_WINDOWS && child.pid) {
+        spawn('taskkill', ['/pid', String(child.pid), '/T', '/F'], { windowsHide: true, stdio: 'ignore' }).on('error', () => child.kill())
+        return
+      }
       try {
         if (child.pid) process.kill(-child.pid, 'SIGKILL')
       } catch {

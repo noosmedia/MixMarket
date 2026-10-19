@@ -40,6 +40,24 @@ async function browserTargetAllowed(raw: string): Promise<boolean> {
   }
 }
 
+// Browser starten: zuerst der von Playwright geladene Chromium (npx playwright install chromium), sonst ein
+// vorhandenes Google Chrome oder Microsoft Edge. So geht der Browser-Modus auch im installierten Programm,
+// in dem es den Playwright-Chromium nicht gibt (unter Windows ist Edge immer vorhanden).
+async function launchBrowser() {
+  const { chromium } = await import('playwright')
+  const attempts: Array<{ channel?: string }> = [{}, { channel: 'chrome' }, { channel: 'msedge' }]
+  for (const attempt of attempts) {
+    try {
+      return await chromium.launch({ headless: true, ...attempt })
+    } catch {
+      // nächsten Browser versuchen
+    }
+  }
+  throw new Error(
+    'Für "Browser verwenden" wird Google Chrome oder Microsoft Edge auf diesem Rechner gebraucht. Ohne diese Option liest MixMarket die Seite direkt.',
+  )
+}
+
 // HTML einer Seite holen. Normal über den gesicherten Abrufer (kein Zugriff aufs eigene Netz, Größe begrenzt);
 // den Browser gibt es nur, wenn der Auftrag ihn ausdrücklich verlangt, und auch dort wird jede Anfrage geprüft.
 async function fetchHtml(url: string, useBrowser?: boolean): Promise<string> {
@@ -48,8 +66,7 @@ async function fetchHtml(url: string, useBrowser?: boolean): Promise<string> {
     return new TextDecoder('utf-8').decode(page.bytes)
   }
   if (!(await browserTargetAllowed(url))) throw new Error('Interne oder ungültige Adresse')
-  const { chromium } = await import('playwright')
-  const browser = await chromium.launch({ headless: true })
+  const browser = await launchBrowser()
   try {
     const page = await browser.newPage({ userAgent: USER_AGENT })
     await page.route('**/*', async (route) => {

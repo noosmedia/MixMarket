@@ -1,0 +1,18 @@
+{
+  "starting": "Starting MixMarket",
+  "stepPrepare": "Preparing data",
+  "stepDatabase": "Setting up the database",
+  "stepServer": "Loading the app",
+  "errorTitle": "MixMarket could not start",
+  "errorHint": "The full message is shown below and in the log. Your data is kept.",
+  "openLog": "Open log",
+  "openDataFolder": "Open data folder",
+  "retry": "Try again",
+  "quit": "Quit",
+  "stoppedTitle": "MixMarket stopped unexpectedly",
+  "menuAbout": "About MixMarket",
+  "menuEdit": "Edit",
+  "menuView": "View",
+  "menuWindow": "Window",
+  "appComment": "Find companies and reach out to them"
+}

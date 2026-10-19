@@ -1,6 +1,6 @@
 {
   "name": "@mixmarket/server",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "description": "MixMarket Backend-API",
   "private": true,
   "type": "module",
@@ -19,6 +19,7 @@
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
     "@fastify/cors": "^10.0.2",
+    "@fastify/static": "^10.1.6",
     "@prisma/adapter-better-sqlite3": "^7.10.1",
     "@prisma/client": "^7.10.1",
     "bcryptjs": "^2.4.3",

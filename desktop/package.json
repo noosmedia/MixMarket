@@ -1,0 +1,21 @@
+{
+  "name": "@mixmarket/desktop",
+  "version": "0.18.0",
+  "description": "MixMarket als installierbares Programm (Electron-Hülle um Server und Oberfläche)",
+  "private": true,
+  "scripts": {
+    "typecheck": "../node_modules/.bin/tsc -p tsconfig.json --noEmit",
+    "stage": "node scripts/stage.mjs",
+    "dist": "node scripts/stage.mjs && electron-builder --config electron-builder.yml --publish never",
+    "start": "node scripts/stage.mjs && electron stage"
+  },
+  "author": "MixMarket",
+  "license": "AGPL-3.0-only",
+  "dependencies": {
+    "electron-updater": "6.8.9"
+  },
+  "devDependencies": {
+    "electron": "44.9.0",
+    "electron-builder": "26.15.3"
+  }
+}

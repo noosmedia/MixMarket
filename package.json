@@ -1,6 +1,6 @@
 {
   "name": "mixmarket",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "description": "MixMarket: schlankes Programm für gezielte B2B-Erstansprache",
   "private": true,
   "type": "module",

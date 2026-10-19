@@ -1784,7 +1784,19 @@
     "copy": "Copy commands",
     "copied": "Commands copied",
     "copyFailed": "Copying is not possible, please type the commands.",
-    "onGithub": "View on GitHub"
+    "onGithub": "View on GitHub",
+    "desktopIntro": "MixMarket downloads version {{version}} and then restarts.",
+    "desktopUpdate": "Update now",
+    "desktopChecking": "Looking for the new version …",
+    "desktopDownloading": "Downloading the new version",
+    "desktopReady": "The new version is downloaded. MixMarket restarts briefly to install it.",
+    "desktopRestart": "Restart and install",
+    "desktopInstalling": "MixMarket is closing and installing the new version …",
+    "desktopNotYet": "Version {{version}} is announced, but its installer is still being prepared. Please try again in an hour.",
+    "desktopManual": "This installation cannot update itself. Download the new version from the download page and install it over the current one.",
+    "desktopManualMac": "On macOS, download the new version from the download page and drag MixMarket into the Applications folder again. This replaces the current version.",
+    "desktopFailed": "The update did not work. The message:",
+    "desktopDownloadPage": "Open download page"
   },
   "proLicense": {
     "intro": "MixMarket Pro unlocks guided tours, Autopilot, follow-up mails, automations, “Approve all”, AI in conversations, more search sources and template packs. Everything else stays free. Pro needs an internet connection.",

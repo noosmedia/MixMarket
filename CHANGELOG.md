@@ -2,6 +2,25 @@
 
 Alle Änderungen an MixMarket, nach Semantic Versioning.
 
+## 0.18.0 (19.10.2026)
+
+### Neu
+- MixMarket als installierbares Programm für Windows, macOS und Linux (Installer, .dmg, AppImage, .deb, .rpm). Es steht mit Symbol im Startmenü, öffnet in einem eigenen Fenster und braucht kein Node.js und kein Terminal
+- Startbildschirm beim Öffnen; scheitert der Start, zeigt er die vollständige Meldung mit Protokoll, Datenordner und „Erneut versuchen“
+- Fenster mit Mindestgröße 1024 × 700, damit Kopfleiste, Tabellen und Fenster immer vollständig Platz haben; Größe und Lage merkt sich das Programm
+- Updates im Programm: „Jetzt aktualisieren“ lädt die neue Version mit Fortschrittsanzeige, sichert vorher die Datenbank und startet neu. Unter macOS führt der Knopf zur Download-Seite
+- Daten des Programms liegen im Benutzerordner und bleiben bei Updates und beim Deinstallieren erhalten
+- Geführte Touren lassen sich auch über die Übersicht und das Benutzermenü starten
+
+### Geändert
+- Browser-Modus beim Webseiten-Auslesen nutzt ein vorhandenes Google Chrome oder Microsoft Edge, wenn der Playwright-Chromium fehlt
+- README beschreibt beide Wege: Installation als Programm und aus dem Quellcode
+
+### Behoben
+- Windows: Codex (über npm installiert) wurde nicht gefunden, der Suchpfad kam bei Claude Code und Codex nicht an, und bei jeder KI-Anfrage hätte sich ein Konsolenfenster geöffnet
+- Anmeldung im Produktionsbetrieb ohne https war nicht möglich
+- Beim Beenden wartete der Server auf offene Verbindungen und beendete sich dadurch verzögert
+
 ## 0.17.0 (19.10.2026)
 
 ### Neu

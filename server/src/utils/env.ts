@@ -29,8 +29,13 @@ function bool(key: string, fallback = false): boolean {
 // Geheimschlüssel für Anmeldung und gespeicherte Zugänge. Steht er nicht in der .env, erzeugt
 // MixMarket beim ersten Start einen zufälligen Schlüssel und legt ihn neben der Datenbank ab
 // (server/prisma/mixmarket.secret). Ein fest eingebauter Ersatzwert wäre für jeden bekannt.
+// Als installiertes Programm ist der Programmordner schreibgeschützt: dann liegt der Schlüssel im
+// Datenordner des Benutzers (MIXMARKET_DATA_DIR, setzt das Programm selbst).
 function generatedSecret(): string {
-  const file = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', 'prisma', 'mixmarket.secret')
+  const dataDir = process.env.MIXMARKET_DATA_DIR?.trim()
+  const file = dataDir
+    ? resolve(dataDir, 'mixmarket.secret')
+    : resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', 'prisma', 'mixmarket.secret')
   if (existsSync(file)) {
     const stored = readFileSync(file, 'utf8').trim()
     if (stored.length >= 32) return stored
@@ -83,6 +88,10 @@ export const env = {
   // Adresse des Lizenzservers für MixMarket Pro (Kauf, Freischalten, Pro-Paket)
   // Leerer Eintrag in der .env (wie in .env.example) zählt als nicht gesetzt: dann gilt die feste Adresse
   licenseServerUrl: (str('MIXMARKET_LICENSE_URL').trim() || 'https://lizenz.noosmedia.de').replace(/\/$/, ''),
+
+  // Ordner mit der fertig gebauten Oberfläche (web/dist). Gesetzt liefert der Server die Oberfläche
+  // selbst aus (installiertes Programm); leer übernimmt das in der Entwicklung Vite.
+  webDir: str('MIXMARKET_WEB_DIR').trim(),
 }
 
 // Ob ein echter Versand möglich ist, prüft isSmtpConfigured() im Postfach-Dienst

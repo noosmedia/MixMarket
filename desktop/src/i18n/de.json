@@ -1,0 +1,18 @@
+{
+  "starting": "MixMarket wird gestartet",
+  "stepPrepare": "Daten werden vorbereitet",
+  "stepDatabase": "Datenbank wird eingerichtet",
+  "stepServer": "Programm wird geladen",
+  "errorTitle": "MixMarket konnte nicht starten",
+  "errorHint": "Die vollständige Meldung steht unten und im Protokoll. Ihre Daten bleiben erhalten.",
+  "openLog": "Protokoll öffnen",
+  "openDataFolder": "Datenordner öffnen",
+  "retry": "Erneut versuchen",
+  "quit": "Beenden",
+  "stoppedTitle": "MixMarket wurde unerwartet beendet",
+  "menuAbout": "Über MixMarket",
+  "menuEdit": "Bearbeiten",
+  "menuView": "Ansicht",
+  "menuWindow": "Fenster",
+  "appComment": "Firmen finden und gezielt anschreiben"
+}

@@ -3132,14 +3132,16 @@ export const handbookEn: HandbookChapter[] = [
           {
             type: 'list',
             items: [
-              '**Update available** opens a window with the new version number, the changes since your version under **What is new** and the steps under **How to update**. Copy the commands with the copy icon next to them.',
+              '**Update available** opens a window with the new version number, the changes since your version under **What is new** and the way to the new version under **How to update**.',
+              'In the installed app, click **Update now** there. MixMarket downloads the new version and shows the progress. Then **Restart and install** restarts the app. MixMarket backs up the database first. On Linux with .deb or .rpm the system asks for your password. On macOS **Open download page** leads to the new version, which you drag into the Applications folder like the first time.',
+              'When started from source, the window shows the commands to update. Copy them with the copy icon next to them.',
               '**Check for updates** asks GitHub right away. If your version is current, it says **You are using the latest version.** with the time of the last check and the button **Check again**.',
               'If GitHub cannot be reached, for example without an internet connection, MixMarket says so in the window. Your work carries on unaffected.',
             ],
           },
           {
             type: 'tip',
-            text: 'MixMarket never updates itself. You decide when to run the commands. Your data and settings are kept.',
+            text: 'MixMarket never updates itself. You decide when to update. Your data and settings are kept.',
           },
         ],
       },

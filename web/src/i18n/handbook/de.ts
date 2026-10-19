@@ -3132,14 +3132,16 @@ export const handbookDe: HandbookChapter[] = [
           {
             type: 'list',
             items: [
-              '**Update verfügbar** öffnet ein Fenster mit der neuen Versionsnummer, unter **Was ist neu** den Änderungen seit Ihrer Version und unter **So aktualisieren Sie** den Schritten zum Aktualisieren. Die Befehle kopieren Sie mit dem Kopiersymbol daneben.',
+              '**Update verfügbar** öffnet ein Fenster mit der neuen Versionsnummer, unter **Was ist neu** den Änderungen seit Ihrer Version und unter **So aktualisieren Sie** dem Weg zur neuen Version.',
+              'Im installierten Programm klicken Sie dort auf **Jetzt aktualisieren**. MixMarket lädt die neue Version mit Fortschrittsanzeige. Danach startet **Neu starten und installieren** das Programm neu. Vorher sichert MixMarket die Datenbank. Unter Linux mit .deb oder .rpm fragt das System nach Ihrem Passwort. Unter macOS führt **Download-Seite öffnen** zur neuen Version, die Sie wie beim ersten Mal in den Ordner „Programme“ ziehen.',
+              'Aus dem Quellcode gestartet, stehen dort die Befehle zum Aktualisieren. Sie kopieren sie mit dem Kopiersymbol daneben.',
               '**Nach Updates suchen** fragt sofort bei GitHub nach. Ist Ihre Version aktuell, steht dort **Sie nutzen die neueste Version.** mit dem Zeitpunkt der letzten Prüfung und dem Knopf **Erneut prüfen**.',
               'Ist GitHub nicht erreichbar, etwa ohne Internetverbindung, sagt MixMarket das im Fenster. Ihre Arbeit läuft davon unberührt weiter.',
             ],
           },
           {
             type: 'tip',
-            text: 'MixMarket aktualisiert sich nie von selbst. Sie entscheiden, wann Sie die Befehle ausführen. Ihre Daten und Einstellungen bleiben dabei erhalten.',
+            text: 'MixMarket aktualisiert sich nie von selbst. Sie entscheiden, wann Sie aktualisieren. Ihre Daten und Einstellungen bleiben dabei erhalten.',
           },
         ],
       },

@@ -441,6 +441,48 @@
 .update-link:hover {
   color: var(--text-primary);
 }
+/* Update im installierten Programm: Fortschritt, Fehlermeldung, Knöpfe */
+.update-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.update-progress-text {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-md);
+  color: var(--text-secondary);
+}
+.update-progress-bar {
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--border-subtle);
+  overflow: hidden;
+}
+.update-progress-bar span {
+  display: block;
+  height: 100%;
+  background: var(--text-primary);
+  transition: width var(--transition-normal);
+}
+.update-error {
+  max-height: 160px;
+  overflow: auto;
+  margin: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-inset);
+  font-size: var(--text-sm);
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--text-secondary);
+}
+.update-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
 
 /* --- Inhalt --- */
 .content {

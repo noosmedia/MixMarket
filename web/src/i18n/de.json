@@ -1784,7 +1784,19 @@
     "copy": "Befehle kopieren",
     "copied": "Befehle kopiert",
     "copyFailed": "Kopieren nicht möglich, bitte die Befehle abschreiben.",
-    "onGithub": "Auf GitHub ansehen"
+    "onGithub": "Auf GitHub ansehen",
+    "desktopIntro": "MixMarket lädt Version {{version}} herunter und startet danach neu.",
+    "desktopUpdate": "Jetzt aktualisieren",
+    "desktopChecking": "Neue Version wird gesucht …",
+    "desktopDownloading": "Neue Version wird heruntergeladen",
+    "desktopReady": "Die neue Version ist heruntergeladen. Zum Installieren startet MixMarket kurz neu.",
+    "desktopRestart": "Neu starten und installieren",
+    "desktopInstalling": "MixMarket wird beendet und installiert die neue Version …",
+    "desktopNotYet": "Version {{version}} ist angekündigt, das Installationspaket wird aber noch bereitgestellt. Bitte in einer Stunde erneut versuchen.",
+    "desktopManual": "Diese Installation kann sich nicht selbst aktualisieren. Laden Sie die neue Version von der Download-Seite und installieren Sie sie über die bisherige.",
+    "desktopManualMac": "Unter macOS laden Sie die neue Version von der Download-Seite und ziehen MixMarket erneut in den Ordner „Programme“. Die bisherige Version wird dabei ersetzt.",
+    "desktopFailed": "Das Update hat nicht geklappt. Die Meldung dazu:",
+    "desktopDownloadPage": "Download-Seite öffnen"
   },
   "proLicense": {
     "intro": "MixMarket Pro schaltet geführte Touren, Autopilot, Nachfass-Mails, Automatisierungen, „Alle freigeben“, KI in Gespräche, weitere Suchquellen und Vorlagenpakete frei. Alles andere bleibt kostenlos. Pro braucht eine Internetverbindung.",

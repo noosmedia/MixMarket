@@ -2865,6 +2865,7 @@ export const handbookEn: HandbookChapter[] = [
               'Pro needs an internet connection. MixMarket checks the subscription at start and every six hours. If the connection drops, Pro keeps running for at most 24 hours; the section shows the time. If MixMarket starts without a connection, Pro stays off until the connection is back.',
               'Both plans renew automatically by one month or one year until you cancel. A cancellation takes effect at the end of the period; Pro keeps running until then. After cancelling, the section shows **Ends on** instead of **Paid until**, plus a note. Under **Manage subscription** you can undo the cancellation until then.',
               'If the subscription has expired or ended, Pro switches off at the next check. If only a payment is open, settle it under **Manage subscription** and then click **Check now**. For a subscription that has ended, subscribe again and enter the new key.',
+              'Some keys are valid without a subscription. Then **Plan** shows “Unlocked without subscription” and **Valid until** shows a date or “Unlimited”; there is no **Manage subscription** for them.',
               'A key runs on at most two computers. For a third one, remove it on one of the two first.',
             ],
           },

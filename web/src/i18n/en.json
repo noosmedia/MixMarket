@@ -1798,8 +1798,12 @@
     "yearlySaving": "Save {{percent}}%",
     "plans": {
       "monthly": "Monthly",
-      "yearly": "Yearly"
+      "yearly": "Yearly",
+      "granted": "Unlocked without subscription"
     },
+    "validUntil": "Valid until",
+    "unlimited": "Unlimited",
+    "grantedExpired": "The unlock for this key has expired, so Pro is off. With a subscription you get a new key, which you enter below.",
     "keyLabel": "Key",
     "keyHint": "Shown on the page after purchase and in the email. Upper or lower case does not matter.",
     "keyMissing": "Please enter your key.",

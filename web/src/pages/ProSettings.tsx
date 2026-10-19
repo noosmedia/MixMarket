@@ -16,7 +16,7 @@ type LicenseStatus = 'none' | 'unavailable' | 'active' | 'offline' | 'invalid' |
 // Antwort von GET /api/pro/license
 interface LicenseInfo {
   status: LicenseStatus
-  plan: 'monthly' | 'yearly' | null
+  plan: 'monthly' | 'yearly' | 'granted' | null
   periodEnd: string | null
   // Abo gekündigt: endet zu periodEnd
   cancelAtPeriodEnd: boolean
@@ -176,6 +176,8 @@ export function ProSettings() {
     return percent >= 1 ? percent : null
   }
 
+  // Freischaltung ohne Enddatum: der Lizenzserver meldet dafür den 31.12.9999
+  const unlimited = (value: string | null) => !!value && new Date(value).getUTCFullYear() >= 9999
   const date = (value: string | null) => (value ? new Date(value).toLocaleDateString(locale, { day: '2-digit', month: '2-digit', year: 'numeric' }) : '')
   const dateTime = (value: string | null) =>
     value ? new Date(value).toLocaleString(locale, { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : ''
@@ -238,8 +240,18 @@ export function ProSettings() {
               <dl className="pro-license-facts">
                 <dt>{t('proLicense.plan')}</dt>
                 <dd>{license.plan ? t(`proLicense.plans.${license.plan}`) : ''}</dd>
-                <dt>{t(license.cancelAtPeriodEnd ? 'proLicense.endsOn' : 'proLicense.paidUntil')}</dt>
-                <dd>{date(license.periodEnd)}</dd>
+                {license.plan === 'granted' ? (
+                  <>
+                    {/* Ohne Abo freigeschaltet: kein Zahlungszeitraum, nur gültig bis oder unbegrenzt */}
+                    <dt>{t('proLicense.validUntil')}</dt>
+                    <dd>{unlimited(license.periodEnd) ? t('proLicense.unlimited') : date(license.periodEnd)}</dd>
+                  </>
+                ) : (
+                  <>
+                    <dt>{t(license.cancelAtPeriodEnd ? 'proLicense.endsOn' : 'proLicense.paidUntil')}</dt>
+                    <dd>{date(license.periodEnd)}</dd>
+                  </>
+                )}
                 <dt>{t('proLicense.key')}</dt>
                 <dd className="pro-license-key">MMPRO-…{license.keyHint}</dd>
               </dl>
@@ -256,14 +268,16 @@ export function ProSettings() {
                 </p>
               )}
               <div className="providers-actions">
-                <button className="btn btn-sm btn-secondary" type="button" onClick={() => openExternal.mutate('portal')}>
-                  {openExternal.isPending && openExternal.variables === 'portal' ? (
-                    <span className="spinner" style={{ width: 14, height: 14 }} />
-                  ) : (
-                    <ExternalLink size={14} />
-                  )}
-                  {t('proLicense.manage')}
-                </button>
+                {license.plan !== 'granted' && (
+                  <button className="btn btn-sm btn-secondary" type="button" onClick={() => openExternal.mutate('portal')}>
+                    {openExternal.isPending && openExternal.variables === 'portal' ? (
+                      <span className="spinner" style={{ width: 14, height: 14 }} />
+                    ) : (
+                      <ExternalLink size={14} />
+                    )}
+                    {t('proLicense.manage')}
+                  </button>
+                )}
                 {license.offline && (
                   <button className="btn btn-sm btn-secondary" type="button" onClick={() => !busy && checkMutation.mutate()}>
                     {checkMutation.isPending ? <span className="spinner" style={{ width: 14, height: 14 }} /> : <RefreshCw size={14} />}
@@ -282,7 +296,9 @@ export function ProSettings() {
                 <p className="pro-license-note">
                   <AlertTriangle size={14} />
                   <span>
-                    {t(`proLicense.status.${license.status}.text`)}
+                    {license.status === 'expired' && license.plan === 'granted'
+                      ? t('proLicense.grantedExpired')
+                      : t(`proLicense.status.${license.status}.text`)}
                     {license.status === 'outdated' && license.message ? ` (${license.message})` : ''}
                     {license.status === 'error' && license.message ? ` ${license.message}` : ''}
                   </span>
@@ -300,7 +316,7 @@ export function ProSettings() {
                       {checkMutation.isPending ? <span className="spinner" style={{ width: 14, height: 14 }} /> : <RefreshCw size={14} />}
                       {t('proLicense.checkNow')}
                     </button>
-                    {license.status === 'expired' && (
+                    {license.status === 'expired' && license.plan !== 'granted' && (
                       <button className="btn btn-sm btn-secondary" type="button" onClick={() => openExternal.mutate('portal')}>
                         {openExternal.isPending && openExternal.variables === 'portal' ? (
                           <span className="spinner" style={{ width: 14, height: 14 }} />

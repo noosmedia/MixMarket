@@ -50,7 +50,8 @@ export type LicenseStatus = 'none' | 'unavailable' | 'active' | 'offline' | 'inv
 
 interface LicenseInfo {
   status: LicenseStatus
-  plan: 'monthly' | 'yearly' | null
+  // granted: ohne Abo freigeschaltet (vom Lizenzserver von Hand ausgestellt)
+  plan: 'monthly' | 'yearly' | 'granted' | null
   // Ende des bezahlten Zeitraums laut Lizenzserver
   periodEnd: string | null
   // Abo gekündigt: endet zu periodEnd und verlängert sich nicht mehr
@@ -257,7 +258,7 @@ async function runCheck(): Promise<void> {
     return
   }
   const body = (await response.json().catch(() => null)) as
-    | { ok: true; token: string; plan: 'monthly' | 'yearly'; periodEnd: string; cancelAtPeriodEnd?: boolean }
+    | { ok: true; token: string; plan: 'monthly' | 'yearly' | 'granted'; periodEnd: string; cancelAtPeriodEnd?: boolean }
     | { ok: false; code?: string; error?: string }
     | null
 

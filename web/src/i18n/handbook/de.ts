@@ -2865,6 +2865,7 @@ export const handbookDe: HandbookChapter[] = [
               'Pro braucht eine Internetverbindung. MixMarket prüft das Abo beim Start und alle sechs Stunden. Fällt die Verbindung aus, läuft Pro höchstens 24 Stunden weiter, der Abschnitt nennt die Uhrzeit. Startet MixMarket ohne Verbindung, bleibt Pro aus, bis die Verbindung zurück ist.',
               'Beide Abos verlängern sich automatisch um einen Monat oder ein Jahr, bis Sie kündigen. Eine Kündigung wirkt zum Ende der Laufzeit, bis dahin läuft Pro weiter. Nach der Kündigung steht im Abschnitt **Endet am** statt **Bezahlt bis**, dazu ein Hinweis. Unter **Abo verwalten** können Sie die Kündigung bis dahin zurücknehmen.',
               'Ist das Abo abgelaufen oder beendet, schaltet Pro beim nächsten Abgleich ab. Ist nur eine Zahlung offen, holen Sie sie unter **Abo verwalten** nach und klicken danach **Jetzt prüfen**. Ein beendetes Abo schließen Sie neu ab und tragen den neuen Schlüssel ein.',
+              'Manche Schlüssel gelten ohne Abo. Dann steht unter **Abo** „Freigeschaltet ohne Abo“ und darunter **Gültig bis** mit einem Datum oder „Unbegrenzt“; **Abo verwalten** gibt es dafür nicht.',
               'Ein Schlüssel läuft auf höchstens zwei Rechnern. Für einen dritten entfernen Sie ihn vorher auf einem der beiden.',
             ],
           },

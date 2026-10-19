@@ -1798,8 +1798,12 @@
     "yearlySaving": "{{percent}} % günstiger",
     "plans": {
       "monthly": "Monatlich",
-      "yearly": "Jährlich"
+      "yearly": "Jährlich",
+      "granted": "Freigeschaltet ohne Abo"
     },
+    "validUntil": "Gültig bis",
+    "unlimited": "Unbegrenzt",
+    "grantedExpired": "Die Freischaltung zu diesem Schlüssel ist abgelaufen, deshalb ist Pro aus. Mit einem Abo bekommen Sie einen neuen Schlüssel, den Sie unten eintragen.",
     "keyLabel": "Schlüssel",
     "keyHint": "Steht auf der Seite nach dem Kauf und in der Mail. Groß- und Kleinschreibung ist egal.",
     "keyMissing": "Bitte tragen Sie Ihren Schlüssel ein.",

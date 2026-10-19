@@ -2766,7 +2766,7 @@ export const handbookDe: HandbookChapter[] = [
             type: 'list',
             items: [
               'Handelnde sind Sie mit dem Namen Ihres Kontos, MixMarket selbst bei automatischen Abläufen wie Versand, Abmeldungen oder Suchen, und KI-Agenten wie die KI-Bewertung, der „KI-Postausgang“, der die Mails im Postausgang schreibt, „KI-Gespräche“, das Antworten einordnet und Antwortentwürfe schreibt, und der „Autopilot“, der Suchen durchleuchten und Zielgruppen bewerten lässt, Interessenten übernimmt und in den Postausgang gibt.',
-              'Im Bereich **Anmeldung und Konto** stehen die Ersteinrichtung, Anmeldungen und Abmeldungen, Änderungen an Name und E-Mail, Passwortänderungen, neue Wiederherstellungsschlüssel und das Zurücksetzen des Passworts. Fehlgeschlagene Anmeldungen und Wiederherstellungen erscheinen mit der eingegebenen E-Mail, ebenso eine Sperre nach zu vielen Fehlversuchen. Ein Zurücksetzen am Rechner ohne Schlüssel, im Programm über **Ohne Schlüssel neu setzen** oder in der Quellcode-Fassung mit npm run reset-password, steht mit MixMarket als Handelndem im Protokoll.',
+              'Im Bereich **Anmeldung und Konto** stehen die Ersteinrichtung, Anmeldungen und Abmeldungen, Änderungen an Name und E-Mail, Passwortänderungen, neue Wiederherstellungsschlüssel und das Zurücksetzen des Passworts. Fehlgeschlagene Anmeldungen und Wiederherstellungen erscheinen mit der eingegebenen E-Mail, ebenso eine Sperre nach zu vielen Fehlversuchen. Ein Zurücksetzen über **Ohne Schlüssel neu setzen** steht mit MixMarket als Handelndem im Protokoll.',
               'Warnungen und Fehler sind mit einem Warnsymbol markiert.',
               'Beim Versand werden Beginn und Ende einer Kampagne protokolliert, nicht jede einzelne Mail.',
               'Im Bereich **Postausgang** steht dagegen jede einzelne Mail: Entwürfe der KI, Ihre Freigaben, Änderungen und Ablehnungen, der Versand, Fehler und beendete Abläufe, dazu Änderungen an Ablauf und Versandregeln.',
@@ -2898,11 +2898,7 @@ export const handbookDe: HandbookChapter[] = [
           },
           {
             type: 'p',
-            text: 'Ist auch der Schlüssel verloren, hilft eine Notlösung. Sie ist auf der Seite „Passwort vergessen“ bewusst versteckt: Klicken Sie in der Überschrift **Passwort vergessen** auf das erste „s“ im Wort „vergessen“. Der Mauszeiger ändert sich dort nicht. Danach erscheint der Hinweis **Schlüssel auch verloren?**. Merken Sie sich diesen Weg, denn ohne Anmeldung ist dieses Handbuch nicht erreichbar. Beide Varianten der Notlösung funktionieren nur direkt an dem Rechner, auf dem MixMarket läuft, nicht über das Netz.',
-          },
-          {
-            type: 'p',
-            text: '**Im installierten Programm** zeigt der Hinweis den Knopf **Ohne Schlüssel neu setzen**. Ein Terminal brauchen Sie dafür nicht.',
+            text: 'Ist auch der Schlüssel verloren, hilft eine Notlösung. Sie ist auf der Seite „Passwort vergessen“ bewusst versteckt: Klicken Sie in der Überschrift **Passwort vergessen** auf das erste „s“ im Wort „vergessen“. Der Mauszeiger ändert sich dort nicht. Danach erscheint der Hinweis **Schlüssel auch verloren?**. Merken Sie sich diesen Weg, denn ohne Anmeldung ist dieses Handbuch nicht erreichbar. Die Notlösung funktioniert nur direkt an dem Rechner, auf dem MixMarket läuft, nicht über das Netz.',
           },
           {
             type: 'steps',
@@ -2915,22 +2911,8 @@ export const handbookDe: HandbookChapter[] = [
             ],
           },
           {
-            type: 'p',
-            text: '**In der Quellcode-Fassung**, die Sie mit npm starten, zeigt der Hinweis stattdessen einen Befehl.',
-          },
-          {
-            type: 'steps',
-            items: [
-              'Öffnen Sie auf dem Rechner, auf dem MixMarket läuft, ein Terminal im MixMarket-Ordner.',
-              'Geben Sie npm run reset-password ein und bestätigen Sie mit der Eingabetaste. Im versteckten Hinweis kopiert der Knopf neben dem Befehl ihn in die Zwischenablage.',
-              'Geben Sie das neue Passwort mit mindestens 10 Zeichen zweimal ein. Die Eingabe bleibt dabei unsichtbar.',
-              'MixMarket zeigt einen neuen Wiederherstellungsschlüssel an. Bewahren Sie ihn sicher auf, der alte gilt nicht mehr.',
-              'Melden Sie sich danach im Browser mit dem neuen Passwort an. Bisherige Anmeldungen sind abgemeldet.',
-            ],
-          },
-          {
             type: 'tip',
-            text: 'Auf allen Wegen bleiben Ihre Daten erhalten. Es ändern sich nur Passwort und Schlüssel.',
+            text: 'Auf beiden Wegen bleiben Ihre Daten erhalten. Es ändern sich nur Passwort und Schlüssel.',
           },
           {
             type: 'warning',
@@ -3151,8 +3133,7 @@ export const handbookDe: HandbookChapter[] = [
             type: 'list',
             items: [
               '**Update verfügbar** öffnet ein Fenster mit der neuen Versionsnummer, unter **Was ist neu** den Änderungen seit Ihrer Version und unter **So aktualisieren Sie** dem Weg zur neuen Version.',
-              'Im installierten Programm klicken Sie dort auf **Jetzt aktualisieren**. MixMarket lädt die neue Version mit Fortschrittsanzeige. Danach startet **Neu starten und installieren** das Programm neu. Vorher sichert MixMarket die Datenbank. Unter Linux mit .deb oder .rpm fragt das System nach Ihrem Passwort. Unter macOS führt **Download-Seite öffnen** zur neuen Version, die Sie wie beim ersten Mal in den Ordner „Programme“ ziehen.',
-              'Aus dem Quellcode gestartet, stehen dort die Befehle zum Aktualisieren. Sie kopieren sie mit dem Kopiersymbol daneben.',
+              'Klicken Sie dort auf **Jetzt aktualisieren**. MixMarket lädt die neue Version mit Fortschrittsanzeige. Danach startet **Neu starten und installieren** das Programm neu. Vorher sichert MixMarket die Datenbank. Unter Linux mit .deb oder .rpm fragt das System nach Ihrem Passwort. Unter macOS führt **Download-Seite öffnen** zur neuen Version, die Sie wie beim ersten Mal in den Ordner „Programme“ ziehen.',
               '**Nach Updates suchen** fragt sofort bei GitHub nach. Ist Ihre Version aktuell, steht dort **Sie nutzen die neueste Version.** mit dem Zeitpunkt der letzten Prüfung und dem Knopf **Erneut prüfen**.',
               'Ist GitHub nicht erreichbar, etwa ohne Internetverbindung, sagt MixMarket das im Fenster. Ihre Arbeit läuft davon unberührt weiter.',
             ],

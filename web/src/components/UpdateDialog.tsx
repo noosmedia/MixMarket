@@ -1,10 +1,9 @@
 // Updates: Abgleich der eigenen Version mit GitHub, Hinweis im Benutzermenü und Fenster mit den
-// Neuerungen. In der npm-Fassung stehen dort die Befehle zum Aktualisieren, im installierten Programm
-// ein Knopf, der die neue Version lädt und installiert. Aktualisiert wird nie ohne Klick.
+// Neuerungen. Im Programm lädt und installiert ein Knopf die neue Version. Aktualisiert wird nie ohne Klick.
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Check, Copy, Download, ExternalLink, RefreshCw, RotateCw } from 'lucide-react'
+import { Check, Download, ExternalLink, RefreshCw, RotateCw } from 'lucide-react'
 import { api } from '../lib/api'
 import { desktop, type DesktopBridge } from '../lib/desktop'
 import { useUi } from '../stores/ui'
@@ -19,9 +18,6 @@ export interface UpdateStatus {
   error: 'unreachable' | null
   repoUrl: string
 }
-
-// Befehle zum Aktualisieren, im MixMarket-Ordner auszuführen
-const UPDATE_COMMANDS = ['git pull', 'npm install', 'npm run db:push']
 
 // Stand der Updates; der Server fragt höchstens einmal am Tag bei GitHub nach
 export function useUpdateStatus(enabled: boolean) {
@@ -183,7 +179,7 @@ export function UpdateDialog({ open, onClose, checkOnOpen }: { open: boolean; on
   const queryClient = useQueryClient()
   const status = useUpdateStatus(open)
   const [checking, setChecking] = useState(false)
-  // Installiertes Programm: Aktualisieren per Knopf statt per Befehlen
+  // Brücke zum Programm: Aktualisieren per Knopf
   const bridge = desktop()
   const data = status.data
 
@@ -204,15 +200,6 @@ export function UpdateDialog({ open, onClose, checkOnOpen }: { open: boolean; on
   useEffect(() => {
     if (open && checkOnOpen) void checkNow()
   }, [open, checkOnOpen])
-
-  async function copyCommands() {
-    try {
-      await navigator.clipboard.writeText(UPDATE_COMMANDS.join('\n'))
-      notify('success', t('update.copied'))
-    } catch {
-      notify('error', t('update.copyFailed'))
-    }
-  }
 
   const checkedAt = data
     ? new Date(data.checkedAt).toLocaleString(i18n.language === 'en' ? 'en-GB' : 'de-DE', {
@@ -261,34 +248,7 @@ export function UpdateDialog({ open, onClose, checkOnOpen }: { open: boolean; on
               <ChangeNotes notes={data.notes} />
             </section>
           )}
-          {bridge ? (
-            <DesktopUpdate bridge={bridge} latest={data.latest ?? ''} repoUrl={data.repoUrl} />
-          ) : (
-            <section className="update-block">
-              <h3 className="update-heading">{t('update.howTo')}</h3>
-              <ol className="update-steps">
-                <li>{t('update.stepStop')}</li>
-                <li>
-                  {t('update.stepRun')}
-                  <div className="update-commands">
-                    <code className="font-mono">
-                      {UPDATE_COMMANDS.map((command) => (
-                        <span key={command}>{command}</span>
-                      ))}
-                    </code>
-                    <button type="button" className="btn btn-ghost btn-sm btn-icon" onClick={copyCommands} aria-label={t('update.copy')}>
-                      <Copy size={15} />
-                    </button>
-                  </div>
-                </li>
-                <li>{t('update.stepStart')}</li>
-              </ol>
-              <p className="update-hint">
-                <Check size={14} />
-                {t('update.dataSafe')}
-              </p>
-            </section>
-          )}
+          {bridge && <DesktopUpdate bridge={bridge} latest={data.latest ?? ''} repoUrl={data.repoUrl} />}
           <a className="update-link" href={data.repoUrl} target="_blank" rel="noreferrer">
             <ExternalLink size={14} />
             {t('update.onGithub')}

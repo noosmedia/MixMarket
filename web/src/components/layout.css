@@ -385,37 +385,6 @@
 .update-notes-list li + li {
   margin-top: var(--space-1);
 }
-.update-steps {
-  margin: 0;
-  padding-left: var(--space-5);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  font-size: var(--text-md);
-  line-height: 1.55;
-  color: var(--text-secondary);
-}
-.update-commands {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-2);
-  margin-top: var(--space-2);
-  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  background: var(--bg-inset);
-}
-.update-commands code {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: var(--space-1) 0;
-  font-size: var(--text-sm);
-  color: var(--text-primary);
-  overflow-x: auto;
-}
 .update-hint {
   display: flex;
   align-items: center;

@@ -59,9 +59,8 @@ Alle Bilder zeigen erfundene Beispieldaten.
 - Für die KI-Funktionen: [Claude Code](https://claude.com/claude-code) (`claude`) oder die Codex CLI (`codex`), installiert und angemeldet
 - Für echten Versand und Empfang: ein Postfach mit SMTP und IMAP. Ohne Postfach läuft MixMarket im Testmodus und verschickt nichts.
 - Optional mit MixMarket Pro: Zugänge zu DataForSEO und Serper als weitere Suchquellen (werden in der App eingetragen)
-- Nur für die Installation aus dem Quellcode: Node.js 22.12 oder neuer (mit npm), für den Browser-Modus beim Webseiten-Auslesen zusätzlich `npx playwright install chromium`
 
-### Installation als Programm
+### Installation
 
 Die Installationspakete stehen unter [Releases](https://github.com/noosmedia/MixMarket/releases/latest):
 
@@ -88,54 +87,13 @@ Ihre Daten (Datenbank, Einstellungen, Protokoll) liegen im Benutzerordner und bl
 - macOS: `~/Library/Application Support/MixMarket`
 - Linux: `~/.config/MixMarket`
 
-Sind Passwort und Wiederherstellungsschlüssel verloren, setzen Sie das Passwort im Programm direkt auf der Seite „Passwort vergessen“ neu, ohne Terminal und nur an diesem Rechner. Wie das geht, steht im Handbuch unter „Passwort vergessen“.
-
-### Installation aus dem Quellcode
-
-```bash
-git clone https://github.com/noosmedia/MixMarket.git
-cd MixMarket
-npm install
-cp .env.example server/.env
-npm run db:push
-npm run db:seed
-```
-
-`npm install` erzeugt dabei auch den Datenbank-Client. `db:push` legt die SQLite-Datenbank unter `server/prisma/dev.db` an, `db:seed` füllt sie mit den Standardlisten, einer Beispielvorlage und den Grundeinstellungen.
-
-Die Werte in `server/.env` können zunächst so bleiben. Den Geheimschlüssel für die Anmeldung erzeugt MixMarket beim ersten Start selbst.
-
-Starten:
-
-```bash
-npm run dev
-```
-
-Danach ist MixMarket unter http://localhost:5261 erreichbar. Beim ersten Aufruf legen Sie Ihr Konto an. Wird die Ersteinrichtung von einem anderen Rechner aus aufgerufen, fragt MixMarket nach einem Einrichtungscode, der im Protokoll des Servers steht.
+Sind Passwort und Wiederherstellungsschlüssel verloren, setzen Sie das Passwort im Programm auf der Seite „Passwort vergessen“ neu, nur an diesem Rechner. Wie das geht, steht im Handbuch unter „Passwort vergessen“.
 
 ### Aktualisieren
 
 Gibt es eine neue Version, zeigt MixMarket oben rechts einen kleinen Punkt an Ihren Initialen und im Menü **Update verfügbar**.
 
-- **Als Programm:** Im Fenster **Update verfügbar** auf **Jetzt aktualisieren** klicken. MixMarket lädt die neue Version, sichert vorher die Datenbank und startet neu. Unter Linux mit .deb oder .rpm fragt das System dabei nach Ihrem Passwort. Unter macOS führt der Knopf zur Download-Seite: neue `.dmg` öffnen und MixMarket wieder in „Programme“ ziehen.
-- **Aus dem Quellcode:** MixMarket mit Strg+C beenden und im MixMarket-Ordner ausführen:
-
-```bash
-git pull
-npm install
-npm run db:push
-```
-
-Danach wie gewohnt mit `npm run dev` starten. Ihre Daten bleiben in beiden Fällen erhalten.
-
-### Weitere Befehle
-
-| Befehl | Wirkung |
-| --- | --- |
-| `npm run build` | Server und Oberfläche für den Betrieb bauen |
-| `npm run db:studio` | Datenbank in Prisma Studio ansehen |
-| `npm run reset-password` | Passwort neu setzen, wenn Passwort und Wiederherstellungsschlüssel verloren sind |
-| `cd desktop && npm install && npm run dist` | Installationspakete für das eigene System bauen (Ergebnis in `desktop/release/`) |
+Im Fenster **Update verfügbar** auf **Jetzt aktualisieren** klicken. MixMarket lädt die neue Version, sichert vorher die Datenbank und startet neu. Ihre Daten bleiben erhalten. Unter Linux mit .deb oder .rpm fragt das System dabei nach Ihrem Passwort. Unter macOS führt der Knopf zur Download-Seite: neue `.dmg` öffnen und MixMarket wieder in „Programme“ ziehen.
 
 ### Aufbau
 
@@ -203,9 +161,8 @@ All images show invented sample data and the German interface; English can be se
 - For the AI features: [Claude Code](https://claude.com/claude-code) (`claude`) or the Codex CLI (`codex`), installed and signed in
 - For real sending and receiving: a mailbox with SMTP and IMAP. Without a mailbox MixMarket runs in test mode and sends nothing.
 - Optional with MixMarket Pro: DataForSEO and Serper accounts as additional search sources (entered in the app)
-- Only for installing from source: Node.js 22.12 or newer (with npm), plus `npx playwright install chromium` for browser mode when reading websites
 
-### Installing the app
+### Installation
 
 The installers are available under [Releases](https://github.com/noosmedia/MixMarket/releases/latest):
 
@@ -232,54 +189,13 @@ Your data (database, settings, log) lives in your user folder and is kept on upd
 - macOS: `~/Library/Application Support/MixMarket`
 - Linux: `~/.config/MixMarket`
 
-If both password and recovery key are lost, set a new password in the program directly on the Forgot password page, without a terminal and only on this computer. The handbook explains how under "Forgot password".
-
-### Installing from source
-
-```bash
-git clone https://github.com/noosmedia/MixMarket.git
-cd MixMarket
-npm install
-cp .env.example server/.env
-npm run db:push
-npm run db:seed
-```
-
-`npm install` also generates the database client. `db:push` creates the SQLite database at `server/prisma/dev.db`, `db:seed` fills it with the default lists, a sample template and the basic settings.
-
-The values in `server/.env` can stay as they are for now. MixMarket creates the secret key for sign-in by itself on the first start.
-
-Start:
-
-```bash
-npm run dev
-```
-
-MixMarket is then available at http://localhost:5261. On the first visit you create your account. If the initial setup is opened from another computer, MixMarket asks for a setup code that is printed in the server log.
+If both password and recovery key are lost, set a new password in the program on the Forgot password page, only on this computer. The handbook explains how under "Forgot password".
 
 ### Updating
 
 When a new version is out, MixMarket shows a small dot on your initials at the top right and **Update available** in the menu.
 
-- **App:** In the **Update available** window click **Update now**. MixMarket downloads the new version, backs up the database first and restarts. On Linux with .deb or .rpm the system asks for your password. On macOS the button leads to the download page: open the new `.dmg` and drag MixMarket into Applications again.
-- **From source:** stop MixMarket with Ctrl+C and run in the MixMarket folder:
-
-```bash
-git pull
-npm install
-npm run db:push
-```
-
-Then start as usual with `npm run dev`. Your data is kept either way.
-
-### More commands
-
-| Command | Effect |
-| --- | --- |
-| `npm run build` | Build server and interface for operation |
-| `npm run db:studio` | Inspect the database in Prisma Studio |
-| `npm run reset-password` | Set a new password if both password and recovery key are lost |
-| `cd desktop && npm install && npm run dist` | Build installers for your own system (output in `desktop/release/`) |
+In the **Update available** window click **Update now**. MixMarket downloads the new version, backs up the database first and restarts. Your data is kept. On Linux with .deb or .rpm the system asks for your password. On macOS the button leads to the download page: open the new `.dmg` and drag MixMarket into Applications again.
 
 ### Structure
 

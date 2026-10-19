@@ -2766,7 +2766,7 @@ export const handbookEn: HandbookChapter[] = [
             type: 'list',
             items: [
               'Actors are you with the name of your account, MixMarket itself for automatic processes such as sending, unsubscribes or searches, and AI agents such as the AI rating, “KI-Postausgang”, which writes the emails in the outbox, “KI-Gespräche”, which sorts replies and writes reply drafts, and the “Autopilot”, which has searches analysed and target groups rated, adds prospects and puts them into the outbox.',
-              'The area **Sign-in and account** holds the first setup, sign-ins and sign-outs, changes to name and email, password changes, new recovery keys and password resets. Failed sign-ins and recoveries appear with the email that was entered, as does a lock after too many failed attempts. A reset on the computer without a key, in the program with **Reset without key** or in the source code version with npm run reset-password, is logged with MixMarket as the actor.',
+              'The area **Sign-in and account** holds the first setup, sign-ins and sign-outs, changes to name and email, password changes, new recovery keys and password resets. Failed sign-ins and recoveries appear with the email that was entered, as does a lock after too many failed attempts. A reset with **Reset without key** is logged with MixMarket as the actor.',
               'Warnings and errors are marked with a warning icon.',
               'When sending, the start and end of a campaign are logged, not every single email.',
               'The area **Outbox**, by contrast, lists every single email: drafts by the AI, your approvals, edits and rejections, sending, errors and ended sequences, plus changes to sequence and sending rules.',
@@ -2898,11 +2898,7 @@ export const handbookEn: HandbookChapter[] = [
           },
           {
             type: 'p',
-            text: 'If the key is lost as well, there is an emergency option. It is deliberately hidden on the Forgot password page: in the heading **Forgot password**, click the first "s" in the word "password". The mouse pointer does not change there. The note **Lost the key as well?** then appears. Remember this way, because this handbook cannot be reached without signing in. Both variants of the emergency option only work directly on the computer MixMarket runs on, not over the network.',
-          },
-          {
-            type: 'p',
-            text: '**In the installed program** the note shows the button **Reset without key**. You do not need a terminal for it.',
+            text: 'If the key is lost as well, there is an emergency option. It is deliberately hidden on the Forgot password page: in the heading **Forgot password**, click the first "s" in the word "password". The mouse pointer does not change there. The note **Lost the key as well?** then appears. Remember this way, because this handbook cannot be reached without signing in. The emergency option only works directly on the computer MixMarket runs on, not over the network.',
           },
           {
             type: 'steps',
@@ -2915,22 +2911,8 @@ export const handbookEn: HandbookChapter[] = [
             ],
           },
           {
-            type: 'p',
-            text: '**In the source code version**, which you start with npm, the note shows a command instead.',
-          },
-          {
-            type: 'steps',
-            items: [
-              'On the computer MixMarket runs on, open a terminal in the MixMarket folder.',
-              'Enter npm run reset-password and press Enter. In the hidden note, the button next to the command copies it to the clipboard.',
-              'Enter the new password with at least 10 characters twice. What you type stays invisible.',
-              'MixMarket shows a new recovery key. Keep it in a safe place, the old one no longer applies.',
-              'Then sign in in the browser with the new password. Previous sign-ins are signed out.',
-            ],
-          },
-          {
             type: 'tip',
-            text: 'Whichever way you choose, your data is kept. Only password and key change.',
+            text: 'Either way your data is kept. Only password and key change.',
           },
           {
             type: 'warning',
@@ -3151,8 +3133,7 @@ export const handbookEn: HandbookChapter[] = [
             type: 'list',
             items: [
               '**Update available** opens a window with the new version number, the changes since your version under **What is new** and the way to the new version under **How to update**.',
-              'In the installed app, click **Update now** there. MixMarket downloads the new version and shows the progress. Then **Restart and install** restarts the app. MixMarket backs up the database first. On Linux with .deb or .rpm the system asks for your password. On macOS **Open download page** leads to the new version, which you drag into the Applications folder like the first time.',
-              'When started from source, the window shows the commands to update. Copy them with the copy icon next to them.',
+              'Click **Update now** there. MixMarket downloads the new version and shows the progress. Then **Restart and install** restarts the app. MixMarket backs up the database first. On Linux with .deb or .rpm the system asks for your password. On macOS **Open download page** leads to the new version, which you drag into the Applications folder like the first time.',
               '**Check for updates** asks GitHub right away. If your version is current, it says **You are using the latest version.** with the time of the last check and the button **Check again**.',
               'If GitHub cannot be reached, for example without an internet connection, MixMarket says so in the window. Your work carries on unaffected.',
             ],

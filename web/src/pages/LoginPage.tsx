@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ArrowLeft, ArrowRight, Copy, KeyRound, Terminal } from 'lucide-react'
+import { ArrowLeft, ArrowRight, KeyRound } from 'lucide-react'
 import { useAuth, type User } from '../stores/auth'
 import { useUi } from '../stores/ui'
 import { ApiError } from '../lib/api'
@@ -13,9 +13,6 @@ import { PasswordField } from '../components/PasswordField'
 import { RecoveryKeyPanel, forgetPendingKey, rememberPendingKey } from '../components/RecoveryKeyPanel'
 import './login.css'
 
-// Befehl der Notlösung in der Quellcode-Fassung, im MixMarket-Ordner auf dem Rechner auszuführen.
-// Im installierten Programm öffnet stattdessen ein Knopf das eigene Fenster des Programms.
-const RESET_COMMAND = 'npm run reset-password'
 // Mindestlänge wie auf dem Server
 const MIN_PASSWORD_LENGTH = 10
 
@@ -193,16 +190,6 @@ export function LoginPage() {
     }
   }
 
-  // Befehl der Notlösung kopieren
-  async function copyCommand() {
-    try {
-      await navigator.clipboard.writeText(RESET_COMMAND)
-      notify('success', t('recovery.copied'))
-    } catch {
-      notify('error', t('recovery.copyFailed'))
-    }
-  }
-
   if (mode === 'key') {
     return (
       <AuthShell>
@@ -298,22 +285,6 @@ export function LoginPage() {
                 <KeyRound size={14} />
                 {t('auth.emergencyAppButton')}
               </button>
-            </div>
-          )}
-          {emergencyOpen && !program && (
-            <div className="login-emergency">
-              <div className="login-emergency-head">
-                <Terminal size={15} />
-                <span>{t('auth.emergencyTitle')}</span>
-              </div>
-              <p>{t('auth.emergencyText')}</p>
-              <div className="login-command">
-                <code className="font-mono">{RESET_COMMAND}</code>
-                <button type="button" className="btn btn-ghost btn-sm btn-icon" onClick={copyCommand} aria-label={t('recovery.copy')}>
-                  <Copy size={14} />
-                </button>
-              </div>
-              <p>{t('auth.emergencyAfter')}</p>
             </div>
           )}
         </form>

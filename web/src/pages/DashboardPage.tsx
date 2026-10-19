@@ -12,11 +12,13 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts'
-import { Send, UserPlus, FileText, ArrowRight } from 'lucide-react'
+import { Send, UserPlus, FileText, ArrowRight, Route } from 'lucide-react'
 import { api } from '../lib/api'
 import { useAuth } from '../stores/auth'
 import { PageHeader, PageBody, Loading } from '../components/Page'
 import { SteeringPanel, UsagePanel, WaitingList } from './ControlPanel'
+import { ProSlot } from '../pro/host'
+import { ProLockButton } from '../pro/ProTeaser'
 import './dashboard.css'
 
 interface Overview {
@@ -77,6 +79,14 @@ export function DashboardPage() {
         eyebrow={t('dashboard.greeting') + (firstName ? `, ${firstName}` : '')}
         title={t('dashboard.title')}
         subtitle={t('app.tagline')}
+        actions={
+          // Geführte Touren (Pro) direkt von der Übersicht aus starten
+          <ProSlot
+            name="dashboard.actions"
+            className="btn btn-secondary"
+            fallback={<ProLockButton feature="tours" label={t('pro.feature.tours.title')} icon={<Route size={16} />} />}
+          />
+        }
       />
       <PageBody>
         {/* Was als Nächstes zu tun ist: Freigaben, Antworten, Hinweise */}

@@ -208,7 +208,8 @@
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  width: 220px;
+  /* Breit genug für "Geführte Touren" mit Pro-Abzeichen */
+  width: 248px;
   /* Deckend: in der weichgezeichneten Kopfleiste wirkt ein zweiter Weichzeichner nicht */
   background: var(--bg-raised);
   border: 1px solid var(--border-default);

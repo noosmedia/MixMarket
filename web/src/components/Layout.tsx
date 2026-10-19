@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from '@tanstack/react-query'
-import { Settings, Sun, Moon, LogOut, Search, ChevronDown, Menu, X, Languages, History, HelpCircle, ShieldBan, Download, RefreshCw } from 'lucide-react'
+import { Settings, Sun, Moon, LogOut, Search, ChevronDown, Menu, X, Languages, History, HelpCircle, ShieldBan, Download, RefreshCw, Route } from 'lucide-react'
 import { api } from '../lib/api'
 import { useAuth } from '../stores/auth'
 import { useUi } from '../stores/ui'
@@ -15,7 +15,8 @@ import { Modal } from './Modal'
 import { RecoveryKeyPanel, forgetPendingKey, readPendingKey } from './RecoveryKeyPanel'
 import { ControlBanner } from './ControlBanner'
 import { UpdateDialog, useUpdateStatus } from './UpdateDialog'
-import { ProSlot, loadPro, usePro } from '../pro/host'
+import { ProSlot, loadPro, proFunction, usePro, useProFeature } from '../pro/host'
+import { ProBadge, ProInfoDialog } from '../pro/ProTeaser'
 import './layout.css'
 
 // Apple-Geräte zeigen Cmd, alle anderen Strg als Taste für die Suche
@@ -42,6 +43,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (user) void loadPro()
   }, [user])
+
+  // Geführte Touren (Pro) aus dem Benutzermenü; ohne Pro erklärt ein Fenster, was die Touren können
+  const toursActive = useProFeature('tours')
+  const [toursInfo, setToursInfo] = useState(false)
+  const openTours = () => {
+    setMenuOpen(false)
+    if (!toursActive) return setToursInfo(true)
+    // Älteres Pro-Paket ohne Liste im Menü: Touren über das Handbuch
+    const openList = proFunction<() => void>('tours.openList')
+    if (openList) openList()
+    else navigate('/handbook')
+  }
 
   // Seitenleiste schließen, sobald eine andere Seite geöffnet wird
   useEffect(() => {
@@ -230,6 +243,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     <Settings size={16} />
                     {t('nav.settings')}
                   </button>
+                  <button className="dropdown-item" onClick={openTours}>
+                    <Route size={16} />
+                    <span className="dropdown-label">{t('pro.feature.tours.title')}</span>
+                    {!toursActive && <ProBadge />}
+                  </button>
                   <button
                     className={`dropdown-item${updateAvailable ? ' has-update' : ''}`}
                     onClick={() => {
@@ -320,6 +338,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Pro: Ebenen über allen Seiten (z. B. geführte Touren) */}
       <ProSlot name="layout.overlay" />
+
+      <ProInfoDialog feature="tours" open={toursInfo} onClose={() => setToursInfo(false)} />
 
       <UpdateDialog
         open={update.open}

@@ -49,7 +49,7 @@ export const handbookDe: HandbookChapter[] = [
               '**Suchen** öffnet die Suche über alle Bereiche. Dasselbe erreichen Sie mit Cmd K auf dem Mac oder Strg K unter Windows und Linux. Der Knopf zeigt die passende Tastenkombination für Ihr Gerät an.',
               'Das Symbol mit Sonne oder Mond wechselt zwischen hellem und dunklem Design, der Knopf mit DE oder EN wechselt die Sprache.',
               'Das Fragezeichen öffnet dieses Handbuch. Zusätzlich steht auf jeder Seite neben dem Titel der Knopf **Hilfe**, der direkt zum passenden Kapitel führt.',
-              'Ein Klick auf Ihre Initialen öffnet das Benutzermenü. Oben stehen Name und E-Mail Ihres Kontos, darunter **Sperrliste**, **Aktivitäten**, **Einstellungen**, **Nach Updates suchen** und **Abmelden**. Gibt es eine neue Version von MixMarket, zeigt ein kleiner pulsierender Punkt an Ihren Initialen das an, und der Menüpunkt heißt **Update verfügbar** (Einstellungen, Updates). **Abmelden** beendet alle Anmeldungen auf allen Geräten, also auch in einem zweiten Browser oder auf dem Handy.',
+              'Ein Klick auf Ihre Initialen öffnet das Benutzermenü. Oben stehen Name und E-Mail Ihres Kontos, darunter **Sperrliste**, **Aktivitäten**, **Einstellungen**, **Geführte Touren**, **Nach Updates suchen** und **Abmelden**. Gibt es eine neue Version von MixMarket, zeigt ein kleiner pulsierender Punkt an Ihren Initialen das an, und der Menüpunkt heißt **Update verfügbar** (Einstellungen, Updates). **Abmelden** beendet alle Anmeldungen auf allen Geräten, also auch in einem zweiten Browser oder auf dem Handy.',
               'Ist das Fenster schmal, etwa auf dem Handy, zeigt die Kopfleiste stattdessen einen Menüknopf. Er öffnet eine Seitenleiste mit allen Bereichen und ihren Symbolen, auch **Sperrliste**, **Aktivitäten**, **Handbuch** und **Einstellungen**, dazu Design, Sprache und **Abmelden**. Auch dort steht hinter **Gespräche** die Zahl offener Antworten.',
             ],
           },
@@ -129,7 +129,7 @@ export const handbookDe: HandbookChapter[] = [
         blocks: [
           {
             type: 'tip',
-            text: 'Geführte Touren gehören zu MixMarket Pro. Ohne Pro zeigt der Knopf **Geführte Touren** im Handbuch, was die Touren können.',
+            text: 'Geführte Touren gehören zu MixMarket Pro. Ohne Pro zeigen die Knöpfe **Geführte Touren** auf der Übersicht, im Handbuch und im Benutzermenü, was die Touren können.',
           },
           {
             type: 'p',
@@ -138,7 +138,7 @@ export const handbookDe: HandbookChapter[] = [
           {
             type: 'list',
             items: [
-              'Starten: Unter **Erste Schritte** auf der Übersicht starten Schritte mit dem Hinweis **mit Anleitung** die passende Tour. Alle Touren finden Sie im Handbuch über den Knopf **Geführte Touren** oben rechts.',
+              'Starten: Alle Touren finden Sie über **Geführte Touren** oben rechts auf der **Übersicht** und im **Handbuch** sowie im Benutzermenü hinter Ihren Initialen. Unter **Erste Schritte** auf der Übersicht starten Schritte mit dem Hinweis **mit Anleitung** die passende Tour.',
               'Bedienen: **Weiter** führt zum nächsten Schritt, **Zurück** zum vorigen. Ist ein Feld noch leer, sagt die Sprechblase das und das Feld wird rot markiert. Soll etwas angeklickt werden, steht das in der Sprechblase.',
               'Unterbrechen: Das Kreuz oben in der Sprechblase beendet die Tour. Laden Sie die Seite neu, läuft die Tour an derselben Stelle weiter. Ist ein Fenster versehentlich zu, öffnet **Wieder öffnen** es erneut.',
             ],

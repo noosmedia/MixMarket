@@ -49,7 +49,7 @@ export const handbookEn: HandbookChapter[] = [
               '**Search** opens the search across all areas. You can also press Cmd K on a Mac or Ctrl K on Windows and Linux. The button shows the right shortcut for your device.',
               'The sun or moon icon switches between the light and dark theme, the DE or EN button switches the language.',
               'The question mark opens this handbook. In addition, every page has a **Help** button next to its title that leads straight to the matching chapter.',
-              'Clicking your initials opens the user menu. It shows the name and email of your account at the top, followed by **Suppression**, **Activity**, **Settings**, **Check for updates** and **Sign out**. When a new version of MixMarket is out, a small pulsing dot on your initials shows it, and the menu item reads **Update available** (Settings, Updates). **Sign out** ends all sign-ins on all devices, including a second browser or your phone.',
+              'Clicking your initials opens the user menu. It shows the name and email of your account at the top, followed by **Suppression**, **Activity**, **Settings**, **Guided tours**, **Check for updates** and **Sign out**. When a new version of MixMarket is out, a small pulsing dot on your initials shows it, and the menu item reads **Update available** (Settings, Updates). **Sign out** ends all sign-ins on all devices, including a second browser or your phone.',
               'In a narrow window, for example on a phone, the top bar shows a menu button instead. It opens a side panel with all areas and their icons, including **Suppression**, **Activity**, **Handbook** and **Settings**, plus theme, language and **Sign out**. There, too, **Conversations** shows the number of open replies.',
             ],
           },
@@ -129,7 +129,7 @@ export const handbookEn: HandbookChapter[] = [
         blocks: [
           {
             type: 'tip',
-            text: 'Guided tours are part of MixMarket Pro. Without Pro, the **Guided tours** button in the handbook shows what the tours can do.',
+            text: 'Guided tours are part of MixMarket Pro. Without Pro, the **Guided tours** buttons on the overview, in the handbook and in the user menu show what the tours can do.',
           },
           {
             type: 'p',
@@ -138,7 +138,7 @@ export const handbookEn: HandbookChapter[] = [
           {
             type: 'list',
             items: [
-              'Start: Under **Getting started** on the overview, steps marked **guided** start the matching tour. You find all tours in the handbook via the **Guided tours** button at the top right.',
+              'Start: You find all tours via **Guided tours** at the top right of the **Overview** and the **Handbook**, and in the user menu behind your initials. Under **Getting started** on the overview, steps marked **guided** start the matching tour.',
               'Use: **Next** goes to the next step, **Back** to the previous one. If a field is still empty, the speech bubble says so and the field is marked red. If something has to be clicked, the speech bubble says so.',
               'Interrupt: The cross at the top of the speech bubble ends the tour. If you reload the page, the tour continues at the same point. If a window was closed by mistake, **Open again** opens it again.',
             ],

@@ -81,11 +81,13 @@ const MAILBOX_FIELDS = [
 ]
 
 // ---------------------------------------------------------------------------
-// Versionsabgleich mit GitHub: Gibt es dort eine neuere Version als diese Installation?
-// Gelesen wird nur die öffentliche package.json und das CHANGELOG, es wird nichts übertragen.
+// Versionsabgleich mit GitHub: Gibt es dort eine neuere veröffentlichte Version als diese Installation?
+// Maßgeblich ist die neueste Veröffentlichung (Release), nicht der aktuelle Code: So erscheint ein Update
+// erst, wenn die Installationspakete wirklich fertig sind. Gelesen werden nur die Versionsnummer der
+// Veröffentlichung und das CHANGELOG dieser Version, es wird nichts übertragen.
 // ---------------------------------------------------------------------------
 
-const UPDATE_SOURCE = 'https://raw.githubusercontent.com/noosmedia/MixMarket/main'
+const UPDATE_SOURCE = 'https://raw.githubusercontent.com/noosmedia/MixMarket'
 const UPDATE_REPO_URL = 'https://github.com/noosmedia/MixMarket'
 const UPDATE_TTL_OK_MS = 24 * 60 * 60 * 1000
 const UPDATE_TTL_ERROR_MS = 60 * 60 * 1000
@@ -137,9 +139,26 @@ interface UpdateStatus {
 
 let updateCache: { at: number; ttl: number; value: UpdateStatus } | null = null
 
-async function fetchText(path: string): Promise<string | null> {
+// Neueste Veröffentlichung: GitHub leitet /releases/latest auf die Seite der Version weiter (…/tag/v1.2.3).
+// Die Weiterleitung reicht, so gilt keine Begrenzung der GitHub-Schnittstelle.
+async function fetchLatestRelease(): Promise<string | null> {
   try {
-    const response = await fetch(`${UPDATE_SOURCE}/${path}`, {
+    const response = await fetch(`${UPDATE_REPO_URL}/releases/latest`, {
+      headers: { 'User-Agent': `MixMarket/${CURRENT_VERSION}` },
+      redirect: 'manual',
+      signal: AbortSignal.timeout(10_000),
+    })
+    const tag = /\/releases\/tag\/([^/?#]+)/.exec(response.headers.get('location') ?? '')?.[1]
+    return tag ? decodeURIComponent(tag).replace(/^v/, '') : null
+  } catch {
+    return null
+  }
+}
+
+// Datei aus dem Stand einer Version (Tag v1.2.3) lesen
+async function fetchText(path: string, version: string): Promise<string | null> {
+  try {
+    const response = await fetch(`${UPDATE_SOURCE}/v${version}/${path}`, {
       headers: { 'User-Agent': `MixMarket/${CURRENT_VERSION}` },
       signal: AbortSignal.timeout(10_000),
     })
@@ -153,18 +172,12 @@ async function checkForUpdate(force: boolean): Promise<UpdateStatus> {
   if (!force && updateCache && Date.now() - updateCache.at < updateCache.ttl) return updateCache.value
   const base = { current: CURRENT_VERSION, repoUrl: UPDATE_REPO_URL, checkedAt: new Date().toISOString() }
   let value: UpdateStatus
-  const pkg = await fetchText('package.json')
-  let latest: string | null = null
-  try {
-    latest = pkg ? ((JSON.parse(pkg) as { version?: string }).version ?? null) : null
-  } catch {
-    latest = null
-  }
+  const latest = await fetchLatestRelease()
   if (!latest || !parseVersion(latest)) {
     value = { ...base, latest: null, available: false, notes: null, error: 'unreachable' }
   } else {
     const available = compareVersions(latest, CURRENT_VERSION) > 0
-    const changelog = available ? await fetchText('CHANGELOG.md') : null
+    const changelog = available ? await fetchText('CHANGELOG.md', latest) : null
     value = {
       ...base,
       latest,

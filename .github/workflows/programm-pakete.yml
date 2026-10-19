@@ -1,6 +1,7 @@
 # Baut MixMarket als installierbares Programm für Linux, Windows und macOS und legt die Pakete
 # an eine Veröffentlichung auf GitHub. Startet bei einem Versions-Tag (z. B. v0.18.0) oder von Hand.
-# Die Veröffentlichung bleibt ein Entwurf, bis alle drei Systeme fertig gebaut sind; erst dann wird sie
+# Die Veröffentlichung wird zuerst als Entwurf angelegt (genau einer, sonst legen die drei Systeme
+# gleichzeitig je einen an). Sie bleibt Entwurf, bis alle drei fertig gebaut sind; erst dann wird sie
 # sichtbar und damit auch für die Update-Prüfung im Programm.
 name: Programm-Pakete
 
@@ -14,8 +15,23 @@ permissions:
   contents: write
 
 jobs:
+  entwurf:
+    name: Entwurf anlegen
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Entwurf der Veröffentlichung anlegen (falls noch keiner da ist)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1 \
+            || gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft --title "${GITHUB_REF_NAME#v}" --notes ""
+
   bauen:
     name: Pakete ${{ matrix.os }}
+    needs: entwurf
+    # Auch von Hand gestartet (ohne Tag, dann ohne Entwurf) bauen
+    if: always() && (needs.entwurf.result == 'success' || needs.entwurf.result == 'skipped')
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -23,10 +39,10 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - name: Quellcode holen
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Node.js einrichten
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -71,7 +87,7 @@ jobs:
           npx electron-builder --config electron-builder.yml --mac --x64 --publish "$PUBLISH"
 
       - name: Pakete als Artefakt aufbewahren
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mixmarket-${{ matrix.os }}
           path: |
@@ -91,7 +107,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Quellcode holen
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Neuerungen dieser Version aus dem CHANGELOG nehmen und Entwurf veröffentlichen
         env:

@@ -2,13 +2,14 @@
 
 Alle Änderungen an MixMarket, nach Semantic Versioning.
 
-## Unveröffentlicht
+## 0.19.0 (19.10.2026)
 
 ### Neu
 - Programm: Sind Passwort und Wiederherstellungsschlüssel verloren, zeigt der versteckte Hinweis auf der Seite „Passwort vergessen“ den Knopf „Ohne Schlüssel neu setzen“. Er öffnet ein eigenes Fenster des Programms, in dem Sie das neue Passwort eingeben und den neuen Schlüssel erhalten. Das geht nur an dem Rechner, auf dem MixMarket läuft
 
 ### Geändert
 - MixMarket gibt es für Nutzer nur noch als Programm. Handbuch, README, Update-Fenster und Anmeldeseite nennen keine Terminal-Befehle mehr
+- Der Update-Hinweis erscheint erst, wenn die Installationspakete der neuen Version fertig veröffentlicht sind
 
 ## 0.18.0 (19.10.2026)
 

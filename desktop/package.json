@@ -1,6 +1,6 @@
 {
   "name": "@mixmarket/desktop",
-  "version": "0.18.0",
+  "version": "0.19.0",
   "description": "MixMarket als installierbares Programm (Electron-Hülle um Server und Oberfläche)",
   "private": true,
   "scripts": {

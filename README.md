@@ -22,7 +22,7 @@ Alles in dieser Liste ist kostenlos:
 - **Gespräche:** Abruf des Postfachs, Zuordnung zu Interessenten, Erkennung von Rückläufern, Abwesenheitsnotizen und Abmeldungen, Antworten direkt aus MixMarket
 - **Steuerung:** Übersicht „Wartet auf Sie“, Versand-Schalter, Not-Aus, automatischer Stopp bei zu vielen Rückläufern, KI-Pause bei knappem Abo-Kontingent, Auslastung
 - **Klassisch:** Kontakte und Listen, Vorlagen mit Platzhaltern, Kampagnen, Sperrliste, Statistiken
-- **Handbuch** in der App, Oberfläche auf Deutsch und Englisch, heller und dunkler Modus, auch auf dem Handy bedienbar
+- **Handbuch** in der App, Oberfläche auf Deutsch und Englisch, heller und dunkler Modus
 
 ### MixMarket Pro
 
@@ -51,8 +51,6 @@ Alle Bilder zeigen erfundene Beispieldaten.
 | ![Zielgruppe](docs/media/cohorts.png)<br>**Zielgruppe:** Merkmale wählen, die Anzahl zählt sofort mit | ![Interessenten](docs/media/prospects.png)<br>**Interessenten:** Status, Ansprechpartner und Stand der Ansprache je Firma |
 | ![Postausgang](docs/media/outbox.png)<br>**Postausgang:** persönliche Mails der KI prüfen und freigeben | ![Gespräche](docs/media/conversations.png)<br>**Gespräche:** Antworten lesen und beantworten, mit Pro eingeordnet und mit Entwurf |
 | ![Steuerung](docs/media/control.png)<br>**Steuerung:** Versand, Not-Aus, Grenzen und Auslastung, mit Pro Autopilot je Bereich | ![Handbuch](docs/media/handbook.png)<br>**Handbuch:** jede Funktion erklärt, direkt in der App |
-
-<p align="center"><img src="docs/media/mobile-overview.png" alt="Übersicht auf dem Handy" width="260">&nbsp;&nbsp;<img src="docs/media/mobile-outbox.png" alt="Postausgang auf dem Handy" width="260"></p>
 
 ### Voraussetzungen
 
@@ -124,7 +122,7 @@ Everything in this list is free:
 - **Conversations:** mailbox polling, matching to prospects, detection of bounces, out-of-office replies and unsubscribes, replying directly from MixMarket
 - **Control:** "Waiting for you" overview, sending switch, emergency stop, automatic stop on too many bounces, AI pause when the subscription quota runs low, usage
 - **Classic:** contacts and lists, templates with placeholders, campaigns, suppression list, statistics
-- **Built-in handbook**, interface in German and English, light and dark mode, also usable on a phone
+- **Built-in handbook**, interface in German and English, light and dark mode
 
 ### MixMarket Pro
 
@@ -153,8 +151,6 @@ All images show invented sample data and the German interface; English can be se
 | ![Target group](docs/media/cohorts.png)<br>**Target group:** pick characteristics, the count updates instantly | ![Prospects](docs/media/prospects.png)<br>**Prospects:** status, contact person and outreach progress per company |
 | ![Outbox](docs/media/outbox.png)<br>**Outbox:** review and approve personal AI emails | ![Conversations](docs/media/conversations.png)<br>**Conversations:** read and answer replies, with Pro classified and with a draft |
 | ![Control](docs/media/control.png)<br>**Control:** sending, emergency stop, limits and usage, with Pro autopilot per area | ![Handbook](docs/media/handbook.png)<br>**Handbook:** every feature explained, right inside the app |
-
-<p align="center"><img src="docs/media/mobile-overview.png" alt="Overview on a phone" width="260">&nbsp;&nbsp;<img src="docs/media/mobile-outbox.png" alt="Outbox on a phone" width="260"></p>
 
 ### Requirements
 

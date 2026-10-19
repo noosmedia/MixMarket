@@ -49,8 +49,8 @@ export const handbookEn: HandbookChapter[] = [
               '**Search** opens the search across all areas. You can also press Cmd K on a Mac or Ctrl K on Windows and Linux. The button shows the right shortcut for your device.',
               'The sun or moon icon switches between the light and dark theme, the DE or EN button switches the language.',
               'The question mark opens this handbook. In addition, every page has a **Help** button next to its title that leads straight to the matching chapter.',
-              'Clicking your initials opens the user menu. It shows the name and email of your account at the top, followed by **Suppression**, **Activity**, **Settings**, **Guided tours**, **Check for updates** and **Sign out**. When a new version of MixMarket is out, a small pulsing dot on your initials shows it, and the menu item reads **Update available** (Settings, Updates). **Sign out** ends all sign-ins on all devices, including a second browser or your phone.',
-              'In a narrow window, for example on a phone, the top bar shows a menu button instead. It opens a side panel with all areas and their icons, including **Suppression**, **Activity**, **Handbook** and **Settings**, plus theme, language and **Sign out**. There, too, **Conversations** shows the number of open replies.',
+              'Clicking your initials opens the user menu. It shows the name and email of your account at the top, followed by **Suppression**, **Activity**, **Settings**, **Guided tours**, **Check for updates** and **Sign out**. When a new version of MixMarket is out, a small pulsing dot on your initials shows it, and the menu item reads **Update available** (Settings, Updates). **Sign out** ends all sign-ins.',
+              'In a narrow window, the top bar shows a menu button instead. It opens a side panel with all areas and their icons, including **Suppression**, **Activity**, **Handbook** and **Settings**, plus theme, language and **Sign out**. There, too, **Conversations** shows the number of open replies.',
             ],
           },
         ],
@@ -62,10 +62,6 @@ export const handbookEn: HandbookChapter[] = [
           {
             type: 'p',
             text: 'MixMarket has exactly one account. There are no roles and no sign-up for further users. On the very first start, as long as no account exists, the page **Set up MixMarket** appears instead of the sign-in.',
-          },
-          {
-            type: 'p',
-            text: 'On the computer that runs MixMarket, you set it up without any further input. From another computer, the page additionally asks for **Setup code** at the very top. Any request that arrives through an intermediary in front of MixMarket, such as a reverse proxy, also counts as another computer. MixMarket writes the code to the server log when the server starts, as long as no account exists, for example in the form ABCD-EFGH. After every restart a new code applies. Upper and lower case do not matter. If the field is empty, MixMarket reports “Please fill in all fields.”, if the code is wrong, “The setup code is missing or wrong.” In both cases MixMarket does not create an account.',
           },
           {
             type: 'steps',
@@ -560,7 +556,7 @@ export const handbookEn: HandbookChapter[] = [
             type: 'list',
             items: [
               'The search field searches email address, first name, last name and company.',
-              'The buttons **All**, **Active**, **Unsubscribed**, **Bounced** and **Complaint** show only contacts with that status. On a phone you choose the status from a dropdown.',
+              'The buttons **All**, **Active**, **Unsubscribed**, **Bounced** and **Complaint** show only contacts with that status.',
               'The dropdown **All lists** shows only the contacts of one list. The number of its contacts follows each list name.',
             ],
           },
@@ -901,7 +897,7 @@ export const handbookEn: HandbookChapter[] = [
         blocks: [
           {
             type: 'p',
-            text: 'Next to the editor, the **Preview** shows how the HTML content is displayed. On narrow screens you switch between the two views with **Editor** and **Preview**.',
+            text: 'Next to the editor, the **Preview** shows how the HTML content is displayed.',
           },
           {
             type: 'p',
@@ -1421,7 +1417,7 @@ export const handbookEn: HandbookChapter[] = [
         blocks: [
           {
             type: 'p',
-            text: 'Research has four tabs. On a phone you pick them from a dropdown. MixMarket remembers which tab you had open last.',
+            text: 'Research has four tabs. MixMarket remembers which tab you had open last.',
           },
           {
             type: 'terms',
@@ -1913,7 +1909,7 @@ export const handbookEn: HandbookChapter[] = [
           },
           {
             type: 'p',
-            text: 'Open the **Outbox** from the top bar, on narrow screens from the side panel.',
+            text: 'Open the **Outbox** from the top bar, in a narrow window from the side panel.',
           },
           {
             type: 'tip',
@@ -2076,10 +2072,10 @@ export const handbookEn: HandbookChapter[] = [
           {
             type: 'list',
             items: [
-              'Each tab shows the number of its emails. On a phone you choose the tab from a dropdown.',
+              'Each tab shows the number of its emails.',
               'The **All products** selection can show the emails of a single product. The tab counts follow this selection.',
               'Each row shows company, time, status, the position in the sequence such as **First email** or **Follow-up 1**, the recipient, the subject and the beginning of the text.',
-              'On wide screens, the list is on the left and the selected email on the right. On narrow screens, a click opens the email in a window; **Back to the list** closes it again.',
+              'On wide screens, the list is on the left and the selected email on the right. In a narrow window, a click opens the email in a window; **Back to the list** closes it again.',
             ],
           },
           {
@@ -2292,7 +2288,7 @@ export const handbookEn: HandbookChapter[] = [
           },
           {
             type: 'p',
-            text: 'Open **Conversations** from the top bar, on narrow screens from the side panel. The number after **Conversations** gives the open replies.',
+            text: 'Open **Conversations** from the top bar, in a narrow window from the side panel. The number after **Conversations** gives the open replies.',
           },
           {
             type: 'tip',
@@ -2501,11 +2497,11 @@ export const handbookEn: HandbookChapter[] = [
           {
             type: 'list',
             items: [
-              '**Open** shows the number of open replies, **Undeliverable** the number of open bounces. On a phone you choose the view from a dropdown.',
+              '**Open** shows the number of open replies, **Undeliverable** the number of open bounces.',
               'Each row shows company or sender, the time of the latest email, the label, the sender’s name and the AI summary, or without a summary the subject and the beginning of the text. Conversations with open replies are highlighted.',
               'If a conversation has several emails, the note “2 new” gives the open ones. **Draft** shows that a reply draft is waiting.',
               'Labels are the AI category, **AI is sorting**, **Sorting failed**, **Out of office**, **Undeliverable** and **Temporarily undeliverable**.',
-              'On wide screens, the list is on the left and the selected conversation on the right. On narrow screens, a click opens the conversation in a window; **Back to the list** closes it again.',
+              'On wide screens, the list is on the left and the selected conversation on the right. In a narrow window, a click opens the conversation in a window; **Back to the list** closes it again.',
               'The view updates by itself, at short intervals while the AI is working.',
             ],
           },
@@ -2645,7 +2641,7 @@ export const handbookEn: HandbookChapter[] = [
           },
           {
             type: 'p',
-            text: 'Open the **Suppression** list from the user menu at the top right. On narrow screens it is in the side panel.',
+            text: 'Open the **Suppression** list from the user menu at the top right. In a narrow window it is in the side panel.',
           },
           {
             type: 'p',
@@ -2825,7 +2821,7 @@ export const handbookEn: HandbookChapter[] = [
             type: 'list',
             items: [
               '**Name** and **Email for sign-in**: change the details and click **Save account**. If you change the email, the field **Current password** appears as well. Without your password, MixMarket does not save a new email. From then on you sign in with the new email.',
-              '**Change password**: enter **Current password**, **New password** with at least 10 characters and **Repeat new password**, then click **Change password**. You stay signed in. Other sign-ins, for example in a second browser, are signed out.',
+              '**Change password**: enter **Current password**, **New password** with at least 10 characters and **Repeat new password**, then click **Change password**. You stay signed in. Other sign-ins are signed out.',
               '**Recovery key**: the note below it shows whether a key is stored. **Create new key** opens a window. Enter your **Current password** there and click **Create new key** again. MixMarket shows the new key once, as on first start, with **Copy**, **Save as file** and the tick **I have stored the key safely.** Close the window with **Done**.',
             ],
           },
@@ -2894,7 +2890,7 @@ export const handbookEn: HandbookChapter[] = [
           },
           {
             type: 'p',
-            text: 'All other sign-ins, for example in a second browser, are signed out. **Back to sign in** returns to the sign-in page without any change.',
+            text: 'All other sign-ins are signed out. **Back to sign in** returns to the sign-in page without any change.',
           },
           {
             type: 'p',
@@ -3117,7 +3113,7 @@ export const handbookEn: HandbookChapter[] = [
           },
           {
             type: 'p',
-            text: 'You can also switch both at any time in the top bar. MixMarket remembers your choice in this browser. The interface language does not affect your emails. You set their language per template under **Email language**, in the outbox per product under **Language of the emails**.',
+            text: 'You can also switch both at any time in the top bar. MixMarket remembers your choice. The interface language does not affect your emails. You set their language per template under **Email language**, in the outbox per product under **Language of the emails**.',
           },
         ],
       },
@@ -3226,8 +3222,8 @@ export const handbookEn: HandbookChapter[] = [
               'Drafts and older cancelled campaigns open for editing; other campaigns are highlighted in the list.',
               'Companies open in the detail view, company searches with their list of companies.',
               'Target groups, prospects and products open in Research, with the matching product selected.',
-              'Outbox emails open in the matching tab, with the product selection set to **All products**. On narrow screens the email opens in a window.',
-              'Conversations open in **Conversations** in the **All** view with the conversation found, on narrow screens in a window.',
+              'Outbox emails open in the matching tab, with the product selection set to **All products**. In a narrow window the email opens in a window.',
+              'Conversations open in **Conversations** in the **All** view with the conversation found, in a narrow window in a window.',
               'Website jobs open their results; suppression entries are highlighted.',
             ],
           },

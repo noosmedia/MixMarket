@@ -49,8 +49,8 @@ export const handbookDe: HandbookChapter[] = [
               '**Suchen** öffnet die Suche über alle Bereiche. Dasselbe erreichen Sie mit Cmd K auf dem Mac oder Strg K unter Windows und Linux. Der Knopf zeigt die passende Tastenkombination für Ihr Gerät an.',
               'Das Symbol mit Sonne oder Mond wechselt zwischen hellem und dunklem Design, der Knopf mit DE oder EN wechselt die Sprache.',
               'Das Fragezeichen öffnet dieses Handbuch. Zusätzlich steht auf jeder Seite neben dem Titel der Knopf **Hilfe**, der direkt zum passenden Kapitel führt.',
-              'Ein Klick auf Ihre Initialen öffnet das Benutzermenü. Oben stehen Name und E-Mail Ihres Kontos, darunter **Sperrliste**, **Aktivitäten**, **Einstellungen**, **Geführte Touren**, **Nach Updates suchen** und **Abmelden**. Gibt es eine neue Version von MixMarket, zeigt ein kleiner pulsierender Punkt an Ihren Initialen das an, und der Menüpunkt heißt **Update verfügbar** (Einstellungen, Updates). **Abmelden** beendet alle Anmeldungen auf allen Geräten, also auch in einem zweiten Browser oder auf dem Handy.',
-              'Ist das Fenster schmal, etwa auf dem Handy, zeigt die Kopfleiste stattdessen einen Menüknopf. Er öffnet eine Seitenleiste mit allen Bereichen und ihren Symbolen, auch **Sperrliste**, **Aktivitäten**, **Handbuch** und **Einstellungen**, dazu Design, Sprache und **Abmelden**. Auch dort steht hinter **Gespräche** die Zahl offener Antworten.',
+              'Ein Klick auf Ihre Initialen öffnet das Benutzermenü. Oben stehen Name und E-Mail Ihres Kontos, darunter **Sperrliste**, **Aktivitäten**, **Einstellungen**, **Geführte Touren**, **Nach Updates suchen** und **Abmelden**. Gibt es eine neue Version von MixMarket, zeigt ein kleiner pulsierender Punkt an Ihren Initialen das an, und der Menüpunkt heißt **Update verfügbar** (Einstellungen, Updates). **Abmelden** beendet alle Anmeldungen.',
+              'Ist das Fenster schmal, zeigt die Kopfleiste stattdessen einen Menüknopf. Er öffnet eine Seitenleiste mit allen Bereichen und ihren Symbolen, auch **Sperrliste**, **Aktivitäten**, **Handbuch** und **Einstellungen**, dazu Design, Sprache und **Abmelden**. Auch dort steht hinter **Gespräche** die Zahl offener Antworten.',
             ],
           },
         ],
@@ -62,10 +62,6 @@ export const handbookDe: HandbookChapter[] = [
           {
             type: 'p',
             text: 'MixMarket hat genau ein Konto. Es gibt keine Rollen und keine Registrierung weiterer Nutzer. Beim allerersten Start, solange noch kein Konto besteht, erscheint statt der Anmeldung die Seite **MixMarket einrichten**.',
-          },
-          {
-            type: 'p',
-            text: 'Am Rechner, auf dem MixMarket läuft, richten Sie MixMarket ohne weitere Angaben ein. Von einem anderen Rechner aus verlangt die Seite zuoberst zusätzlich das Feld **Einrichtungscode**. Als anderer Rechner gilt auch jede Anfrage, die über einen vorgeschalteten Vermittler wie einen Reverse-Proxy ankommt. Den Code schreibt MixMarket beim Start des Servers in das Protokoll des Servers, solange noch kein Konto besteht, etwa in der Form ABCD-EFGH. Nach jedem Neustart gilt ein neuer Code. Groß- und Kleinschreibung spielen keine Rolle. Ist das Feld leer, meldet MixMarket „Bitte alle Felder ausfüllen.“, ist der Code falsch, „Der Einrichtungscode fehlt oder ist falsch.“ In beiden Fällen legt MixMarket kein Konto an.',
           },
           {
             type: 'steps',
@@ -560,7 +556,7 @@ export const handbookDe: HandbookChapter[] = [
             type: 'list',
             items: [
               'Das Suchfeld durchsucht E-Mail-Adresse, Vorname, Nachname und Firma.',
-              'Mit den Knöpfen **Alle**, **Aktiv**, **Abgemeldet**, **Unzustellbar** und **Beschwerde** zeigen Sie nur Kontakte mit diesem Status. Auf dem Handy wählen Sie den Status in einem Auswahlfeld.',
+              'Mit den Knöpfen **Alle**, **Aktiv**, **Abgemeldet**, **Unzustellbar** und **Beschwerde** zeigen Sie nur Kontakte mit diesem Status.',
               'Das Auswahlfeld **Alle Listen** zeigt nur die Kontakte einer Liste. Hinter jedem Listennamen steht die Zahl ihrer Kontakte.',
             ],
           },
@@ -901,7 +897,7 @@ export const handbookDe: HandbookChapter[] = [
         blocks: [
           {
             type: 'p',
-            text: 'Neben dem Editor zeigt die **Vorschau**, wie der HTML-Inhalt dargestellt wird. Auf schmalen Bildschirmen wechseln Sie mit **Editor** und **Vorschau** zwischen beiden Ansichten.',
+            text: 'Neben dem Editor zeigt die **Vorschau**, wie der HTML-Inhalt dargestellt wird.',
           },
           {
             type: 'p',
@@ -1421,7 +1417,7 @@ export const handbookDe: HandbookChapter[] = [
         blocks: [
           {
             type: 'p',
-            text: 'Die Recherche hat vier Reiter. Auf dem Handy wählen Sie sie über ein Auswahlfeld. MixMarket merkt sich, welchen Reiter Sie zuletzt geöffnet hatten.',
+            text: 'Die Recherche hat vier Reiter. MixMarket merkt sich, welchen Reiter Sie zuletzt geöffnet hatten.',
           },
           {
             type: 'terms',
@@ -1913,7 +1909,7 @@ export const handbookDe: HandbookChapter[] = [
           },
           {
             type: 'p',
-            text: 'Sie öffnen den **Postausgang** in der Kopfleiste, auf schmalen Bildschirmen über die Seitenleiste.',
+            text: 'Sie öffnen den **Postausgang** in der Kopfleiste, in einem schmalen Fenster über die Seitenleiste.',
           },
           {
             type: 'tip',
@@ -2076,10 +2072,10 @@ export const handbookDe: HandbookChapter[] = [
           {
             type: 'list',
             items: [
-              'Hinter jedem Reiter steht die Zahl seiner Mails. Auf dem Handy wählen Sie den Reiter über ein Auswahlfeld.',
+              'Hinter jedem Reiter steht die Zahl seiner Mails.',
               'Die Auswahl **Alle Produkte** zeigt auf Wunsch nur die Mails eines Produkts. Die Zahlen der Reiter folgen dieser Auswahl.',
               'Jede Zeile zeigt Firma, Zeitpunkt, Status, die Stelle im Ablauf wie **Erstmail** oder **Nachfass 1**, den Empfänger, den Betreff und den Anfang des Textes.',
-              'Auf breiten Bildschirmen steht links die Liste und rechts die gewählte Mail. Auf schmalen Bildschirmen öffnet ein Klick die Mail in einem Fenster, **Zurück zur Liste** schließt es wieder.',
+              'Auf breiten Bildschirmen steht links die Liste und rechts die gewählte Mail. In einem schmalen Fenster öffnet ein Klick die Mail in einem Fenster, **Zurück zur Liste** schließt es wieder.',
             ],
           },
           {
@@ -2292,7 +2288,7 @@ export const handbookDe: HandbookChapter[] = [
           },
           {
             type: 'p',
-            text: 'Sie öffnen **Gespräche** in der Kopfleiste, auf schmalen Bildschirmen über die Seitenleiste. Die Zahl hinter **Gespräche** nennt die offenen Antworten.',
+            text: 'Sie öffnen **Gespräche** in der Kopfleiste, in einem schmalen Fenster über die Seitenleiste. Die Zahl hinter **Gespräche** nennt die offenen Antworten.',
           },
           {
             type: 'tip',
@@ -2501,11 +2497,11 @@ export const handbookDe: HandbookChapter[] = [
           {
             type: 'list',
             items: [
-              'Hinter **Offen** steht die Zahl offener Antworten, hinter **Unzustellbar** die Zahl offener Rückläufer. Auf dem Handy wählen Sie die Ansicht über ein Auswahlfeld.',
+              'Hinter **Offen** steht die Zahl offener Antworten, hinter **Unzustellbar** die Zahl offener Rückläufer.',
               'Jede Zeile zeigt Firma oder Absender, den Zeitpunkt der jüngsten Mail, die Kennzeichnung, den Namen des Absenders und die Zusammenfassung der KI, ohne Zusammenfassung den Betreff und den Anfang des Textes. Gespräche mit offenen Antworten sind hervorgehoben.',
               'Hat ein Gespräch mehrere Mails, nennt der Hinweis „2 neu“ die offenen. **Entwurf** zeigt, dass ein Antwortentwurf wartet.',
               'Kennzeichnungen sind die Einordnung der KI, **KI ordnet ein**, **Einordnung fehlgeschlagen**, **Abwesenheit**, **Unzustellbar** und **Vorübergehend unzustellbar**.',
-              'Auf breiten Bildschirmen steht links die Liste und rechts das gewählte Gespräch. Auf schmalen Bildschirmen öffnet ein Klick das Gespräch in einem Fenster, **Zurück zur Liste** schließt es wieder.',
+              'Auf breiten Bildschirmen steht links die Liste und rechts das gewählte Gespräch. In einem schmalen Fenster öffnet ein Klick das Gespräch in einem Fenster, **Zurück zur Liste** schließt es wieder.',
               'Die Ansicht aktualisiert sich von selbst, solange die KI arbeitet, in kurzen Abständen.',
             ],
           },
@@ -2645,7 +2641,7 @@ export const handbookDe: HandbookChapter[] = [
           },
           {
             type: 'p',
-            text: 'Sie öffnen die **Sperrliste** über das Benutzermenü oben rechts. Auf schmalen Bildschirmen steht sie in der Seitenleiste.',
+            text: 'Sie öffnen die **Sperrliste** über das Benutzermenü oben rechts. In einem schmalen Fenster steht sie in der Seitenleiste.',
           },
           {
             type: 'p',
@@ -2825,7 +2821,7 @@ export const handbookDe: HandbookChapter[] = [
             type: 'list',
             items: [
               '**Name** und **E-Mail für die Anmeldung**: Ändern Sie die Angaben und klicken Sie **Konto speichern**. Ändern Sie die E-Mail, erscheint zusätzlich das Feld **Aktuelles Passwort**. Ohne Ihr Passwort speichert MixMarket keine neue E-Mail. Danach melden Sie sich mit der neuen E-Mail an.',
-              '**Passwort ändern**: Tragen Sie **Aktuelles Passwort**, **Neues Passwort** mit mindestens 10 Zeichen und **Neues Passwort wiederholen** ein und klicken Sie **Passwort ändern**. Sie bleiben angemeldet. Andere Anmeldungen, etwa in einem zweiten Browser, werden abgemeldet.',
+              '**Passwort ändern**: Tragen Sie **Aktuelles Passwort**, **Neues Passwort** mit mindestens 10 Zeichen und **Neues Passwort wiederholen** ein und klicken Sie **Passwort ändern**. Sie bleiben angemeldet. Andere Anmeldungen werden abgemeldet.',
               '**Wiederherstellungsschlüssel**: Der Hinweis darunter zeigt, ob ein Schlüssel hinterlegt ist. **Neuen Schlüssel erzeugen** öffnet ein Fenster. Geben Sie dort Ihr **Aktuelles Passwort** ein und klicken Sie erneut **Neuen Schlüssel erzeugen**. MixMarket zeigt den neuen Schlüssel einmalig an, wie bei der Ersteinrichtung mit **Kopieren**, **Als Datei speichern** und dem Haken **Ich habe den Schlüssel sicher aufbewahrt.** Mit **Fertig** schließen Sie das Fenster.',
             ],
           },
@@ -2894,7 +2890,7 @@ export const handbookDe: HandbookChapter[] = [
           },
           {
             type: 'p',
-            text: 'Alle anderen Anmeldungen, etwa in einem zweiten Browser, werden dabei abgemeldet. Mit **Zurück zur Anmeldung** kehren Sie ohne Änderung zur Anmeldeseite zurück.',
+            text: 'Alle anderen Anmeldungen werden dabei abgemeldet. Mit **Zurück zur Anmeldung** kehren Sie ohne Änderung zur Anmeldeseite zurück.',
           },
           {
             type: 'p',
@@ -3117,7 +3113,7 @@ export const handbookDe: HandbookChapter[] = [
           },
           {
             type: 'p',
-            text: 'Beides können Sie auch jederzeit in der Kopfleiste umschalten. MixMarket merkt sich Ihre Wahl in diesem Browser. Die Sprache der Oberfläche hat keinen Einfluss auf Ihre Mails. Deren Sprache legen Sie je Vorlage unter **Sprache der Mail** fest, im Postausgang je Produkt unter **Sprache der Mails**.',
+            text: 'Beides können Sie auch jederzeit in der Kopfleiste umschalten. MixMarket merkt sich Ihre Wahl. Die Sprache der Oberfläche hat keinen Einfluss auf Ihre Mails. Deren Sprache legen Sie je Vorlage unter **Sprache der Mail** fest, im Postausgang je Produkt unter **Sprache der Mails**.',
           },
         ],
       },
@@ -3226,8 +3222,8 @@ export const handbookDe: HandbookChapter[] = [
               'Entwürfe und ältere abgebrochene Kampagnen öffnen sich zum Bearbeiten, andere Kampagnen werden in der Liste hervorgehoben.',
               'Firmen öffnen sich in der Detailansicht, Firmensuchen mit der Liste ihrer Firmen.',
               'Zielgruppen, Interessenten und Produkte öffnen sich in der Recherche, das passende Produkt wird dabei gewählt.',
-              'Mails des Postausgangs öffnen sich im passenden Reiter, die Auswahl der Produkte steht dann auf **Alle Produkte**. Auf schmalen Bildschirmen öffnet sich die Mail im Fenster.',
-              'Gespräche öffnen sich unter **Gespräche** in der Ansicht **Alle** mit dem gefundenen Gespräch, auf schmalen Bildschirmen im Fenster.',
+              'Mails des Postausgangs öffnen sich im passenden Reiter, die Auswahl der Produkte steht dann auf **Alle Produkte**. In einem schmalen Fenster öffnet sich die Mail im Fenster.',
+              'Gespräche öffnen sich unter **Gespräche** in der Ansicht **Alle** mit dem gefundenen Gespräch, in einem schmalen Fenster im Fenster.',
               'Webseiten-Aufträge öffnen ihre Ergebnisse, Einträge der Sperrliste werden hervorgehoben.',
             ],
           },

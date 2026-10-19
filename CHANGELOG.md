@@ -2,10 +2,15 @@
 
 Alle Änderungen an MixMarket, nach Semantic Versioning.
 
+## Unveröffentlicht
+
+### Geändert
+- Handbuch beschreibt MixMarket als Programm für den Rechner; Hinweise zur Bedienung auf dem Handy und im Browser entfernt
+
 ## 0.19.0 (19.10.2026)
 
 ### Neu
-- Programm: Sind Passwort und Wiederherstellungsschlüssel verloren, zeigt der versteckte Hinweis auf der Seite „Passwort vergessen“ den Knopf „Ohne Schlüssel neu setzen“. Er öffnet ein eigenes Fenster des Programms, in dem Sie das neue Passwort eingeben und den neuen Schlüssel erhalten. Das geht nur an dem Rechner, auf dem MixMarket läuft
+- Neuer Weg, um im Programm wieder Zugang zu bekommen, wenn Passwort und Wiederherstellungsschlüssel verloren sind
 
 ### Geändert
 - MixMarket gibt es für Nutzer nur noch als Programm. Handbuch, README, Update-Fenster und Anmeldeseite nennen keine Terminal-Befehle mehr
@@ -188,7 +193,7 @@ Alle Änderungen an MixMarket, nach Semantic Versioning.
 ### Neu
 - Ersteinrichtung beim ersten Start: Ohne Konto zeigt MixMarket "MixMarket einrichten" (Name, E-Mail, Passwort); es gibt genau ein Konto
 - Wiederherstellungsschlüssel: wird bei der Einrichtung einmalig gezeigt (kopieren, als Datei speichern, Bestätigung); "Passwort vergessen?" auf der Anmeldeseite setzt damit ein neues Passwort und gibt einen neuen Schlüssel
-- Notlösung ohne Schlüssel: `npm run reset-password` auf dem Rechner, auf dem MixMarket läuft; der Hinweis dazu ist auf der Seite "Passwort vergessen" versteckt und öffnet sich nur per Klick auf das erste "s" in "vergessen" (Englisch: in "password"), beschrieben im Handbuch
+- Notlösung, wenn auch der Wiederherstellungsschlüssel verloren ist; sie funktioniert nur an dem Rechner, auf dem MixMarket läuft
 - Einstellungen, Bereich Konto: Name und E-Mail ändern, Passwort ändern, neuen Wiederherstellungsschlüssel erzeugen
 - Sperre nach 5 Fehlversuchen für 5 Minuten (Anmeldung und Wiederherstellung), gezählt je Netzwerkadresse und je Konto
 - Wird die Seite neu geladen, bevor ein neuer Wiederherstellungsschlüssel bestätigt ist, zeigt MixMarket ihn erneut an

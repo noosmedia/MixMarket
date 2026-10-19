@@ -1367,7 +1367,7 @@
     "passwordChanged": "Passwort geändert",
     "keyTitle": "Wiederherstellungsschlüssel",
     "keyExists": "Ein Schlüssel ist hinterlegt. Ein neuer Schlüssel macht den bisherigen ungültig.",
-    "keyMissing": "Es ist noch kein Schlüssel hinterlegt. Ohne Schlüssel bleibt bei vergessenem Passwort nur der Befehl am Rechner.",
+    "keyMissing": "Es ist noch kein Schlüssel hinterlegt. Erzeugen Sie einen und bewahren Sie ihn sicher auf, er ist der Weg zurück bei vergessenem Passwort.",
     "newKey": "Neuen Schlüssel erzeugen",
     "newKeyConfirmHint": "Zur Bestätigung bitte Ihr Passwort eingeben.",
     "keyDone": "Fertig"

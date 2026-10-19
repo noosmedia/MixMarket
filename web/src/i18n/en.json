@@ -1367,7 +1367,7 @@
     "passwordChanged": "Password changed",
     "keyTitle": "Recovery key",
     "keyExists": "A key is stored. A new key makes the previous one invalid.",
-    "keyMissing": "No key is stored yet. Without a key, the only option after forgetting the password is the command on the computer.",
+    "keyMissing": "No key is stored yet. Create one and keep it in a safe place, it is the way back if you forget your password.",
     "newKey": "Create new key",
     "newKeyConfirmHint": "Please enter your password to confirm.",
     "keyDone": "Done"
